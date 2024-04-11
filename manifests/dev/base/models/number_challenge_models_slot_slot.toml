@@ -1,0 +1,25 @@
+kind = "DojoModel"
+class_hash = "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90"
+original_class_hash = "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90"
+abi = "manifests/dev/abis/base/models/number_challenge_models_slot_slot.json"
+name = "number_challenge::models::slot::slot"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "slot"
+type = "u8"
+key = true
+
+[[members]]
+name = "number"
+type = "u16"
+key = false

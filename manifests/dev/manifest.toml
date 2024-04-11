@@ -3,10 +3,10 @@ kind = "Contract"
 class_hash = "0x799bc4e9da10bfb3dd88e6f223c9cfbf7745435cd14f5d69675ea448e578cd"
 original_class_hash = "0x799bc4e9da10bfb3dd88e6f223c9cfbf7745435cd14f5d69675ea448e578cd"
 abi = "abis/deployments/dojo_world_world.json"
-address = "0x446f1f19ba951b59935df72974f8ba6060e5fbb411ca21d3e3e3812e3eb8df8"
-transaction_hash = "0x7f1456c94b5cc20a043c7acb7e183a31b57b6de82699b062498189f8aae9d0b"
+address = "0x2fb9256a503272ddf2606741a969933bc0711e19ae5d08fcb9b147a76dfe3c5"
+transaction_hash = "0x41b3481aa326ca80adea510c6e2fa845f6573b2f321c845f0c133fa11820665"
 block_number = 3
-seed = "dojo_starter"
+seed = "number_challenge"
 name = "dojo::world::world"
 
 [base]
@@ -17,7 +17,7 @@ name = "dojo::base::base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x7ec42d76c6d876b8f219c20b6a152fe35fe2afc62c471b29ba689c2f6a075b3"
+address = "0x6e526671cb7b00c2e47befbfa29307eea2dbee40e0276379ba2d58c6aa28dc3"
 class_hash = "0x1d9defcdd0a85810e88f34def5030abb3f56c7f528db876092dd0a4adc879fd"
 original_class_hash = "0x1d9defcdd0a85810e88f34def5030abb3f56c7f528db876092dd0a4adc879fd"
 base_class_hash = "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76"
@@ -26,6 +26,18 @@ reads = []
 writes = []
 computed = []
 name = "dojo_starter::systems::actions::actions"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x1473b7da9f3f265893ecb4fe9f2c1dcaaa95750d53cf399d73c6f33ec51b7dc"
+class_hash = "0x1243b367fe75d23d760c952f421ac894b9b5cf1909bc13f1c20882274dfcce9"
+original_class_hash = "0x1243b367fe75d23d760c952f421ac894b9b5cf1909bc13f1c20882274dfcce9"
+base_class_hash = "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76"
+abi = "abis/deployments/contracts/number_challenge_systems_actions_actions.json"
+reads = []
+writes = []
+computed = []
+name = "number_challenge::systems::actions::actions"
 
 [[models]]
 kind = "DojoModel"
@@ -64,4 +76,149 @@ key = true
 [[models.members]]
 name = "vec"
 type = "Vec2"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x238c2be7bbdd00b067c01d7595a3edfb58956d369b0301101d523712580320"
+original_class_hash = "0x238c2be7bbdd00b067c01d7595a3edfb58956d369b0301101d523712580320"
+abi = "abis/deployments/models/number_challenge_models_game_game.json"
+name = "number_challenge::models::game::game"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "remaining_slots"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "next_number"
+type = "u16"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x409cc741dc7c80fd199adabe37a2f4e5d2b76299773bc14b27fc2b9699483e1"
+original_class_hash = "0x409cc741dc7c80fd199adabe37a2f4e5d2b76299773bc14b27fc2b9699483e1"
+abi = "abis/deployments/models/number_challenge_models_game_slot.json"
+name = "number_challenge::models::game::slot"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "slot"
+type = "u8"
+key = true
+
+[[models.members]]
+name = "number"
+type = "u16"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90"
+original_class_hash = "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90"
+abi = "abis/deployments/models/number_challenge_models_slot_slot.json"
+name = "number_challenge::models::slot::slot"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "slot"
+type = "u8"
+key = true
+
+[[models.members]]
+name = "number"
+type = "u16"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x5e4fe57cf7425f140616c74a8ad87d51581fc62f39ed6a8b022c5cd8a9bfdb"
+original_class_hash = "0x5e4fe57cf7425f140616c74a8ad87d51581fc62f39ed6a8b022c5cd8a9bfdb"
+abi = "abis/deployments/models/number_challenge_systems_actions_actions_created.json"
+name = "number_challenge::systems::actions::actions::created"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x1c0ca075b77f4e84a93f4942e50559824fa4a5c3df51b7b51b4e0eb1b2eb3a6"
+original_class_hash = "0x1c0ca075b77f4e84a93f4942e50559824fa4a5c3df51b7b51b4e0eb1b2eb3a6"
+abi = "abis/deployments/models/number_challenge_systems_actions_actions_inserted.json"
+name = "number_challenge::systems::actions::actions::inserted"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "slot"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "number"
+type = "u16"
 key = false

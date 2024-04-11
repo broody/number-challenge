@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use starknet::class_hash::Felt252TryIntoClassHash;
+    use starknet::testing::set_transaction_hash;
 
     // import world dispatcher
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
@@ -9,54 +10,66 @@ mod tests {
     use dojo::test_utils::{spawn_test_world, deploy_contract};
 
     // import test utils
-    use dojo_starter::{
+    use number_challenge::{
         systems::{actions::{actions, IActionsDispatcher, IActionsDispatcherTrait}},
-        models::{position::{Position, Vec2, position}, moves::{Moves, Direction, moves}}
+        models::{game::{Game, game}, slot::{Slot, slot}}
     };
 
 
     #[test]
-    #[available_gas(30000000)]
-    fn test_move() {
-        // caller
+    #[available_gas(100000000)]
+    fn test_create() {
         let caller = starknet::contract_address_const::<0x0>();
-
-        // models
-        let mut models = array![position::TEST_CLASS_HASH, moves::TEST_CLASS_HASH];
-
-        // deploy world with models
+        let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
         let world = spawn_test_world(models);
 
-        // deploy systems contract
         let contract_address = world
             .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
         let actions_system = IActionsDispatcher { contract_address };
 
-        // call spawn()
-        actions_system.spawn();
+        let (game_id, first_number) = actions_system.create();
+        let game = get!(world, (game_id, caller), Game);
+        assert(game.next_number == first_number, 'next number create is wrong');
 
-        // call move with direction right
-        actions_system.move(Direction::Right);
+        // set transaction hash so seed is "random"
+        set_transaction_hash(42);  
 
-        // Check world state
-        let moves = get!(world, caller, Moves);
+        let next_number = actions_system.set_slot(game_id, 6);
+        let game = get!(world, (game_id, caller), Game);
+        assert(game.next_number == next_number, 'next number set slot is wrong');
 
-        // casting right direction
-        let right_dir_felt: felt252 = Direction::Right.into();
+        if next_number > first_number {
+            actions_system.set_slot(game_id, 7);
+        } else {
+            actions_system.set_slot(game_id, 5);
+        }
+    }
 
-        // check moves
-        assert(moves.remaining == 99, 'moves is wrong');
+    #[test]
+    #[available_gas(100000000)]
+    fn test_set_eqaul() {
+        let caller = starknet::contract_address_const::<0x0>();
+        let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
+        let world = spawn_test_world(models);
 
-        // check last direction
-        assert(moves.last_direction.into() == right_dir_felt, 'last direction is wrong');
+        let contract_address = world
+            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
+        let actions_system = IActionsDispatcher { contract_address };
 
-        // get new_position
-        let new_position = get!(world, caller, Position);
+        let (game_id, number) = actions_system.create();
 
-        // check new position x
-        assert(new_position.vec.x == 11, 'position x is wrong');
+        // next number will always return same number as seed is based on transaction hash
+                
+        actions_system.set_slot(game_id, 7);
+        let slot = get!(world, (game_id, caller, 7), Slot);
+        assert(slot.number == number, 'slot 7 number is wrong');
 
-        // check new position y
-        assert(new_position.vec.y == 10, 'position y is wrong');
+        actions_system.set_slot(game_id, 6);
+        let slot = get!(world, (game_id, caller, 6), Slot);
+        assert(slot.number == number, 'slot 6 number is wrong');
+
+        actions_system.set_slot(game_id, 5);
+        let slot = get!(world, (game_id, caller, 5), Slot);
+        assert(slot.number == number, 'slot 5 number is wrong');
     }
 }
