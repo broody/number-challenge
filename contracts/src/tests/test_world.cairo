@@ -29,6 +29,7 @@ mod tests {
 
         let (game_id, first_number) = actions_system.create();
         let game = get!(world, (game_id, caller), Game);
+        let remaining = game.remaining_slots;
         assert(game.next_number == first_number, 'next number create is wrong');
 
         // set transaction hash so seed is "random"
@@ -37,6 +38,7 @@ mod tests {
         let next_number = actions_system.set_slot(game_id, 6);
         let game = get!(world, (game_id, caller), Game);
         assert(game.next_number == next_number, 'next number set slot is wrong');
+        assert(game.remaining_slots == remaining - 1, 'remaining slots is wrong');
 
         if next_number > first_number {
             actions_system.set_slot(game_id, 7);

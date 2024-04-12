@@ -122,6 +122,7 @@ mod actions {
             let mut rand = RandomImpl::new(world);
             let next_number = rand.between::<u16>(1, 1000);
             game.next_number = next_number;
+            game.remaining_slots -= 1;
 
             set!(world, (game, target));
 
