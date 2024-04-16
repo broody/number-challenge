@@ -661,7 +661,7 @@
       }
     ],
     "address": "0x2fb9256a503272ddf2606741a969933bc0711e19ae5d08fcb9b147a76dfe3c5",
-    "transaction_hash": "0x10861345c311f2f567fb972c6fd5ccbe8f9c759269bbfc3b4307f210be36cd8",
+    "transaction_hash": "0x12da06f837cf677d6a4cbb79f4c9245dc8f3b52d1dea4b01715302f11515a05",
     "block_number": 3,
     "seed": "number_challenge",
     "name": "dojo::world::world"

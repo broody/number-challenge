@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import "./index.css";
 import {
   Provider,
   Client,
@@ -10,6 +9,7 @@ import {
   subscriptionExchange,
 } from "urql";
 import { createClient as createWSClient } from "graphql-ws";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const wsClient = createWSClient({
   url: "ws://localhost:8080/graphql",
@@ -37,7 +37,9 @@ const client = new Client({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider value={client}>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </Provider>
   </React.StrictMode>,
 );
