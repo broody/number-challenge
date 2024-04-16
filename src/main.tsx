@@ -12,11 +12,11 @@ import { createClient as createWSClient } from "graphql-ws";
 import { ChakraProvider } from "@chakra-ui/react";
 
 const wsClient = createWSClient({
-  url: "ws://localhost:8080/graphql",
+  url: import.meta.env.VITE_GRAPHQL_WS_URL,
 });
 
 const client = new Client({
-  url: "http://localhost:8080/graphql",
+  url: import.meta.env.VITE_GRAPHQL_URL,
   exchanges: [
     cacheExchange,
     fetchExchange,

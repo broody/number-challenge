@@ -3,22 +3,19 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Spacer,
   HStack,
   Button,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
-import { useQuery, useSubscription } from "urql";
+import { useQuery} from "urql";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
-import { formatAddress } from "../utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -27,20 +24,12 @@ const GamesQuery = graphql(`
       limit: 10
       offset: $offset
     ) {
-      totalCount
       edges {
-        cursor
         node {
           game_id
           player
           remaining_slots
         }
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
       }
     }
   }

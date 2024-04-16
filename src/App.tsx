@@ -5,7 +5,7 @@ import { BurnerProvider } from "@dojoengine/create-burner";
 import { Account, RpcProvider } from "starknet";
 
 const rpcProvider = new RpcProvider({
-  nodeUrl: "http://localhost:5050",
+  nodeUrl: import.meta.env.VITE_RPC_URL,
 });
 
 const masterAccount = new Account(
