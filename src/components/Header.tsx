@@ -17,7 +17,13 @@ const CreatedEvent = graphql(`
   }
 `);
 
-const Header = ({ title, onNewGame }: { title: string; onNewGame?: () => void }) => {
+const Header = ({
+  title,
+  onNewGame,
+}: {
+  title: string;
+  onNewGame?: () => void;
+}) => {
   const { account, create, isDeploying } = useBurner();
   const [creating, setCreating] = useState(false);
   const location = useLocation();
@@ -45,7 +51,7 @@ const Header = ({ title, onNewGame }: { title: string; onNewGame?: () => void })
   const newGame = async () => {
     if (!account) return;
 
-    if(onNewGame) {
+    if (onNewGame) {
       onNewGame();
     }
 

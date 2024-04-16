@@ -3,7 +3,15 @@ import { graphql } from "../graphql";
 import { useQuery, useSubscription } from "urql";
 import { useEffect, useState } from "react";
 import { formatAddress } from "../utils";
-import { Box, Button, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Heading,
+  Spacer,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useBurner } from "@dojoengine/create-burner";
 import Header from "./Header";
 import { ACTIONS_CONTRACT } from "../constants";
@@ -141,14 +149,11 @@ const Game = () => {
 
   return (
     <>
-      <Header
-        title={"Number Challnege"}
-        onNewGame={() => setSlots([])}
-      />
+      <Header title={"Number Challnege"} onNewGame={() => setSlots([])} />
       <Spacer minH="80px" />
       <HStack align="flex-start" flexDir="row-reverse">
-        <VStack w="100%" flex="1">
-          <VStack align="flex-start">
+        <VStack flex="1">
+          <VStack align="flex-start" h="100%">
             <Text>
               Player: <strong>{formatAddress(player)}</strong>{" "}
               {isOwner && "(you)"}
@@ -156,15 +161,19 @@ const Game = () => {
             <Text>
               Game ID: <strong>{gameId}</strong>
             </Text>
-            <Text> 
-              Number Range: {maxNum && <strong>1 - {maxNum - 1}</strong>}
-            </Text>
             <Text>
-              Next number: <strong>{next}</strong>
+              Number Range: {maxNum && <strong>1 - {maxNum - 1}</strong>}
             </Text>
             <Text>
               Remaining: <strong>{remaining}</strong>
             </Text>
+            <Spacer minH="100px" />
+            <VStack w="100%">
+              <Heading fontSize="24px">Next Number</Heading>
+              <Text fontSize="20px">
+                <strong>{next}</strong>
+              </Text>
+            </VStack>
           </VStack>
         </VStack>
         <HStack flex="2" justify="space-around">
