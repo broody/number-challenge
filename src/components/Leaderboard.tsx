@@ -1,5 +1,5 @@
-import { graphql } from '../graphql'
-import { useQuery } from 'urql'
+import { graphql } from "../graphql";
+import { useQuery } from "urql";
 
 const GamesQuery = graphql(`
   query Games {
@@ -14,19 +14,18 @@ const GamesQuery = graphql(`
       }
     }
   }
-`)
+`);
 
 const Leaderboard = () => {
   const [result] = useQuery({
-    query: GamesQuery
-  })
-  
-  
+    query: GamesQuery,
+  });
+
   return (
     <div>
       <h1>Leaderboard</h1>
     </div>
-  )
-}
+  );
+};
 
 export default Leaderboard;
