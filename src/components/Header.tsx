@@ -79,6 +79,7 @@ const Header = ({
             newGame();
           }}
           isLoading={creating}
+          visibility={account ? "visible" : "hidden"}
         >
           New Game
         </Button>

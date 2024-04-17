@@ -677,8 +677,8 @@
     {
       "kind": "DojoContract",
       "address": "0x1473b7da9f3f265893ecb4fe9f2c1dcaaa95750d53cf399d73c6f33ec51b7dc",
-      "class_hash": "0x50413c0ff64edd115b4a297e15803beace304d8cd76aec37d169c778e3dcdaf",
-      "original_class_hash": "0x50413c0ff64edd115b4a297e15803beace304d8cd76aec37d169c778e3dcdaf",
+      "class_hash": "0x64d9d0008420678da838431e5f9437bce4c81b9fe6304f332203d1957f305d2",
+      "original_class_hash": "0x64d9d0008420678da838431e5f9437bce4c81b9fe6304f332203d1957f305d2",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -874,6 +874,16 @@
             {
               "name": "number",
               "type": "core::integer::u16",
+              "kind": "data"
+            },
+            {
+              "name": "next_number",
+              "type": "core::integer::u16",
+              "kind": "data"
+            },
+            {
+              "name": "remaining_slots",
+              "type": "core::integer::u8",
               "kind": "data"
             }
           ]
@@ -1695,10 +1705,20 @@
           "name": "number",
           "type": "u16",
           "key": false
+        },
+        {
+          "name": "next_number",
+          "type": "u16",
+          "key": false
+        },
+        {
+          "name": "remaining_slots",
+          "type": "u8",
+          "key": false
         }
       ],
-      "class_hash": "0x1c0ca075b77f4e84a93f4942e50559824fa4a5c3df51b7b51b4e0eb1b2eb3a6",
-      "original_class_hash": "0x1c0ca075b77f4e84a93f4942e50559824fa4a5c3df51b7b51b4e0eb1b2eb3a6",
+      "class_hash": "0x2fb5bdac065d0b9d8763f84d84604590cd2cff98ba5c8aedf02e01ed1671f9d",
+      "original_class_hash": "0x2fb5bdac065d0b9d8763f84d84604590cd2cff98ba5c8aedf02e01ed1671f9d",
       "abi": [
         {
           "type": "impl",
@@ -1892,6 +1912,14 @@
             {
               "name": "number",
               "type": "core::integer::u16"
+            },
+            {
+              "name": "next_number",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "remaining_slots",
+              "type": "core::integer::u8"
             }
           ]
         },

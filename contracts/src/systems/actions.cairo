@@ -29,7 +29,9 @@ mod actions {
         #[key]
         player: ContractAddress,
         slot: u8,
-        number: u16
+        number: u16,
+        next_number: u16,
+        remaining_slots: u8
     }
 
     #[derive(starknet::Event, Model, Copy, Drop, Serde)]
@@ -117,12 +119,21 @@ mod actions {
             }
 
             target.number = game.next_number;
-            emit!(world, Inserted { game_id, player, slot, number: target.number });
-
             let mut rand = RandomImpl::new(world);
             let next_number = rand.between::<u16>(1, 1000);
             game.next_number = next_number;
             game.remaining_slots -= 1;
+            emit!(
+                world,
+                Inserted {
+                    game_id,
+                    player,
+                    slot,
+                    number: target.number,
+                    next_number,
+                    remaining_slots: game.remaining_slots
+                }
+            );
 
             set!(world, (game, target));
 

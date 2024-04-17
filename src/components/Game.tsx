@@ -31,6 +31,7 @@ const GameQuery = graphql(`
     slotModels(
       where: { game_id: $gameId }
       order: { direction: ASC, field: SLOT }
+      limit: 20
     ) {
       edges {
         node {
@@ -43,21 +44,10 @@ const GameQuery = graphql(`
 `);
 
 const EventSubscription = graphql(`
-  subscription EntityUpdated {
-    entityUpdated {
-      models {
-        __typename
-        ... on Game {
-          game_id
-          next_number
-          remaining_slots
-        }
-        ... on Slot {
-          game_id
-          slot
-          number
-        }
-      }
+  subscription EventEmitted($gameId: String) {
+    eventEmitted(keys: [$gameId]) {
+      keys
+      data
     }
   }
 `);
@@ -82,50 +72,43 @@ const Game = () => {
     pause: !gameId,
   });
 
-  const [updatedResult] = useSubscription({
+  const [eventEmitted] = useSubscription({
     query: EventSubscription,
-    pause: !gameId,
+    variables: { gameId },
   });
 
-  useEffect(() => {
-    if (queryResult.data) {
-      queryResult.data?.gameModels?.edges?.forEach((edge: any) => {
-        setRemaining(edge.node.remaining_slots);
-        setNext(edge.node.next_number);
-        setPlayer(edge.node.player);
-        setMaxNum(edge.node.max_number);
-
-        if (edge.node.player === account?.address) {
-          setIsOwner(true);
-        }
-      });
-
-      const newSlots: number[] = Array.from({ length: 20 });
-      queryResult.data?.slotModels?.edges?.forEach((edge: any) => {
-        newSlots[edge.node.slot - 1] = edge.node.number;
-      });
+  useEffect(()=>{
+    if (eventEmitted.data?.eventEmitted) {
+      const { data } = eventEmitted.data?.eventEmitted;
+      setNext(parseInt(data?.[2] || "0", 16));
+      setRemaining(parseInt(data?.[3] || "0", 16));
+      const newSlots = [...slots];
+      newSlots[parseInt(data?.[0] || "0", 16)] = parseInt(data?.[1] || "0", 16);
       setSlots(newSlots);
+      setDisableAll(false);
     }
+    
+  }, [eventEmitted]);
+
+  useEffect(() => {
+    queryResult.data?.gameModels?.edges?.forEach((edge: any) => {
+      setRemaining(edge.node.remaining_slots);
+      setNext(edge.node.next_number);
+      setPlayer(edge.node.player);
+      setMaxNum(edge.node.max_number);
+
+      if (edge.node.player === account?.address) {
+        setIsOwner(true);
+      }
+    });
+
+    const newSlots: number[] = Array.from({ length: 20 });
+    queryResult.data?.slotModels?.edges?.forEach((edge: any) => {
+      newSlots[edge.node.slot] = edge.node.number;
+    });
+    setSlots(newSlots);
   }, [queryResult, account]);
 
-  useEffect(() => {
-    if (updatedResult.data) {
-      updatedResult.data?.entityUpdated?.models?.forEach((model: any) => {
-        if (parseInt(model.game_id) === parseInt(gameId)) {
-          if (model.__typename === "Game") {
-            setRemaining(model.remaining_slots);
-            setNext(model.next_number);
-          }
-          if (model.__typename === "Slot") {
-            const newSlots = [...slots];
-            newSlots[model.slot - 1] = model.number;
-            setSlots(newSlots);
-            setDisableAll(false);
-          }
-        }
-      });
-    }
-  }, [updatedResult]);
 
   const setSlot = async (slot: number): Promise<boolean> => {
     if (!account) return false;
@@ -162,7 +145,7 @@ const Game = () => {
               Game ID: <strong>{gameId}</strong>
             </Text>
             <Text>
-              Number Range: {maxNum && <strong>1 - {maxNum - 1}</strong>}
+              Number Range: {maxNum && <strong>1 - {maxNum}</strong>}
             </Text>
             <Text>
               Remaining: <strong>{remaining}</strong>
@@ -182,7 +165,7 @@ const Game = () => {
             {slots.slice(0, 10).map((number, index) => {
               return (
                 <Slot
-                  index={index + 1}
+                  index={index}
                   number={number}
                   isOwner={isOwner}
                   disableAll={disableAll}
@@ -198,7 +181,7 @@ const Game = () => {
             {slots.slice(10, 20).map((number, index) => {
               return (
                 <Slot
-                  index={index + 11}
+                  index={index + 10}
                   number={number}
                   isOwner={isOwner}
                   disableAll={disableAll}
@@ -233,7 +216,7 @@ const Slot = ({
   const [loading, setLoading] = useState(false);
   return (
     <HStack key={index} gap="30px" justify="space-between" width="180px">
-      <Text>{index}:</Text>
+      <Text>{index + 1}:</Text>
       <Box w="100px">
         {number ? (
           <Button w="100%" pointerEvents="none" bgColor="green.100">

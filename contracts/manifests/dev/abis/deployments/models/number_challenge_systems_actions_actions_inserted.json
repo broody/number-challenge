@@ -191,6 +191,14 @@
       {
         "name": "number",
         "type": "core::integer::u16"
+      },
+      {
+        "name": "next_number",
+        "type": "core::integer::u16"
+      },
+      {
+        "name": "remaining_slots",
+        "type": "core::integer::u8"
       }
     ]
   },

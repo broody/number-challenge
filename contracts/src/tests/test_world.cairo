@@ -33,7 +33,7 @@ mod tests {
         assert(game.next_number == first_number, 'next number create is wrong');
 
         // set transaction hash so seed is "random"
-        set_transaction_hash(42);  
+        set_transaction_hash(42);
 
         let next_number = actions_system.set_slot(game_id, 6);
         let game = get!(world, (game_id, caller), Game);
@@ -61,7 +61,7 @@ mod tests {
         let (game_id, number) = actions_system.create();
 
         // next number will always return same number as seed is based on transaction hash
-                
+
         actions_system.set_slot(game_id, 7);
         let slot = get!(world, (game_id, caller, 7), Slot);
         assert(slot.number == number, 'slot 7 number is wrong');
