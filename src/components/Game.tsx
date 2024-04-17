@@ -77,7 +77,7 @@ const Game = () => {
     variables: { gameId },
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (eventEmitted.data?.eventEmitted) {
       const { data } = eventEmitted.data?.eventEmitted;
       setNext(parseInt(data?.[2] || "0", 16));
@@ -87,7 +87,6 @@ const Game = () => {
       setSlots(newSlots);
       setDisableAll(false);
     }
-    
   }, [eventEmitted]);
 
   useEffect(() => {
@@ -108,7 +107,6 @@ const Game = () => {
     });
     setSlots(newSlots);
   }, [queryResult, account]);
-
 
   const setSlot = async (slot: number): Promise<boolean> => {
     if (!account) return false;
@@ -144,9 +142,7 @@ const Game = () => {
             <Text>
               Game ID: <strong>{gameId}</strong>
             </Text>
-            <Text>
-              Number Range: {maxNum && <strong>1 - {maxNum}</strong>}
-            </Text>
+            <Text>Number Range: {maxNum && <strong>1 - {maxNum}</strong>}</Text>
             <Text>
               Remaining: <strong>{remaining}</strong>
             </Text>
