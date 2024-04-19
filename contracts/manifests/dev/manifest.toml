@@ -11,7 +11,7 @@ name = "dojo::world::world"
 
 [world.metadata]
 profile_name = "dev"
-rpc_url = "http://localhost:5050/"
+rpc_url = "https://api.cartridge.gg/x/20-number-challenge/katana"
 
 [base]
 kind = "Class"
