@@ -60,13 +60,14 @@ const Leaderboard = () => {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>Remaining</Th>
+                <Th>Ranking</Th>
                 <Th>Player</Th>
+                <Th>Remaining Numbers</Th>
                 <Th>Game ID</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {result.data?.gameModels?.edges?.map((edge: any) => (
+              {result.data?.gameModels?.edges?.map((edge: any, index) => (
                 <Tr
                   key={edge.node.game_id}
                   cursor="pointer"
@@ -78,8 +79,9 @@ const Leaderboard = () => {
                     account?.address === edge.node.player ? "green.100" : ""
                   }
                 >
-                  <Td>{edge.node.remaining_slots}</Td>
+                  <Td>{index + offset + 1}</Td>
                   <Td>{formatAddress(edge.node.player)} {account?.address === edge.node.player && <>(you)</>}</Td>
+                  <Td>{edge.node.remaining_slots}</Td>
                   <Td>0x{edge.node.game_id.toString(16)}</Td>
                 </Tr>
               ))}
