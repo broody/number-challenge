@@ -23,7 +23,7 @@ const GamesQuery = graphql(`
   query Games($offset: Int) {
     gameModels(
       order: { direction: ASC, field: REMAINING_SLOTS }
-      limit: 10
+      limit: 20
       offset: $offset
     ) {
       edges {
@@ -53,7 +53,7 @@ const Leaderboard = () => {
     : 0;
   return (
     <>
-      <Header title={"Leaderboard"} />
+      <Header title={"NUMBER CHALLENGE LEADERBOARD"} />
       <Spacer minH="40px" />
       <VStack w="100%" px="40px" gap="40px">
         <TableContainer w="100%">
@@ -92,16 +92,16 @@ const Leaderboard = () => {
           <Button
             isDisabled={offset === 0}
             onClick={() => {
-              setOffset(offset - 10);
+              setOffset(offset - 20);
               reexecuteQuery({ requestPolicy: "network-only" });
             }}
           >
             Prev
           </Button>
           <Button
-            isDisabled={totalResult < 10}
+            isDisabled={totalResult < 20}
             onClick={() => {
-              setOffset(offset + 10);
+              setOffset(offset + 20);
               reexecuteQuery({ requestPolicy: "network-only" });
             }}
           >

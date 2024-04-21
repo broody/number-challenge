@@ -10,6 +10,7 @@ import {
 } from "urql";
 import { createClient as createWSClient } from "graphql-ws";
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme/index.ts";
 
 const wsClient = createWSClient({
   url: import.meta.env.VITE_GRAPHQL_WS_URL,
@@ -37,7 +38,7 @@ const client = new Client({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider value={client}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>
     </Provider>

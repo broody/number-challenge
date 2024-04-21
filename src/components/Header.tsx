@@ -40,7 +40,6 @@ const Header = ({
   useEffect(() => {
     const gameId = createdEvent.data?.eventEmitted?.keys?.[0];
     if (!gameId) {
-      console.error("gameId not found in emitted event");
       return;
     }
 
@@ -92,7 +91,7 @@ const Header = ({
           </Button>
         ) : (
           <Box alignContent="right">
-            Player: <strong>{formatAddress(account.address)}</strong>
+            <strong>{formatAddress(account.address)}</strong>
           </Box>
         )}
       </HStack>
