@@ -10,6 +10,7 @@ import {
   Spacer,
   HStack,
   Button,
+  useColorMode,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
@@ -41,6 +42,7 @@ const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
   const { account } = useBurner();
+  const { colorMode } = useColorMode();
   const [result, reexecuteQuery] = useQuery({
     query: GamesQuery,
     variables: {
@@ -63,7 +65,7 @@ const Leaderboard = () => {
                 <Th>Ranking</Th>
                 <Th>Player</Th>
                 <Th>Remaining Numbers</Th>
-                <Th>Game ID</Th>
+                <Th display={["none", "none", "block"]}>Game ID</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -71,16 +73,25 @@ const Leaderboard = () => {
                 <Tr
                   key={edge.node.game_id}
                   cursor="pointer"
-                  _hover={{ bgColor: "gray.100" }}
+                  _hover={{
+                    bgColor: colorMode === "light" ? "gray.100" : "gray.700",
+                  }}
                   onClick={() => {
                     navigate(`/0x${edge.node.game_id.toString(16)}`);
                   }}
                   bgColor={
-                    account?.address === edge.node.player ? "green.100" : ""
+                    account?.address === edge.node.player
+                      ? colorMode === "light"
+                        ? "green.100"
+                        : "green.400"
+                      : ""
                   }
                 >
                   <Td>{index + offset + 1}</Td>
-                  <Td>{formatAddress(edge.node.player)} {account?.address === edge.node.player && <>(you)</>}</Td>
+                  <Td>
+                    {formatAddress(edge.node.player)}{" "}
+                    {account?.address === edge.node.player && <>(you)</>}
+                  </Td>
                   <Td>{edge.node.remaining_slots}</Td>
                   <Td>0x{edge.node.game_id.toString(16)}</Td>
                 </Tr>

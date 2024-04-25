@@ -11,6 +11,7 @@ import {
   Spacer,
   Text,
   VStack,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useBurner } from "@dojoengine/create-burner";
 import Header from "./Header";
@@ -130,7 +131,7 @@ const Game = () => {
 
   return (
     <>
-      <Header title={"Number Challnege"} onNewGame={() => setSlots([])} />
+      <Header title={"Number Challenge"} onNewGame={() => setSlots([])} />
       <Spacer minH="80px" />
       <HStack align="flex-start" flexDir="row-reverse">
         <VStack flex="1">
@@ -210,12 +211,17 @@ const Slot = ({
   onClick: (slot: number) => Promise<boolean>;
 }) => {
   const [loading, setLoading] = useState(false);
+  const { colorMode } = useColorMode();
   return (
     <HStack key={index} gap="30px" justify="space-between" width="180px">
       <Text>{index + 1}:</Text>
       <Box w="100px">
         {number ? (
-          <Button w="100%" pointerEvents="none" bgColor="green.100">
+          <Button
+            w="100%"
+            pointerEvents="none"
+            bgColor={colorMode === "light" ? "green.100" : "green.400"}
+          >
             {number}
           </Button>
         ) : (

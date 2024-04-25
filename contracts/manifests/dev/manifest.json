@@ -666,7 +666,7 @@
     "seed": "number_challenge",
     "metadata": {
       "profile_name": "dev",
-      "rpc_url": "https://api.cartridge.gg/x/20-number-challenge/katana"
+      "rpc_url": "https://api.cartridge.gg/rpc/starknet-sepolia"
     },
     "name": "dojo::world::world"
   },
