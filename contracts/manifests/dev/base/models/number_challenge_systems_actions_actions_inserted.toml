@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x2fb5bdac065d0b9d8763f84d84604590cd2cff98ba5c8aedf02e01ed1671f9d"
-original_class_hash = "0x2fb5bdac065d0b9d8763f84d84604590cd2cff98ba5c8aedf02e01ed1671f9d"
+class_hash = "0x39c9138c8d936a9146cce7b39270781656dc9a81260c5be34d00338cb76a671"
+original_class_hash = "0x39c9138c8d936a9146cce7b39270781656dc9a81260c5be34d00338cb76a671"
 abi = "manifests/dev/abis/base/models/number_challenge_systems_actions_actions_inserted.json"
 name = "number_challenge::systems::actions::actions::inserted"
 

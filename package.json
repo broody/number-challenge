@@ -11,9 +11,9 @@
     "format": "prettier ./src --write"
   },
   "dependencies": {
+    "@cartridge/connector": "^0.3.22",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
-    "@dojoengine/create-burner": "^0.6.122",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@starknet-react/chains": "^0.1.7",

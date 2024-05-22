@@ -9,3 +9,11 @@ export function formatAddress(addr: BigNumberish) {
 
   return addr.substr(0, 6) + "..." + addr.substr(-4);
 }
+
+export function removeZeros(addr: string) {
+  if (addr.startsWith("0x")) {
+    addr = addr.slice(2);
+  }
+
+  return "0x" + addr.replace(/^0+/, "");
+}

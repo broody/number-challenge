@@ -17,8 +17,8 @@ import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { useState } from "react";
-import { useBurner } from "@dojoengine/create-burner";
 import { formatAddress } from "../utils";
+import { useAccount } from "@starknet-react/core";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -41,7 +41,7 @@ const GamesQuery = graphql(`
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
-  const { account } = useBurner();
+  const { account } = useAccount();
   const { colorMode } = useColorMode();
   const [result, reexecuteQuery] = useQuery({
     query: GamesQuery,

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { graphql } from "../graphql";
 import { useQuery, useSubscription } from "urql";
 import { useEffect, useState } from "react";
-import { formatAddress } from "../utils";
+import { formatAddress, removeZeros } from "../utils";
 import {
   Box,
   Button,
@@ -13,9 +13,8 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import { useBurner } from "@dojoengine/create-burner";
 import Header from "./Header";
-import { ACTIONS_CONTRACT } from "../constants";
+import { useAccount } from "@starknet-react/core";
 
 const GameQuery = graphql(`
   query GameQuery($gameId: u32) {
@@ -61,7 +60,7 @@ const Game = () => {
   const [remaining, setRemaining] = useState<number>();
   const [disableAll, setDisableAll] = useState<boolean>(false);
   const [maxNum, setMaxNum] = useState<number>();
-  const { account } = useBurner();
+  const { account } = useAccount();
   const { gameId } = useParams();
   if (!gameId) {
     return <></>;
@@ -97,7 +96,7 @@ const Game = () => {
       setPlayer(edge.node.player);
       setMaxNum(edge.node.max_number);
 
-      if (edge.node.player === account?.address) {
+      if (edge.node.player === removeZeros(account?.address || "")) {
         setIsOwner(true);
       }
     });
@@ -113,11 +112,13 @@ const Game = () => {
     if (!account) return false;
 
     try {
-      const { transaction_hash } = await account.execute({
-        contractAddress: ACTIONS_CONTRACT,
-        entrypoint: "set_slot",
-        calldata: [gameId, slot],
-      });
+      const { transaction_hash } = await account.execute([
+        {
+          contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
+          entrypoint: "set_slot",
+          calldata: [gameId, slot.toString()],
+        },
+      ]);
 
       console.log(transaction_hash);
     } catch (e) {

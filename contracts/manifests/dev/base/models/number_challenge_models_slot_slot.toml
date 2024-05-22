@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90"
-original_class_hash = "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90"
+class_hash = "0x180f772e8666851a16291698fa8b0c7804c6501095bbbf649cf2147bdfe11bc"
+original_class_hash = "0x180f772e8666851a16291698fa8b0c7804c6501095bbbf649cf2147bdfe11bc"
 abi = "manifests/dev/abis/base/models/number_challenge_models_slot_slot.json"
 name = "number_challenge::models::slot::slot"
 

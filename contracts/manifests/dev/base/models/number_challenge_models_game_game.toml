@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x238c2be7bbdd00b067c01d7595a3edfb58956d369b0301101d523712580320"
-original_class_hash = "0x238c2be7bbdd00b067c01d7595a3edfb58956d369b0301101d523712580320"
+class_hash = "0x4e8dfa0aa01bce92bbf8ada6264419959f5e2bb1a556cecb3a6b4abcc2114a8"
+original_class_hash = "0x4e8dfa0aa01bce92bbf8ada6264419959f5e2bb1a556cecb3a6b4abcc2114a8"
 abi = "manifests/dev/abis/base/models/number_challenge_models_game_game.json"
 name = "number_challenge::models::game::game"
 
