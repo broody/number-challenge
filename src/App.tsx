@@ -25,7 +25,9 @@ const connectors = [new CartridgeConnector([
     target: import.meta.env.VITE_ACTIONS_CONTRACT,
     method: "set_slot",
   }
-], {}) as never as Connector];
+], {
+  url: "https://keychain-git-fix-est-fee.preview.cartridge.gg/"
+}) as never as Connector];
 
 function App() {
   return (
