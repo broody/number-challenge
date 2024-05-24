@@ -19,6 +19,7 @@ import Header from "./Header";
 import { useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
+import { addAddressPadding } from "starknet";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -80,7 +81,7 @@ const Leaderboard = () => {
                     navigate(`/0x${edge.node.game_id.toString(16)}`);
                   }}
                   bgColor={
-                    account?.address === edge.node.player
+                    account?.address === addAddressPadding(edge.node.player)
                       ? colorMode === "light"
                         ? "green.100"
                         : "green.400"
