@@ -8,13 +8,14 @@ import {
   Button,
   HStack,
   Heading,
+  Link,
   Spacer,
   Text,
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
 import Header from "./Header";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useExplorer } from "@starknet-react/core";
 
 const GameQuery = graphql(`
   query GameQuery($gameId: u32) {
@@ -60,6 +61,7 @@ const Game = () => {
   const [remaining, setRemaining] = useState<number>();
   const [disableAll, setDisableAll] = useState<boolean>(false);
   const [maxNum, setMaxNum] = useState<number>();
+  const explorer = useExplorer();
   const { account } = useAccount();
   const { gameId } = useParams();
   if (!gameId) {
@@ -138,8 +140,11 @@ const Game = () => {
         <VStack flex="1">
           <VStack align="flex-start" h="100%">
             <Text>
-              Player: <strong>{formatAddress(player)}</strong>{" "}
-              {isOwner && "(you)"}
+              Player:{" "}
+              <Link href={explorer.contract(player)} isExternal>
+                <strong>{formatAddress(player)}</strong>
+              </Link>
+              {isOwner && " (you)"}
             </Text>
             <Text>
               Game ID: <strong>{gameId}</strong>

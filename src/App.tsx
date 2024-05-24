@@ -16,16 +16,21 @@ function rpc(_chain: Chain) {
   };
 }
 
-const connectors = [new CartridgeConnector([
-  { 
-    target: import.meta.env.VITE_ACTIONS_CONTRACT,
-    method: "create",
-  },
-  { 
-    target: import.meta.env.VITE_ACTIONS_CONTRACT,
-    method: "set_slot",
-  }
-], {}) as never as Connector];
+const connectors = [
+  new CartridgeConnector(
+    [
+      {
+        target: import.meta.env.VITE_ACTIONS_CONTRACT,
+        method: "create",
+      },
+      {
+        target: import.meta.env.VITE_ACTIONS_CONTRACT,
+        method: "set_slot",
+      },
+    ],
+    {},
+  ) as never as Connector,
+];
 
 function App() {
   return (

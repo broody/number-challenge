@@ -1,11 +1,11 @@
-import { Box, Button, HStack, Heading } from "@chakra-ui/react";
+import { Box, Button, HStack, Heading, Link } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { formatAddress, removeZeros } from "../utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { graphql } from "gql.tada";
 import { useSubscription } from "urql";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount, useConnect, useExplorer } from "@starknet-react/core";
 
 const CreatedEvent = graphql(`
   subscription Created($player: String) {
@@ -26,6 +26,7 @@ const Header = ({
   const { connect, connectors } = useConnect();
   const { address, account } = useAccount();
   const [creating, setCreating] = useState<boolean>(false);
+  const explorer = useExplorer();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -35,10 +36,10 @@ const Header = ({
     query: CreatedEvent,
     pause: !account,
     variables: {
-      player: removeZeros(account?.address || ""), 
+      player: removeZeros(account?.address || ""),
     },
   });
-  
+
   useEffect(() => {
     const gameId = createdEvent.data?.eventEmitted?.keys?.[0];
     if (!gameId) {
@@ -100,7 +101,9 @@ const Header = ({
           </Button>
         ) : (
           <Box alignContent="right">
-            <strong>{formatAddress(address)}</strong>
+            <Link href={explorer.contract(account?.address || "")} isExternal>
+              <strong>{formatAddress(address)}</strong>
+            </Link>
           </Box>
         )}
       </HStack>
