@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { graphql } from "../graphql";
 import { useQuery, useSubscription } from "urql";
 import { useEffect, useState } from "react";
@@ -6,16 +6,19 @@ import { formatAddress, removeZeros } from "../utils";
 import {
   Box,
   Button,
+  Container,
   HStack,
   Heading,
   Link,
+  SimpleGrid,
   Spacer,
   Text,
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import Header from "./Header";
+import Header from "./Connect";
 import { useAccount, useExplorer } from "@starknet-react/core";
+import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const GameQuery = graphql(`
   query GameQuery($gameId: u32) {
@@ -133,73 +136,86 @@ const Game = () => {
   };
 
   return (
-    <>
-      <Header title={"Number Challenge"} onNewGame={() => setSlots([])} />
-      <Spacer minH="80px" />
-      <HStack align="flex-start" flexDir="row-reverse">
-        <VStack flex="1">
-          <VStack align="flex-start" h="100%">
-            <Text>
-              Player:{" "}
-              <Link href={explorer.contract(player)} isExternal>
-                <strong>{formatAddress(player)}</strong>
-              </Link>
-              {isOwner && " (you)"}
-            </Text>
-            <Text>
-              Game ID: <strong>{gameId}</strong>
-            </Text>
-            <Text>Number Range: {maxNum && <strong>1 - {maxNum}</strong>}</Text>
-            <Text>
-              Remaining: <strong>{remaining}</strong>
-            </Text>
-            <Spacer minH="100px" />
-            <VStack w="100%">
-              <Heading fontSize="24px">Next Number</Heading>
-              <Text fontSize="20px">
-                <strong>{next}</strong>
+    <Container h="100vh">
+      <ArrowBackIcon position="absolute" top="20px" left="20px" boxSize="24px" cursor="pointer" onClick={()=>{
+        window.history.back();
+      }} />
+      <VStack h="100%" justify={["none", "none", "center"]} >
+        <SimpleGrid
+          columns={[1, 1, 2]}
+          h={["auto", "auto", "700px"]}
+          w={["100%", "100%", "1200px"]}
+          spacing={"20px"}
+          py="50px"
+        >
+          <HStack justify={["center", "center", "flex-end"]}>
+            <VStack mr="40px">
+              {slots.slice(0, 10).map((number, index) => {
+                return (
+                  <Slot
+                    index={index}
+                    number={number}
+                    isOwner={isOwner}
+                    disableAll={disableAll}
+                    onClick={async (slot) => {
+                      setDisableAll(true);
+                      return await setSlot(slot);
+                    }}
+                  />
+                );
+              })}
+            </VStack>
+            <VStack>
+              {slots.slice(10, 20).map((number, index) => {
+                return (
+                  <Slot
+                    index={index + 10}
+                    number={number}
+                    isOwner={isOwner}
+                    disableAll={disableAll}
+                    onClick={async (slot) => {
+                      setDisableAll(true);
+                      return await setSlot(slot);
+                    }}
+                  />
+                );
+              })}
+            </VStack>
+            <Box />
+          </HStack>
+          <VStack  align="center" justify="center" >
+            <VStack align="flex-start">
+              <Text>
+                Player:{" "}
+                <Link href={explorer.contract(player)} isExternal>
+                  <strong>{formatAddress(player)}</strong>
+                </Link>
+                {isOwner && " (you)"}
               </Text>
+              <Text>
+                Game ID: <strong>{gameId}</strong>
+              </Text>
+              <Text>
+                Number Range: {maxNum && <strong>1 - {maxNum}</strong>}
+              </Text>
+              <Text>
+                Remaining: <strong>{remaining}</strong>
+              </Text>
+              <VStack w="100%" mt="40px">
+                <Heading fontSize="24px">Next Number</Heading>
+                <HStack spacing="20px">
+                  <ArrowRightIcon />
+                  <Text fontSize="20px">
+                    <strong>{next}</strong>
+                  </Text>
+                  <ArrowLeftIcon /> 
+                </HStack>
+              </VStack>
             </VStack>
           </VStack>
-        </VStack>
-        <HStack flex="2" justify="space-around">
-          <Box />
-          <VStack>
-            {slots.slice(0, 10).map((number, index) => {
-              return (
-                <Slot
-                  index={index}
-                  number={number}
-                  isOwner={isOwner}
-                  disableAll={disableAll}
-                  onClick={async (slot) => {
-                    setDisableAll(true);
-                    return await setSlot(slot);
-                  }}
-                />
-              );
-            })}
-          </VStack>
-          <VStack>
-            {slots.slice(10, 20).map((number, index) => {
-              return (
-                <Slot
-                  index={index + 10}
-                  number={number}
-                  isOwner={isOwner}
-                  disableAll={disableAll}
-                  onClick={async (slot) => {
-                    setDisableAll(true);
-                    return await setSlot(slot);
-                  }}
-                />
-              );
-            })}
-          </VStack>
-          <Box />
-        </HStack>
-      </HStack>
-    </>
+        </SimpleGrid>
+      </VStack>
+    </Container>
   );
 };
 
@@ -219,7 +235,7 @@ const Slot = ({
   const [loading, setLoading] = useState(false);
   const { colorMode } = useColorMode();
   return (
-    <HStack key={index} gap="30px" justify="space-between" width="180px">
+    <HStack key={index}  justify="space-between" width="150px">
       <Text>{index + 1}:</Text>
       <Box w="100px">
         {number ? (
