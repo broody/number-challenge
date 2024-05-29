@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Game from "./components/Game";
-import Leaderboard from "./components/Leaderboard";
+import Home from "./components/Home";
 import {
   StarknetConfig,
   Connector,
@@ -43,7 +43,7 @@ function App() {
     >
       <Router>
         <Routes>
-          <Route path="/" element={<Leaderboard />} />
+          <Route path="/" element={<Home />} />
           <Route path="/:gameId" element={<Game />} />
         </Routes>
       </Router>
