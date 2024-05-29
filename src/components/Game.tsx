@@ -121,7 +121,9 @@ const Game = () => {
           entrypoint: "set_slot",
           calldata: [gameId, slot.toString()],
         },
-      ]);
+      ], undefined, {
+        maxFee: "0x100"
+      });
 
       console.log(transaction_hash);
     } catch (e) {

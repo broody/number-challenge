@@ -52,7 +52,9 @@ const Connect = () => {
         entrypoint: "create",
         calldata: [],
       },
-    ]);
+    ], undefined, {
+      maxFee: "0x100"
+    });
   };
 
   return (
