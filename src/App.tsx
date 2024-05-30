@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Game from "./components/Game";
-import Leaderboard from "./components/Leaderboard";
+import Home from "./components/Home";
 import {
   StarknetConfig,
   Connector,
@@ -26,7 +26,7 @@ const connectors = [new CartridgeConnector([
     method: "set_slot",
   }
 ], {
-  url: "https://keychain-git-fix-est-fee.preview.cartridge.gg/"
+  url: "https://keychain-git-execute-err.preview.cartridge.gg"
 }) as never as Connector];
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
     >
       <Router>
         <Routes>
-          <Route path="/" element={<Leaderboard />} />
+          <Route path="/" element={<Home />} />
           <Route path="/:gameId" element={<Game />} />
         </Routes>
       </Router>
