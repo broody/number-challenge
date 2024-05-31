@@ -69,7 +69,7 @@ const Game = () => {
     return <></>;
   }
   window.scrollTo(0, 0);
-  
+
   const [queryResult] = useQuery({
     query: GameQuery,
     variables: { gameId: parseInt(gameId) },

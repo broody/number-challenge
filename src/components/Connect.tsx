@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { graphql } from "gql.tada";
 import { useSubscription } from "urql";
-import { useAccount, useConnect, useExplorer } from "@starknet-react/core";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useExplorer,
+} from "@starknet-react/core";
 
 const CreatedEvent = graphql(`
   subscription Created($player: String) {
@@ -18,6 +23,7 @@ const CreatedEvent = graphql(`
 
 const Connect = () => {
   const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const { address, account } = useAccount();
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
@@ -58,17 +64,27 @@ const Connect = () => {
   return (
     <>
       <VStack w="100%" h="120px" spacing="20px" justify="center">
-        <Text>
-          Hello,{" "}
-          {address ? (
-            <Link href={explorer.contract(address)} isExternal>
-              <strong>{formatAddress(address)}</strong>
-            </Link>
-          ) : (
-            "anon"
-          )}
-          .
-        </Text>
+        <HStack>
+          <Text>
+            Hello,{" "}
+            {address ? (
+              <>
+                <Link href={explorer.contract(address)} isExternal>
+                  <strong>{formatAddress(address)}</strong>
+                </Link>
+              </>
+            ) : (
+              "anon"
+            )}
+            .
+          </Text>
+          <Link
+            display={address ? "block" : "none"}
+            onClick={() => disconnect()}
+          >
+            [Disconnect]
+          </Link>
+        </HStack>
         <HStack spacing="20px">
           <ArrowRightIcon />
           {address ? (

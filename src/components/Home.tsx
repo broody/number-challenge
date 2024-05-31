@@ -76,20 +76,12 @@ const Leaderboard = () => {
                   <Text>
                     Welcome to <strong>Number Challenge.</strong> A fully{" "}
                     <strong>on-chain</strong> game built using{" "}
-                    <Link
-                      href="https://www.dojoengine.org"
-                      isExternal
-                      textDecoration="underline"
-                    >
-                      Dojo Engine
+                    <Link href="https://www.dojoengine.org" isExternal>
+                      [Dojo Engine]
                     </Link>{" "}
                     on{" "}
-                    <Link
-                      href="https://www.starknet.io"
-                      isExternal
-                      textDecoration="underline"
-                    >
-                      Starknet
+                    <Link href="https://www.starknet.io" isExternal>
+                      [Starknet]
                     </Link>
                     .
                   </Text>
