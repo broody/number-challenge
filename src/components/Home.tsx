@@ -19,11 +19,12 @@ import {
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Connect from "./Connect";
+import { formatEther } from "viem";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -32,6 +33,7 @@ const GamesQuery = graphql(`
       limit: 10
       offset: $offset
     ) {
+      totalCount
       edges {
         node {
           game_id
@@ -43,21 +45,49 @@ const GamesQuery = graphql(`
   }
 `);
 
+const StatsQuery = graphql(`
+  query Stats {
+    transactions(limit: 5) {
+      totalCount
+      edges {
+        node {
+          maxFee
+        }
+      }
+    }
+  }
+`);
+
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
   const { account } = useAccount();
   const { colorMode } = useColorMode();
-  const [result, reexecuteQuery] = useQuery({
+  const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
     variables: {
       offset,
     },
   });
 
-  const totalResult = result.data?.gameModels?.edges
-    ? result.data.gameModels?.edges.length
+  const [statsResult] = useQuery({
+    query: StatsQuery,
+  });
+
+  const totalResult = gameResult.data?.gameModels?.edges
+    ? gameResult.data.gameModels?.edges.length
     : 0;
+
+  const avgMaxFee = useMemo(() => {
+    if (!statsResult.data?.transactions?.edges) return BigInt(0);
+
+    const fees = statsResult.data.transactions.edges.map((edge: any) =>
+      BigInt(edge.node.maxFee),
+    );
+    const sum = fees.reduce((a: bigint, b: bigint) => a + b, BigInt(0));
+    return sum / BigInt(fees.length);
+  }, [statsResult]);
+
   return (
     <>
       <Container h="100vh">
@@ -90,9 +120,20 @@ const Leaderboard = () => {
                     randomly generated numbers, players must place each number
                     in a <strong>slot</strong> in ascending order.
                   </Text>
-                  <Text>
-                    A <strong>Jackpot</strong> system will be implemented #soon.
-                  </Text>
+                  <VStack w="full" align="flex-start">
+                    <Text>Chain: Sepolia Starknet</Text>
+                    <Text>
+                      Total Games: {gameResult.data?.gameModels?.totalCount}
+                    </Text>
+                    <Text>
+                      Total Transactions:{" "}
+                      {statsResult.data?.transactions?.totalCount}
+                    </Text>
+                    <Text>
+                      Avg Txn Max Fee:{" "}
+                      {parseFloat(formatEther(avgMaxFee)).toFixed(5)} ETH
+                    </Text>
+                  </VStack>
                 </VStack>
                 <Connect />
               </VStack>
@@ -109,34 +150,38 @@ const Leaderboard = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {result.data?.gameModels?.edges?.map((edge: any, index) => (
-                      <Tr
-                        key={edge.node.game_id}
-                        cursor="pointer"
-                        _hover={{
-                          bgColor:
-                            colorMode === "light" ? "gray.100" : "gray.700",
-                        }}
-                        onClick={() => {
-                          navigate(`/0x${edge.node.game_id.toString(16)}`);
-                        }}
-                        bgColor={
-                          account?.address ===
-                          addAddressPadding(edge.node.player)
-                            ? colorMode === "light"
-                              ? "green.100"
-                              : "green.400"
-                            : ""
-                        }
-                      >
-                        <Td>{index + offset + 1}</Td>
-                        <Td>
-                          {formatAddress(edge.node.player)}{" "}
-                          {account?.address === edge.node.player && <>(you)</>}
-                        </Td>
-                        <Td>{edge.node.remaining_slots}</Td>
-                      </Tr>
-                    ))}
+                    {gameResult.data?.gameModels?.edges?.map(
+                      (edge: any, index) => (
+                        <Tr
+                          key={edge.node.game_id}
+                          cursor="pointer"
+                          _hover={{
+                            bgColor:
+                              colorMode === "light" ? "gray.100" : "gray.700",
+                          }}
+                          onClick={() => {
+                            navigate(`/0x${edge.node.game_id.toString(16)}`);
+                          }}
+                          bgColor={
+                            account?.address ===
+                            addAddressPadding(edge.node.player)
+                              ? colorMode === "light"
+                                ? "green.100"
+                                : "green.400"
+                              : ""
+                          }
+                        >
+                          <Td>{index + offset + 1}</Td>
+                          <Td>
+                            {formatAddress(edge.node.player)}{" "}
+                            {account?.address === edge.node.player && (
+                              <>(you)</>
+                            )}
+                          </Td>
+                          <Td>{edge.node.remaining_slots}</Td>
+                        </Tr>
+                      ),
+                    )}
                   </Tbody>
                 </Table>
               </TableContainer>
