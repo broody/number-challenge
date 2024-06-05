@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@cartridge/connector':
-    specifier: ^0.3.25
-    version: 0.3.25(get-starknet-core@3.2.0)(react@18.2.0)
+    specifier: ^0.3.26
+    version: 0.3.26(get-starknet-core@3.2.0)(react@18.2.0)
   '@chakra-ui/icons':
     specifier: ^2.1.1
     version: 2.1.1(@chakra-ui/system@2.6.2)(react@18.2.0)
@@ -354,10 +354,10 @@ packages:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  /@cartridge/connector@0.3.25(get-starknet-core@3.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-iOL0q7PsZ4LFhkn9EmJpd8ZUFmhEJAKG+w0kUjfF31lzXF/HkavfGFOPBOVNFxyc8wJRQSh/UyVCzMKZtZ2q5Q==}
+  /@cartridge/connector@0.3.26(get-starknet-core@3.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-zg5Hs59b++yCjLPo/HDLuGwofWUtk9fos0poUXJqyU5QrIwjJXJuDaRFskoGfPGAsAzVqt1AHMpVpLEauxADig==}
     dependencies:
-      '@cartridge/controller': 0.3.25
+      '@cartridge/controller': 0.3.26
       '@starknet-react/core': 2.6.0(get-starknet-core@3.2.0)(react@18.2.0)(starknet@6.7.0)
       starknet: 6.7.0
       typescript: 5.4.5
@@ -367,8 +367,8 @@ packages:
       - react
     dev: false
 
-  /@cartridge/controller@0.3.25:
-    resolution: {integrity: sha512-5t2VQQUtR+vig2JlSW+arjZQWO+LuxzBGE92Xp6gHC0p2THJ3/4M+3fg5wAaegPa1DJ6Ysse4fkzBTbmkKRzpg==}
+  /@cartridge/controller@0.3.26:
+    resolution: {integrity: sha512-rdvsFszy5bQUlLPXYWbEsOglu6XrmN2RlkGYhzcNccdxey5HicN1xP2lj+I0sBxDJ4WIjl59/hU8Oqw4yFwy8Q==}
     dependencies:
       '@cartridge/penpal': 6.2.3
       base64url: 3.0.1
