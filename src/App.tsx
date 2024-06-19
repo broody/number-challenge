@@ -28,7 +28,7 @@ const connectors = [
         method: "set_slot",
       },
     ],
-    {},
+    { url: "https://keychain-git-test-keychain.preview.cartridge.gg/"},
   ) as never as Connector,
 ];
 
