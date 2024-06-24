@@ -22,14 +22,11 @@ const connectors = [
     [
       {
         target: import.meta.env.VITE_ACTIONS_CONTRACT,
-        method: "create",
-      },
-      {
-        target: import.meta.env.VITE_ACTIONS_CONTRACT,
         method: "set_slot",
       },
     ],
     {
+      url: "https://keychain-git-fix-execute.preview.cartridge.gg/",
       paymaster: {
         caller: shortString.encodeShortString("ANY_CALLER")
       }
