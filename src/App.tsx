@@ -9,7 +9,6 @@ import {
 } from "@starknet-react/core";
 import { Chain, sepolia } from "@starknet-react/chains";
 import CartridgeConnector from "@cartridge/connector";
-import { shortString } from "starknet";
 
 function rpc(_chain: Chain) {
   return {
@@ -30,9 +29,9 @@ const connectors = [
       },
     ],
     {
-      paymaster: {
-        caller: shortString.encodeShortString("ANY_CALLER")
-      }
+      // paymaster: {
+      //   caller: shortString.encodeShortString("ANY_CALLER")
+      // }
     },
   ) as never as Connector,
 ];
