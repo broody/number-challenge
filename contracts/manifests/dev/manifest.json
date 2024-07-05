@@ -1,8 +1,8 @@
 {
   "world": {
-    "kind": "WorldContract",
-    "class_hash": "0x249c480cccbaf12d17af89cdbb11fbd145ff2ebed2d108dd75ecdae2c7f80ca",
-    "original_class_hash": "0x249c480cccbaf12d17af89cdbb11fbd145ff2ebed2d108dd75ecdae2c7f80ca",
+    "kind": "Contract",
+    "class_hash": "0x799bc4e9da10bfb3dd88e6f223c9cfbf7745435cd14f5d69675ea448e578cd",
+    "original_class_hash": "0x799bc4e9da10bfb3dd88e6f223c9cfbf7745435cd14f5d69675ea448e578cd",
     "abi": [
       {
         "type": "impl",
@@ -660,29 +660,25 @@
         ]
       }
     ],
-    "address": "0x623ab17e0ce2fa1a73acb1eb7bd08c90ae7670de0aa03e9703db195ee8d0d9a",
-    "transaction_hash": "0x7078a4a2582e88c9cc096aff659b19ce2068363ef74ed24846176cd2fcd6b7d",
+    "address": "0x2fb9256a503272ddf2606741a969933bc0711e19ae5d08fcb9b147a76dfe3c5",
+    "transaction_hash": "0x66e98476a7abf14c3ff1866783358d38335d718cbf737149e3d3988929553f6",
     "block_number": 3,
     "seed": "number_challenge",
-    "metadata": {
-      "profile_name": "dev",
-      "rpc_url": "https://api.cartridge.gg/rpc/starknet-sepolia"
-    },
     "name": "dojo::world::world"
   },
   "base": {
     "kind": "Class",
-    "class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
-    "original_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
+    "class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
+    "original_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
     "abi": null,
     "name": "dojo::base::base"
   },
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x2eebb648f31d6420d6a3872e1c44c202b046f7e011aa9ce0c1a407b4cc648eb",
-      "class_hash": "0xcfbddd3d404b1437f8390aa021e7297bb8ede142cdce4a2654def39a2eaad2",
-      "original_class_hash": "0xcfbddd3d404b1437f8390aa021e7297bb8ede142cdce4a2654def39a2eaad2",
+      "address": "0x1473b7da9f3f265893ecb4fe9f2c1dcaaa95750d53cf399d73c6f33ec51b7dc",
+      "class_hash": "0x64d9d0008420678da838431e5f9437bce4c81b9fe6304f332203d1957f305d2",
+      "original_class_hash": "0x64d9d0008420678da838431e5f9437bce4c81b9fe6304f332203d1957f305d2",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -956,8 +952,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4e8dfa0aa01bce92bbf8ada6264419959f5e2bb1a556cecb3a6b4abcc2114a8",
-      "original_class_hash": "0x4e8dfa0aa01bce92bbf8ada6264419959f5e2bb1a556cecb3a6b4abcc2114a8",
+      "class_hash": "0x238c2be7bbdd00b067c01d7595a3edfb58956d369b0301101d523712580320",
+      "original_class_hash": "0x238c2be7bbdd00b067c01d7595a3edfb58956d369b0301101d523712580320",
       "abi": [
         {
           "type": "impl",
@@ -1213,8 +1209,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x180f772e8666851a16291698fa8b0c7804c6501095bbbf649cf2147bdfe11bc",
-      "original_class_hash": "0x180f772e8666851a16291698fa8b0c7804c6501095bbbf649cf2147bdfe11bc",
+      "class_hash": "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90",
+      "original_class_hash": "0x78551c90f5f5de43b5b59347a59d1cbcc01d1e5d9b459c3d10105acd0b59e90",
       "abi": [
         {
           "type": "impl",
@@ -1462,8 +1458,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x3804aacbedba0a892fc7f23b09c78cdd0bad71ad49ed615211d4df607e63637",
-      "original_class_hash": "0x3804aacbedba0a892fc7f23b09c78cdd0bad71ad49ed615211d4df607e63637",
+      "class_hash": "0x5e4fe57cf7425f140616c74a8ad87d51581fc62f39ed6a8b022c5cd8a9bfdb",
+      "original_class_hash": "0x5e4fe57cf7425f140616c74a8ad87d51581fc62f39ed6a8b022c5cd8a9bfdb",
       "abi": [
         {
           "type": "impl",
@@ -1721,8 +1717,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x39c9138c8d936a9146cce7b39270781656dc9a81260c5be34d00338cb76a671",
-      "original_class_hash": "0x39c9138c8d936a9146cce7b39270781656dc9a81260c5be34d00338cb76a671",
+      "class_hash": "0x2fb5bdac065d0b9d8763f84d84604590cd2cff98ba5c8aedf02e01ed1671f9d",
+      "original_class_hash": "0x2fb5bdac065d0b9d8763f84d84604590cd2cff98ba5c8aedf02e01ed1671f9d",
       "abi": [
         {
           "type": "impl",
