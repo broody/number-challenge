@@ -1,25 +1,14 @@
 import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { formatAddress, removeZeros } from "../utils";
+import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { graphql } from "gql.tada";
-import { useSubscription } from "urql";
+import { useState } from "react";
 import {
   useAccount,
   useConnect,
   useDisconnect,
   useExplorer,
 } from "@starknet-react/core";
-
-const CreatedEvent = graphql(`
-  subscription Created($player: String) {
-    eventEmitted(keys: ["*", $player]) {
-      keys
-      data
-    }
-  }
-`);
 
 const Connect = () => {
   const { connect, connectors } = useConnect();
@@ -28,37 +17,33 @@ const Connect = () => {
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
   const navigate = useNavigate();
-
   const connector = connectors[0];
-
-  const [createdEvent] = useSubscription({
-    query: CreatedEvent,
-    pause: !account,
-    variables: {
-      player: removeZeros(account?.address || ""),
-    },
-  });
-
-  useEffect(() => {
-    const gameId = createdEvent.data?.eventEmitted?.keys?.[0];
-    if (!gameId) {
-      return;
-    }
-
-    setCreating(false);
-    navigate(`/${gameId}`);
-  }, [createdEvent]);
 
   const newGame = async () => {
     if (!account) return;
 
-    await account.execute([
-      {
-        contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
-        entrypoint: "create",
-        calldata: [],
-      },
-    ]);
+    try {
+      const { transaction_hash } = await account.execute([
+        {
+          contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
+          entrypoint: "create",
+          calldata: [],
+        },
+      ]);
+
+      const receipt = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 1000,
+      });
+      if (receipt.isSuccess()) {
+        const gameId = receipt.events[1].keys[0];
+        navigate(`/${gameId}`);
+      } else {
+        throw new Error("Transaction rejected/reverted.");
+      }
+    } catch (e) {
+      console.error(e);
+      setCreating(false);
+    }
   };
 
   return (
