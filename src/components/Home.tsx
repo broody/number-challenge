@@ -121,7 +121,7 @@ const Leaderboard = () => {
                     in a <strong>slot</strong> in ascending order.
                   </Text>
                   <VStack w="full" align="flex-start">
-                    <Text>Chain: Sepolia Starknet</Text>
+                    <Text>Chain: Mainnet Starknet</Text>
                     <Text>
                       Total Games: {gameResult.data?.gameModels?.totalCount}
                     </Text>
