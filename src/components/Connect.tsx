@@ -29,7 +29,9 @@ const Connect = () => {
           entrypoint: "create",
           calldata: [],
         },
-      ]);
+      ],{
+        maxFee: "100000000000000"
+      });
 
       const receipt = await account.waitForTransaction(transaction_hash, {
         retryInterval: 1000,
