@@ -29,10 +29,9 @@ const connectors = [
       },
     ],
     {
-      rpc: "https://starknet-mainnet.public.blastapi.io/rpc/v0_6",
-      url: "https://keychain-git-featkeychain-funding.preview.cartridge.gg/"
+      rpc: import.meta.env.VITE_RPC_URL,
     }
-  ) as never as Connector,
+  ) as Connector,
 ];
 
 function App() {
