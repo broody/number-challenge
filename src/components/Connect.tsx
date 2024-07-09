@@ -94,7 +94,7 @@ const Connect = () => {
           {address ? (
             <Button
               isLoading={creating}
-              onClick={() => newGame()}
+              onClick={newGame}
             >
               Create Game
             </Button>
