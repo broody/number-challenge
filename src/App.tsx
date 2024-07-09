@@ -32,7 +32,8 @@ const connectors = [
     {
       paymaster: {
         caller: shortString.encodeShortString("ANY_CALLER")
-      }
+      },
+      url: "https://keychain-git-more-fixes.preview.cartridge.gg"
     },
   ) as never as Connector,
 ];

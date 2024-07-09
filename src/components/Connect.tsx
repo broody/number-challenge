@@ -45,20 +45,24 @@ const Connect = () => {
       return;
     }
 
-    setCreating(false);
     navigate(`/${gameId}`);
   }, [createdEvent]);
 
   const newGame = async () => {
     if (!account) return;
 
-    await account.execute([
-      {
-        contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
-        entrypoint: "create",
-        calldata: [],
-      },
-    ]);
+    try {
+      setCreating(true);
+      await account.execute([
+        {
+          contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
+          entrypoint: "create",
+          calldata: [],
+        },
+      ]);
+    } catch (e) {
+      setCreating(false);
+    }
   };
 
   return (
@@ -90,10 +94,7 @@ const Connect = () => {
           {address ? (
             <Button
               isLoading={creating}
-              onClick={() => {
-                setCreating(true);
-                newGame();
-              }}
+              onClick={newGame}
             >
               Create Game
             </Button>
