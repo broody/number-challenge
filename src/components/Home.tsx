@@ -15,11 +15,14 @@ import {
   SimpleGrid,
   Container,
   Link,
+  RadioGroup,
+  Stack,
+  Radio,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
@@ -121,7 +124,24 @@ const Leaderboard = () => {
                     in a <strong>slot</strong> in ascending order.
                   </Text>
                   <VStack w="full" align="flex-start">
-                    <Text>Chain: Mainnet Starknet</Text>
+                    <HStack>
+                      <Text>Chain: </Text>
+                      <RadioGroup defaultValue="2" onChange={(network)=>{
+                        switch (network) {
+                          case '1': 
+                            window.location.href = 'https://nums.gg';
+                            break;
+                          case '2': 
+                            window.location.href = 'https://mainnet.nums.gg';
+                            break;
+                        }
+                      }}>
+                        <Stack direction='row'>
+                          <Radio value='1'>Sepolia</Radio>
+                          <Radio value='2'>Mainnet</Radio>
+                        </Stack>
+                      </RadioGroup>
+                    </HStack>
                     <Text>
                       Total Games: {gameResult.data?.gameModels?.totalCount}
                     </Text>
