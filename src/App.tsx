@@ -7,9 +7,8 @@ import {
   starkscan,
   jsonRpcProvider,
 } from "@starknet-react/core";
-import { Chain, sepolia } from "@starknet-react/chains";
+import { Chain, mainnet } from "@starknet-react/chains";
 import CartridgeConnector from "@cartridge/connector";
-import { shortString } from "starknet";
 
 function rpc(_chain: Chain) {
   return {
@@ -30,18 +29,16 @@ const connectors = [
       },
     ],
     {
-      paymaster: {
-        caller: shortString.encodeShortString("ANY_CALLER")
-      }
-    },
-  ) as never as Connector,
+      rpc: import.meta.env.VITE_RPC_URL,
+    }
+  ) as Connector,
 ];
 
 function App() {
   return (
     <StarknetConfig
       autoConnect
-      chains={[sepolia]}
+      chains={[mainnet]}
       connectors={connectors}
       explorer={starkscan}
       provider={jsonRpcProvider({ rpc })}
