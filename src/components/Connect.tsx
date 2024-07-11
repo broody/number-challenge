@@ -92,10 +92,7 @@ const Connect = () => {
         <HStack spacing="20px">
           <ArrowRightIcon />
           {address ? (
-            <Button
-              isLoading={creating}
-              onClick={newGame}
-            >
+            <Button isLoading={creating} onClick={newGame}>
               Create Game
             </Button>
           ) : (
