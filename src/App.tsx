@@ -31,8 +31,8 @@ const connectors = [
     ],
     {
       paymaster: {
-        caller: shortString.encodeShortString("ANY_CALLER")
-      }
+        caller: shortString.encodeShortString("ANY_CALLER"),
+      },
     },
   ) as never as Connector,
 ];
