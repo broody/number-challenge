@@ -319,12 +319,12 @@
   },
   {
     "type": "impl",
-    "name": "gameImpl",
-    "interface_name": "number_challenge::models::game::Igame"
+    "name": "nameImpl",
+    "interface_name": "nums::models::name::Iname"
   },
   {
     "type": "struct",
-    "name": "number_challenge::models::game::Game",
+    "name": "nums::models::name::Name",
     "members": [
       {
         "name": "game_id",
@@ -335,26 +335,14 @@
         "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "max_slots",
-        "type": "core::integer::u8"
-      },
-      {
-        "name": "remaining_slots",
-        "type": "core::integer::u8"
-      },
-      {
-        "name": "max_number",
-        "type": "core::integer::u16"
-      },
-      {
-        "name": "next_number",
-        "type": "core::integer::u16"
+        "name": "name",
+        "type": "core::felt252"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "number_challenge::models::game::Igame",
+    "name": "nums::models::name::Iname",
     "items": [
       {
         "type": "function",
@@ -362,7 +350,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "number_challenge::models::game::Game"
+            "type": "nums::models::name::Name"
           }
         ],
         "outputs": [],
@@ -372,7 +360,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::models::game::game::Event",
+    "name": "nums::models::name::name::Event",
     "kind": "enum",
     "variants": []
   }

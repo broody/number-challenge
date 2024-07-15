@@ -319,42 +319,62 @@
   },
   {
     "type": "impl",
-    "name": "gameImpl",
-    "interface_name": "number_challenge::models::game::Igame"
+    "name": "jackpotImpl",
+    "interface_name": "nums::models::jackpot::Ijackpot"
   },
   {
-    "type": "struct",
-    "name": "number_challenge::models::game::Game",
-    "members": [
+    "type": "enum",
+    "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
+    "variants": [
       {
-        "name": "game_id",
-        "type": "core::integer::u32"
-      },
-      {
-        "name": "player",
+        "name": "Some",
         "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "max_slots",
-        "type": "core::integer::u8"
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
       },
       {
-        "name": "remaining_slots",
-        "type": "core::integer::u8"
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::Jackpot",
+    "members": [
+      {
+        "name": "jackpot_id",
+        "type": "core::integer::u32"
       },
       {
-        "name": "max_number",
-        "type": "core::integer::u16"
+        "name": "winner",
+        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
       },
       {
-        "name": "next_number",
-        "type": "core::integer::u16"
+        "name": "token",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u256"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "number_challenge::models::game::Igame",
+    "name": "nums::models::jackpot::Ijackpot",
     "items": [
       {
         "type": "function",
@@ -362,7 +382,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "number_challenge::models::game::Game"
+            "type": "nums::models::jackpot::Jackpot"
           }
         ],
         "outputs": [],
@@ -372,7 +392,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::models::game::game::Event",
+    "name": "nums::models::jackpot::jackpot::Event",
     "kind": "enum",
     "variants": []
   }

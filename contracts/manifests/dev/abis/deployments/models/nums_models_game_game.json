@@ -320,11 +320,11 @@
   {
     "type": "impl",
     "name": "gameImpl",
-    "interface_name": "number_challenge::models::game::Igame"
+    "interface_name": "nums::models::game::Igame"
   },
   {
     "type": "struct",
-    "name": "number_challenge::models::game::Game",
+    "name": "nums::models::game::Game",
     "members": [
       {
         "name": "game_id",
@@ -339,12 +339,16 @@
         "type": "core::integer::u8"
       },
       {
-        "name": "remaining_slots",
-        "type": "core::integer::u8"
-      },
-      {
         "name": "max_number",
         "type": "core::integer::u16"
+      },
+      {
+        "name": "min_number",
+        "type": "core::integer::u16"
+      },
+      {
+        "name": "remaining_slots",
+        "type": "core::integer::u8"
       },
       {
         "name": "next_number",
@@ -354,7 +358,7 @@
   },
   {
     "type": "interface",
-    "name": "number_challenge::models::game::Igame",
+    "name": "nums::models::game::Igame",
     "items": [
       {
         "type": "function",
@@ -362,7 +366,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "number_challenge::models::game::Game"
+            "type": "nums::models::game::Game"
           }
         ],
         "outputs": [],
@@ -372,7 +376,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::models::game::game::Event",
+    "name": "nums::models::game::game::Event",
     "kind": "enum",
     "variants": []
   }

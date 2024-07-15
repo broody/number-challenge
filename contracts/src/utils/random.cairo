@@ -1,5 +1,7 @@
 use starknet::ContractAddress;
 use starknet::get_contract_address;
+use starknet::Zeroable;
+use core::pedersen::pedersen;
 
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -19,7 +21,7 @@ impl RandomImpl of RandomTrait {
 
     fn next_seed(ref self: Random) -> felt252 {
         self.nonce += 1;
-        self.seed = pedersen::pedersen(self.seed, self.nonce.into());
+        self.seed = pedersen(self.seed, self.nonce.into());
         self.seed
     }
 
@@ -31,7 +33,7 @@ impl RandomImpl of RandomTrait {
     fn felt(ref self: Random) -> felt252 {
         let tx_hash = starknet::get_tx_info().unbox().transaction_hash;
         let seed = self.next_seed();
-        pedersen::pedersen(tx_hash, seed)
+        pedersen(tx_hash, seed)
     }
 
     fn occurs(ref self: Random, likelihood: u8) -> bool {
@@ -68,5 +70,5 @@ impl RandomImpl of RandomTrait {
 }
 
 fn seed(salt: ContractAddress) -> felt252 {
-    pedersen::pedersen(starknet::get_tx_info().unbox().transaction_hash, salt.into())
+    pedersen(starknet::get_tx_info().unbox().transaction_hash, salt.into())
 }
