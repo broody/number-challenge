@@ -1,0 +1,40 @@
+kind = "DojoModel"
+class_hash = "0x62d7c9b7073a063c7fe22dc9011802c36fdf8dff8a6c2cb43b6c62a497bca00"
+original_class_hash = "0x62d7c9b7073a063c7fe22dc9011802c36fdf8dff8a6c2cb43b6c62a497bca00"
+abi = "manifests/dev/abis/base/models/nums_models_game_game.json"
+name = "nums::models::game::game"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[members]]
+name = "min_number"
+type = "u16"
+key = false
+
+[[members]]
+name = "remaining_slots"
+type = "u8"
+key = false
+
+[[members]]
+name = "next_number"
+type = "u16"
+key = false

@@ -2,30 +2,66 @@
 mod tests {
     use starknet::class_hash::Felt252TryIntoClassHash;
     use starknet::testing::set_transaction_hash;
+    use core::Option;
 
-    // import world dispatcher
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+    use dojo::test_utils::spawn_test_world;
 
-    // import test utils
-    use dojo::test_utils::{spawn_test_world, deploy_contract};
-
-    // import test utils
-    use number_challenge::{
+    use nums::{
         systems::{actions::{actions, IActionsDispatcher, IActionsDispatcherTrait}},
-        models::{game::{Game, game}, slot::{Slot, slot}}
+        models::{game::{Game, GameTrait, game}, slot::{Slot, slot}, name::{Name, name}, config::{Config, GameConfig, config}}
     };
+
+    pub fn CONFIG() -> Config {
+        Config {
+            world: 0,
+            game: Option::Some(GameConfig {
+                max_slots: 20,
+                max_number: 1000,
+                min_number: 0,
+            }),
+            cost: Option::None,
+            reward: Option::None,
+        }
+    }
 
 
     #[test]
-    #[available_gas(100000000)]
+    fn test_config() {
+        let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
+        let world = spawn_test_world(models);
+
+        let contract_address = world.deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap(), array![].span());
+        let actions_system = IActionsDispatcher { contract_address };
+
+        actions_system.set_config(CONFIG());
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_config_unauthorized() {
+        let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
+        let world = spawn_test_world(models);
+
+        let contract_address = world.deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap(), array![].span());
+        let actions_system = IActionsDispatcher { contract_address };
+
+        let unauthorized_caller = starknet::contract_address_const::<0x1337>();
+        starknet::testing::set_contract_address(unauthorized_caller);
+
+        actions_system.set_config(CONFIG());
+    }
+
+    #[test]
     fn test_create() {
         let caller = starknet::contract_address_const::<0x0>();
         let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
         let world = spawn_test_world(models);
 
-        let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
+        let contract_address = world.deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap(), array![].span());
         let actions_system = IActionsDispatcher { contract_address };
+
+        actions_system.set_config(CONFIG());
 
         let (game_id, first_number) = actions_system.create();
         let game = get!(world, (game_id, caller), Game);
@@ -48,30 +84,44 @@ mod tests {
     }
 
     #[test]
-    #[available_gas(100000000)]
-    fn test_set_eqaul() {
+    fn test_is_valid() {
+        let mut game = Game {
+            game_id: 0_u32,
+            player: starknet::contract_address_const::<0x0>(),
+            max_slots: 20_u8,
+            remaining_slots: 20_u8,
+            max_number: 1000_u16,
+            min_number: 0_u16,
+            next_number: 42_u16,
+        };
+
+        let mut nums = ArrayTrait::<u16>::new();
+        nums.append(100_u16);
+        assert(game.is_valid(@nums), 'valid game is invalid');
+
+        nums.append(200_u16);
+        nums.append(500_u16);
+        assert(game.is_valid(@nums), 'valid game is invalid');
+
+        nums.append(5_u16);
+        assert(!game.is_valid(@nums), 'invalid game is valid');
+    }
+
+    #[test]
+    fn test_set_name() {
         let caller = starknet::contract_address_const::<0x0>();
-        let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
+        let mut models = array![game::TEST_CLASS_HASH, name::TEST_CLASS_HASH];
         let world = spawn_test_world(models);
 
-        let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
+        let contract_address = world.deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap(), array![].span());
         let actions_system = IActionsDispatcher { contract_address };
 
-        let (game_id, number) = actions_system.create();
+        actions_system.set_config(CONFIG());
 
-        // next number will always return same number as seed is based on transaction hash
-
-        actions_system.set_slot(game_id, 7);
-        let slot = get!(world, (game_id, caller, 7), Slot);
-        assert(slot.number == number, 'slot 7 number is wrong');
-
-        actions_system.set_slot(game_id, 6);
-        let slot = get!(world, (game_id, caller, 6), Slot);
-        assert(slot.number == number, 'slot 6 number is wrong');
-
-        actions_system.set_slot(game_id, 5);
-        let slot = get!(world, (game_id, caller, 5), Slot);
-        assert(slot.number == number, 'slot 5 number is wrong');
+        let (game_id, _) = actions_system.create();
+        actions_system.set_name(game_id, 'test_name');
+        
+        let name = get!(world, (game_id, caller), Name);
+        assert!(name.name == 'test_name', "name is wrong");
     }
 }

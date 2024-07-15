@@ -319,27 +319,15 @@
   },
   {
     "type": "impl",
-    "name": "gameImpl",
-    "interface_name": "number_challenge::models::game::Igame"
+    "name": "configImpl",
+    "interface_name": "nums::models::config::Iconfig"
   },
   {
     "type": "struct",
-    "name": "number_challenge::models::game::Game",
+    "name": "nums::models::config::GameConfig",
     "members": [
       {
-        "name": "game_id",
-        "type": "core::integer::u32"
-      },
-      {
-        "name": "player",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
         "name": "max_slots",
-        "type": "core::integer::u8"
-      },
-      {
-        "name": "remaining_slots",
         "type": "core::integer::u8"
       },
       {
@@ -347,14 +335,134 @@
         "type": "core::integer::u16"
       },
       {
-        "name": "next_number",
+        "name": "min_number",
         "type": "core::integer::u16"
       }
     ]
   },
   {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::config::GameConfig>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::config::GameConfig"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::CreateCost",
+    "members": [
+      {
+        "name": "token",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::config::CreateCost>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::config::CreateCost"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::RewardLevel",
+    "members": [
+      {
+        "name": "level",
+        "type": "core::integer::u8"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::SlotReward",
+    "members": [
+      {
+        "name": "token",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "levels",
+        "type": "core::array::Array::<nums::models::config::RewardLevel>"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::config::SlotReward>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::config::SlotReward"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::Config",
+    "members": [
+      {
+        "name": "world",
+        "type": "core::felt252"
+      },
+      {
+        "name": "game",
+        "type": "core::option::Option::<nums::models::config::GameConfig>"
+      },
+      {
+        "name": "cost",
+        "type": "core::option::Option::<nums::models::config::CreateCost>"
+      },
+      {
+        "name": "reward",
+        "type": "core::option::Option::<nums::models::config::SlotReward>"
+      }
+    ]
+  },
+  {
     "type": "interface",
-    "name": "number_challenge::models::game::Igame",
+    "name": "nums::models::config::Iconfig",
     "items": [
       {
         "type": "function",
@@ -362,7 +470,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "number_challenge::models::game::Game"
+            "type": "nums::models::config::Config"
           }
         ],
         "outputs": [],
@@ -372,7 +480,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::models::game::game::Event",
+    "name": "nums::models::config::config::Event",
     "kind": "enum",
     "variants": []
   }

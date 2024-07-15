@@ -1,0 +1,25 @@
+kind = "DojoModel"
+class_hash = "0x2fc8e3ac03f91e3ed1b9dfabfdc0e983e9a174950bd65023bd75d31bd76770f"
+original_class_hash = "0x2fc8e3ac03f91e3ed1b9dfabfdc0e983e9a174950bd65023bd75d31bd76770f"
+abi = "manifests/dev/abis/base/models/nums_models_config_config.json"
+name = "nums::models::config::config"
+
+[[members]]
+name = "world"
+type = "felt252"
+key = true
+
+[[members]]
+name = "game"
+type = "Option<GameConfig>"
+key = false
+
+[[members]]
+name = "cost"
+type = "Option<CreateCost>"
+key = false
+
+[[members]]
+name = "reward"
+type = "Option<SlotReward>"
+key = false

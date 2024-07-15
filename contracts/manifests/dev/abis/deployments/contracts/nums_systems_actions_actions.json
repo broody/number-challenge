@@ -56,12 +56,116 @@
   {
     "type": "impl",
     "name": "ActionsImpl",
-    "interface_name": "number_challenge::systems::actions::IActions"
+    "interface_name": "nums::systems::actions::IActions"
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::GameConfig",
+    "members": [
+      {
+        "name": "max_slots",
+        "type": "core::integer::u8"
+      },
+      {
+        "name": "max_number",
+        "type": "core::integer::u16"
+      },
+      {
+        "name": "min_number",
+        "type": "core::integer::u16"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::config::GameConfig>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::config::GameConfig"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::GameCost",
+    "members": [
+      {
+        "name": "token",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::config::GameCost>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::config::GameCost"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::Config",
+    "members": [
+      {
+        "name": "world",
+        "type": "core::felt252"
+      },
+      {
+        "name": "game",
+        "type": "core::option::Option::<nums::models::config::GameConfig>"
+      },
+      {
+        "name": "cost",
+        "type": "core::option::Option::<nums::models::config::GameCost>"
+      }
+    ]
   },
   {
     "type": "interface",
-    "name": "number_challenge::systems::actions::IActions",
+    "name": "nums::systems::actions::IActions",
     "items": [
+      {
+        "type": "function",
+        "name": "set_config",
+        "inputs": [
+          {
+            "name": "config",
+            "type": "nums::models::config::Config"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
       {
         "type": "function",
         "name": "create",
@@ -71,7 +175,7 @@
             "type": "(core::integer::u32, core::integer::u16)"
           }
         ],
-        "state_mutability": "view"
+        "state_mutability": "external"
       },
       {
         "type": "function",
@@ -82,7 +186,7 @@
             "type": "core::integer::u32"
           },
           {
-            "name": "slot",
+            "name": "target_idx",
             "type": "core::integer::u8"
           }
         ],
@@ -91,6 +195,40 @@
             "type": "core::integer::u16"
           }
         ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_name",
+        "inputs": [
+          {
+            "name": "game_id",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "name",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "IDojoInitImpl",
+    "interface_name": "nums::systems::actions::actions::IDojoInit"
+  },
+  {
+    "type": "interface",
+    "name": "nums::systems::actions::actions::IDojoInit",
+    "items": [
+      {
+        "type": "function",
+        "name": "dojo_init",
+        "inputs": [],
+        "outputs": [],
         "state_mutability": "view"
       }
     ]
@@ -144,7 +282,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::systems::actions::actions::Created",
+    "name": "nums::systems::actions::actions::Created",
     "kind": "struct",
     "members": [
       {
@@ -171,7 +309,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::systems::actions::actions::Inserted",
+    "name": "nums::systems::actions::actions::Inserted",
     "kind": "struct",
     "members": [
       {
@@ -185,7 +323,7 @@
         "kind": "key"
       },
       {
-        "name": "slot",
+        "name": "index",
         "type": "core::integer::u8",
         "kind": "data"
       },
@@ -208,7 +346,7 @@
   },
   {
     "type": "event",
-    "name": "number_challenge::systems::actions::actions::Event",
+    "name": "nums::systems::actions::actions::Event",
     "kind": "enum",
     "variants": [
       {
@@ -218,12 +356,12 @@
       },
       {
         "name": "Created",
-        "type": "number_challenge::systems::actions::actions::Created",
+        "type": "nums::systems::actions::actions::Created",
         "kind": "nested"
       },
       {
         "name": "Inserted",
-        "type": "number_challenge::systems::actions::actions::Inserted",
+        "type": "nums::systems::actions::actions::Inserted",
         "kind": "nested"
       }
     ]

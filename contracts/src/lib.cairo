@@ -5,6 +5,13 @@ mod systems {
 mod models {
     mod game;
     mod slot;
+    mod name;
+    mod config;
+    mod jackpot;
+}
+
+mod interfaces {
+    mod token;
 }
 
 mod utils {
@@ -13,5 +20,6 @@ mod utils {
 
 mod tests {
     mod test_world;
+    mod test_reward;
 }
 

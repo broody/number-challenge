@@ -3,39 +3,37 @@ import Game from "./components/Game";
 import Home from "./components/Home";
 import {
   StarknetConfig,
-  Connector,
   starkscan,
   jsonRpcProvider,
 } from "@starknet-react/core";
-import { Chain, sepolia } from "@starknet-react/chains";
-import CartridgeConnector from "@cartridge/connector";
 import { shortString } from "starknet";
+import { Chain, sepolia } from "@starknet-react/chains";
+import { ControllerOptions } from "@cartridge/controller"
+import CartridgeConnector from "@cartridge/connector";
 
 function rpc(_chain: Chain) {
   return {
-    nodeUrl: import.meta.env.VITE_RPC_URL,
+    nodeUrl: "http://localhost:8000/x/starknet/sepolia",
   };
 }
 
-const connectors = [
-  new CartridgeConnector(
-    [
-      {
-        target: import.meta.env.VITE_ACTIONS_CONTRACT,
-        method: "create",
-      },
-      {
-        target: import.meta.env.VITE_ACTIONS_CONTRACT,
-        method: "set_slot",
-      },
-    ],
-    {
-      paymaster: {
-        caller: shortString.encodeShortString("ANY_CALLER"),
-      },
-    },
-  ) as never as Connector,
+const policies = [
+  {
+    target: import.meta.env.VITE_ACTIONS_CONTRACT,
+    method: "create",
+  },
+  {
+    target: import.meta.env.VITE_ACTIONS_CONTRACT,
+    method: "set_slot",
+  },
 ];
+
+const options: ControllerOptions = {
+  url: "http://localhost:3001",
+  rpc: "http://localhost:8000/x/starknet/sepolia"
+};
+
+const connectors = [new CartridgeConnector(policies, options)];
 
 function App() {
   return (
