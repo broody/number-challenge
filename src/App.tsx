@@ -33,6 +33,8 @@ const connectors = [
       paymaster: {
         caller: shortString.encodeShortString("ANY_CALLER"),
       },
+      rpc: import.meta.env.VITE_RPC_URL,
+      url: "https://keychain-git-slot-auth-update.preview.cartridge.gg",
     },
   ) as never as Connector,
 ];
