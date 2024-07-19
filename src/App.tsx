@@ -31,7 +31,7 @@ const connectors = [
     {
       rpc: import.meta.env.VITE_RPC_URL,
     },
-  ) as Connector,
+  ) as never as Connector,
 ];
 
 function App() {
