@@ -14,7 +14,7 @@ import {
 
 const CreatedEvent = graphql(`
   subscription Created($player: String) {
-    eventEmitted(keys: ["*", $player]) {
+    eventEmitted(keys: ["*", "*", $player]) {
       keys
       data
     }
@@ -40,7 +40,7 @@ const Connect = () => {
   });
 
   useEffect(() => {
-    const gameId = createdEvent.data?.eventEmitted?.keys?.[0];
+    const gameId = createdEvent.data?.eventEmitted?.keys?.[1];
     if (!gameId) {
       return;
     }
@@ -56,8 +56,8 @@ const Connect = () => {
       await account.execute([
         {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
-          entrypoint: "create",
-          calldata: [],
+          entrypoint: "create_game",
+          calldata: [1],
         },
       ]);
     } catch (e) {

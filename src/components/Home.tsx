@@ -31,7 +31,7 @@ import { formatEther } from "viem";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
-    gameModels(
+    numsGameModels(
       order: { direction: ASC, field: REMAINING_SLOTS }
       limit: 10
       offset: $offset
@@ -77,8 +77,8 @@ const Leaderboard = () => {
     query: StatsQuery,
   });
 
-  const totalResult = gameResult.data?.gameModels?.edges
-    ? gameResult.data.gameModels?.edges.length
+  const totalResult = gameResult.data?.numsGameModels?.edges
+    ? gameResult.data.numsGameModels?.edges.length
     : 0;
 
   const avgMaxFee = useMemo(() => {
@@ -127,7 +127,7 @@ const Leaderboard = () => {
                     <HStack>
                       <Text>Chain: </Text>
                       <RadioGroup
-                        defaultValue="1"
+                        defaultValue="3"
                         onChange={(network) => {
                           switch (network) {
                             case "1":
@@ -136,19 +136,27 @@ const Leaderboard = () => {
                             case "2":
                               window.location.href = "https://mainnet.nums.gg";
                               break;
+                            case "3":
+                              window.location.href = "https://slot.nums.gg";
+                              break;
                           }
                         }}
                       >
                         <Stack direction="row">
-                          <Radio value="1">Sepolia</Radio>
-                          <Radio value="2" isDisabled>
+                          <Radio value="3">
+                            Slot
+                          </Radio>
+                          <Radio value="2">
                             Mainnet
+                          </Radio>
+                          <Radio value="1">
+                            Sepolia
                           </Radio>
                         </Stack>
                       </RadioGroup>
                     </HStack>
                     <Text>
-                      Total Games: {gameResult.data?.gameModels?.totalCount}
+                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
                     </Text>
                     <Text>
                       Total Transactions:{" "}
@@ -175,7 +183,7 @@ const Leaderboard = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {gameResult.data?.gameModels?.edges?.map(
+                    {gameResult.data?.numsGameModels?.edges?.map(
                       (edge: any, index) => (
                         <Tr
                           key={edge.node.game_id}

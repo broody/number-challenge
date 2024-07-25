@@ -2,7 +2,7 @@ use nums::models::config::Config;
 use starknet::ContractAddress;
 
 #[dojo::interface]
-trait IActions {
+pub trait IActions {
     fn create_jackpot(ref world: IWorldDispatcher, token: ContractAddress, initial_supply: u256, entry_fee: u256) -> u32;
     fn create_game(ref world: IWorldDispatcher, jackpot_id: Option<u32>) -> (u32, u16);
     fn set_config(ref world: IWorldDispatcher, config: Config);
@@ -11,11 +11,11 @@ trait IActions {
 }
 
 #[dojo::contract]
-mod actions {
+pub mod actions {
     use super::IActions;
 
     use starknet::{ContractAddress, get_caller_address};
-    use core::ArrayTrait;
+    use core::array::ArrayTrait;
     use nums::models::name::Name;
     use nums::models::config::{Config, SlotReward, SlotRewardTrait};
     use nums::models::game::{Game, GameTrait};
@@ -26,16 +26,10 @@ mod actions {
 
     const WORLD: felt252 = 0;
 
-    #[event]
-    #[derive(Drop, starknet::Event)]
-    enum Event {
-        Created: Created,
-        Inserted: Inserted,
-        Rewarded: Rewarded,
-    }
-
-    #[derive(starknet::Event, Model, Copy, Drop, Serde)]
-    struct Inserted {
+    #[derive(Copy, Drop, Serde)]
+    #[dojo::event]
+    #[dojo::model]
+    pub struct Inserted {
         #[key]
         game_id: u32,
         #[key]
@@ -46,8 +40,10 @@ mod actions {
         remaining_slots: u8
     }
 
-    #[derive(starknet::Event, Model, Copy, Drop, Serde)]
-    struct Created {
+    #[derive(Copy, Drop, Serde)]
+    #[dojo::event]
+    #[dojo::model]
+    pub struct Created {
         #[key]
         game_id: u32,
         #[key]
@@ -57,8 +53,10 @@ mod actions {
         min_number: u16
     }
 
-    #[derive(starknet::Event, Model, Copy, Drop, Serde)]
-    struct Rewarded {
+    #[derive(Copy, Drop, Serde)]
+    #[dojo::event]
+    #[dojo::model]
+    pub struct Rewarded {
         #[key]
         game_id: u32,
         #[key]
@@ -67,8 +65,10 @@ mod actions {
         amount: u256,
     }
 
-    #[derive(starknet::Event, Model, Copy, Drop, Serde)]
-    struct JackpotIncreased {
+    #[derive(Copy, Drop, Serde)]
+    #[dojo::event]
+    #[dojo::model]
+    pub struct JackpotIncreased {
         #[key]
         jackpot_id: u32,
         #[key]
@@ -82,7 +82,7 @@ mod actions {
         fn set_config(ref world: IWorldDispatcher, config: Config) {
             let owner = get_caller_address();
             assert!(world.is_owner(owner, WORLD), "Unauthorized owner");
-            assert!(config.world == WORLD, "Invalid config state");
+            assert!(config.world_resource == WORLD, "Invalid config state");
 
             set!(world, (config));
         }
@@ -91,7 +91,7 @@ mod actions {
             ITokenDispatcher { contract_address: token }.transfer(get_caller_address(), initial_supply);
             
             let jackpot_id = world.uuid();
-            set!(world, (jackpot_id, Jackpot {
+            set!(world, (Jackpot {
                 jackpot_id,
                 winner: Option::None,
                 token,

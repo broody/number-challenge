@@ -2,34 +2,34 @@ use starknet::ContractAddress;
 
 #[derive(Drop, Serde)]
 #[dojo::model]
-struct Config {
+pub struct Config {
     #[key]
-    world: felt252, // This is always 0 correpsonding to the world resource.
-    game: Option<GameConfig>,
-    reward: Option<SlotReward>,
+    pub world_resource: felt252, 
+    pub game: Option<GameConfig>,
+    pub reward: Option<SlotReward>,
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct GameConfig {
-    max_slots: u8,
-    max_number: u16,
-    min_number: u16,
+pub struct GameConfig {
+    pub max_slots: u8,
+    pub max_number: u16,
+    pub min_number: u16,
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct SlotReward {
-    token: ContractAddress,
-    levels: Array<RewardLevel>,
+pub struct SlotReward {
+    pub token: ContractAddress,
+    pub levels: Array<RewardLevel>,
 }
 
 #[derive(Copy, Drop, Serde, Introspect)]
-struct RewardLevel {
-    level: u8,
-    amount: u256,
+pub struct RewardLevel {
+    pub level: u8,
+    pub amount: u256,
 }
 
 #[generate_trait]
-impl SlotRewardImpl of SlotRewardTrait {
+pub impl SlotRewardImpl of SlotRewardTrait {
     /// Calculates the reward amount and token for a given level based on the configured reward structure.
     ///
     /// # Arguments

@@ -1,0 +1,31 @@
+kind = "DojoModel"
+class_hash = "0x330dd35108e8231b4d16712308577ad63d310bb3fe7bf0faf9bdac521e7ad2a"
+original_class_hash = "0x330dd35108e8231b4d16712308577ad63d310bb3fe7bf0faf9bdac521e7ad2a"
+abi = "manifests/dev/base/abis/models/nums-Jackpot-723709fc.json"
+tag = "nums-Jackpot"
+manifest_name = "nums-Jackpot-723709fc"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "winner"
+type = "Option<ContractAddress>"
+key = false
+
+[[members]]
+name = "token"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "entry_fee"
+type = "u256"
+key = false
+
+[[members]]
+name = "total"
+type = "u256"
+key = false

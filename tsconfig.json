@@ -22,7 +22,7 @@
     "plugins": [ 
       { 
         "name": "@0no-co/graphqlsp", 
-        "schema": "http://localhost:8080/graphql", 
+        "schema": "https://api.cartridge.gg/x/nums-slot/torii/graphql", 
         "tadaOutputLocation": "./src/graphql/graphql-env.d.ts"
       } 
     ] 

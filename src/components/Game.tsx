@@ -20,7 +20,7 @@ import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const GameQuery = graphql(`
   query GameQuery($gameId: u32) {
-    gameModels(where: { game_id: $gameId }) {
+    numsGameModels(where: { game_id: $gameId }) {
       edges {
         node {
           player
@@ -30,14 +30,14 @@ const GameQuery = graphql(`
         }
       }
     }
-    slotModels(
+    numsSlotModels(
       where: { game_id: $gameId }
-      order: { direction: ASC, field: SLOT }
+      order: { direction: ASC, field: NUMBER }
       limit: 20
     ) {
       edges {
         node {
-          slot
+          index
           number
         }
       }
@@ -47,7 +47,7 @@ const GameQuery = graphql(`
 
 const EventSubscription = graphql(`
   subscription EventEmitted($gameId: String) {
-    eventEmitted(keys: [$gameId]) {
+    eventEmitted(keys: ["*", $gameId]) {
       keys
       data
     }
@@ -94,7 +94,7 @@ const Game = () => {
   }, [eventEmitted]);
 
   useEffect(() => {
-    queryResult.data?.gameModels?.edges?.forEach((edge: any) => {
+    queryResult.data?.numsGameModels?.edges?.forEach((edge: any) => {
       setRemaining(edge.node.remaining_slots);
       setNext(edge.node.next_number);
       setPlayer(edge.node.player);
@@ -106,8 +106,8 @@ const Game = () => {
     });
 
     const newSlots: number[] = Array.from({ length: 20 });
-    queryResult.data?.slotModels?.edges?.forEach((edge: any) => {
-      newSlots[edge.node.slot] = edge.node.number;
+    queryResult.data?.numsSlotModels?.edges?.forEach((edge: any) => {
+      newSlots[edge.node.index] = edge.node.number;
     });
     setSlots(newSlots);
   }, [queryResult, account]);

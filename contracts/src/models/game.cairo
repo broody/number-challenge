@@ -1,22 +1,22 @@
 use starknet::ContractAddress;
-use core::ArrayTrait;
+use core::array::ArrayTrait;
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
-struct Game {
+pub struct Game {
     #[key]
-    game_id: u32,
+    pub game_id: u32,
     #[key]
-    player: ContractAddress,
-    max_slots: u8,
-    max_number: u16,
-    min_number: u16,
-    remaining_slots: u8,
-    next_number: u16,
+    pub player: ContractAddress,
+    pub max_slots: u8,
+    pub max_number: u16,
+    pub min_number: u16,
+    pub remaining_slots: u8,
+    pub next_number: u16,
 }
 
 #[generate_trait]
-impl GameImpl of GameTrait {
+pub impl GameImpl of GameTrait {
     /// Checks if the elements in the given array of slots are in ascending order.
     ///
     /// # Arguments

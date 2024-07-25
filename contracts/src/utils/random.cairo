@@ -1,19 +1,18 @@
 use starknet::ContractAddress;
 use starknet::get_contract_address;
-use starknet::Zeroable;
 use core::pedersen::pedersen;
 
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 #[derive(Copy, Drop, Serde)]
-struct Random {
-    world: IWorldDispatcher,
-    seed: felt252,
-    nonce: usize,
+pub struct Random {
+    pub world: IWorldDispatcher,
+    pub seed: felt252,
+    pub nonce: usize,
 }
 
 #[generate_trait]
-impl RandomImpl of RandomTrait {
+pub impl RandomImpl of RandomTrait {
     // one instance by contract, then passed by ref to sub fns
     fn new(world: IWorldDispatcher) -> Random {
         Random { world, seed: seed(get_contract_address()), nonce: 0 }
@@ -51,7 +50,6 @@ impl RandomImpl of RandomTrait {
         +Into<T, u256>,
         +TryInto<u128, T>,
         +PartialOrd<T>,
-        +Zeroable<T>,
         +Copy<T>,
         +Drop<T>
     >(
@@ -59,9 +57,7 @@ impl RandomImpl of RandomTrait {
     ) -> T {
         let seed: u256 = self.next_seed().into();
 
-        if min >= max {
-            return Zeroable::zero();
-        };
+        assert(min < max, 'min must be less than max');
 
         let range: u128 = max.into() - min.into();
         let rand = (seed.low % range) + min.into();

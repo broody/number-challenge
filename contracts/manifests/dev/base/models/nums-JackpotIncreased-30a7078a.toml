@@ -1,0 +1,26 @@
+kind = "DojoModel"
+class_hash = "0x2c2c77431bbcd678c7cbc4b2edc2e8a5c0d0617ab509f71f5e0e932dceaa4a2"
+original_class_hash = "0x2c2c77431bbcd678c7cbc4b2edc2e8a5c0d0617ab509f71f5e0e932dceaa4a2"
+abi = "manifests/dev/base/abis/models/nums-JackpotIncreased-30a7078a.json"
+tag = "nums-JackpotIncreased"
+manifest_name = "nums-JackpotIncreased-30a7078a"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "increased_amount"
+type = "u256"
+key = false
+
+[[members]]
+name = "total"
+type = "u256"
+key = false

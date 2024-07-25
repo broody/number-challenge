@@ -5,22 +5,22 @@ import {
   StarknetConfig,
   starkscan,
   jsonRpcProvider,
+  Connector,
 } from "@starknet-react/core";
-import { shortString } from "starknet";
 import { Chain, sepolia } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller"
 import CartridgeConnector from "@cartridge/connector";
 
 function rpc(_chain: Chain) {
   return {
-    nodeUrl: "http://localhost:8000/x/starknet/sepolia",
+    nodeUrl: "https://api.cartridge.gg/x/nums-slot/katana",
   };
 }
 
 const policies = [
   {
     target: import.meta.env.VITE_ACTIONS_CONTRACT,
-    method: "create",
+    method: "create_game",
   },
   {
     target: import.meta.env.VITE_ACTIONS_CONTRACT,
@@ -29,11 +29,10 @@ const policies = [
 ];
 
 const options: ControllerOptions = {
-  url: "http://localhost:3001",
-  rpc: "http://localhost:8000/x/starknet/sepolia"
+  rpc: "https://api.cartridge.gg/x/nums-slot/katana"
 };
 
-const connectors = [new CartridgeConnector(policies, options)];
+const connectors = [new CartridgeConnector(policies, options) as never as Connector];
 
 function App() {
   return (

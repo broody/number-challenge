@@ -1,0 +1,21 @@
+kind = "DojoModel"
+class_hash = "0x2518088af405be4a6708995bad142b364758cb6a63ba83370b6936434a8269e"
+original_class_hash = "0x2518088af405be4a6708995bad142b364758cb6a63ba83370b6936434a8269e"
+abi = "manifests/dev/base/abis/models/nums-Name-3d781391.json"
+tag = "nums-Name"
+manifest_name = "nums-Name-3d781391"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "name"
+type = "felt252"
+key = false
