@@ -164,7 +164,7 @@ const Leaderboard = () => {
                     </Text>
                     <Text>
                       Avg Txn Max Fee:{" "}
-                      {parseFloat(formatEther(avgMaxFee)).toFixed(5)} ETH
+                      {parseFloat(formatEther(avgMaxFee)).toFixed(6)} ETH
                     </Text>
                   </VStack>
                 </VStack>
