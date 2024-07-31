@@ -136,12 +136,22 @@ const Leaderboard = () => {
                             case "2":
                               window.location.href = "https://mainnet.nums.gg";
                               break;
+                            case "3":
+                              window.location.href = "https://slot.nums.gg";
+                              break;
                           }
                         }}
                       >
                         <Stack direction="row">
-                          <Radio value="1">Sepolia</Radio>
-                          <Radio value="2">Mainnet</Radio>
+                          <Radio value="3">
+                            Slot
+                          </Radio>
+                          <Radio value="2">
+                            Mainnet
+                          </Radio>
+                          <Radio value="1">
+                            Sepolia
+                          </Radio>
                         </Stack>
                       </RadioGroup>
                     </HStack>
