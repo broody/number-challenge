@@ -2,12 +2,10 @@ use starknet::ContractAddress;
 
 #[derive(Drop, Serde)]
 #[dojo::model]
-pub struct Slot {
+pub struct Name {
     #[key]
     pub game_id: u32,
     #[key]
     pub player: ContractAddress,
-    #[key]
-    pub index: u8,
-    pub number: u16,
+    pub name: felt252
 }

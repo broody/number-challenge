@@ -1,32 +1,33 @@
 [package]
-cairo-version = "2.5.4"
-name = "number_challenge"
+cairo-version = "=2.7.0-rc.3"
+name = "nums"
 version = "0.1.0"
+edition = "2024_07"
 
 [cairo]
 sierra-replace-ids = true
 
-[scripts]
-migrate = "sozo build && sozo migrate apply && ./scripts/default_auth.sh"
-
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v0.6.0" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.3" }
 
 [[target.dojo]]
 
-[tool.dojo]
-initializer_class_hash = "0xbeef"
+[tool.dojo.world.namespace]
+default = "nums"
 
 [tool.dojo.env]
-rpc_url = "https://api.cartridge.gg/rpc/starknet-sepolia"
-# Default account for katana with seed = 0
-account_address = "0x071BA8e0cE57BC942035edF27DE30b199e27B28A60947625eab1249620F3256b"
-private_key = "0xc01bfdd65cf046e8b69947c70eb987ad29707cc2f4d8256a5c45392a53c72d"
-world_address = "0x2fb9256a503272ddf2606741a969933bc0711e19ae5d08fcb9b147a76dfe3c5" # Update this line with your world address
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+# account_address = ""
+# private_key = ""
+# rpc_url = "http://localhost:5050"
+# account_address = "0x6162896d1d7ab204c7ccac6dd5f8e9e7c25ecd5ae4fcb4ad32e57786bb46e03"
+# private_key = "0x1800000000300000180000000000030000000000003006001800006600"
+world_address = "0x1cc6503beb238fa8c3c07dee65da825ab2bde8317689dd42c3dbba4379cb6ef" 
 
 [tool.dojo.world]
-name = "20 Number Challenge"
-description = "On chain version of the 20 Number Challenge or Blind Number Challenge game."
+name = "Nums"
+seed = "nums"
+description = "On chain version of the Number Challenge or Blind Number Challenge game."
 cover_uri = "file://assets/cover.png"
 icon_uri = "file://assets/icon.png"
 website = "https://number-challenge.vercel.app"

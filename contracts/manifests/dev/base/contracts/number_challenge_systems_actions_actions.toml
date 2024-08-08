@@ -1,9 +1,0 @@
-kind = "DojoContract"
-class_hash = "0xcfbddd3d404b1437f8390aa021e7297bb8ede142cdce4a2654def39a2eaad2"
-original_class_hash = "0xcfbddd3d404b1437f8390aa021e7297bb8ede142cdce4a2654def39a2eaad2"
-base_class_hash = "0x0"
-abi = "manifests/dev/abis/base/contracts/number_challenge_systems_actions_actions.json"
-reads = []
-writes = []
-computed = []
-name = "number_challenge::systems::actions::actions"

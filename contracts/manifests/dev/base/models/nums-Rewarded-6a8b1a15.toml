@@ -1,0 +1,26 @@
+kind = "DojoModel"
+class_hash = "0x756bcc7b327444dbabe7f8bb71118bbceda7ad7693c8e49ecb2cc10f3801a86"
+original_class_hash = "0x756bcc7b327444dbabe7f8bb71118bbceda7ad7693c8e49ecb2cc10f3801a86"
+abi = "manifests/dev/base/abis/models/nums-Rewarded-6a8b1a15.json"
+tag = "nums-Rewarded"
+manifest_name = "nums-Rewarded-6a8b1a15"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "token"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "amount"
+type = "u256"
+key = false

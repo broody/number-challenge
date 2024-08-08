@@ -31,7 +31,7 @@ import { formatEther } from "viem";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
-    gameModels(
+    numsGameModels(
       order: { direction: ASC, field: REMAINING_SLOTS }
       limit: 10
       offset: $offset
@@ -77,8 +77,8 @@ const Leaderboard = () => {
     query: StatsQuery,
   });
 
-  const totalResult = gameResult.data?.gameModels?.edges
-    ? gameResult.data.gameModels?.edges.length
+  const totalResult = gameResult.data?.numsGameModels?.edges
+    ? gameResult.data.numsGameModels?.edges.length
     : 0;
 
   const avgMaxFee = useMemo(() => {
@@ -156,7 +156,7 @@ const Leaderboard = () => {
                       </RadioGroup>
                     </HStack>
                     <Text>
-                      Total Games: {gameResult.data?.gameModels?.totalCount}
+                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
                     </Text>
                     <Text>
                       Total Transactions:{" "}
@@ -164,7 +164,7 @@ const Leaderboard = () => {
                     </Text>
                     <Text>
                       Avg Txn Max Fee:{" "}
-                      {parseFloat(formatEther(avgMaxFee)).toFixed(5)} ETH
+                      {parseFloat(formatEther(avgMaxFee)).toFixed(6)} ETH
                     </Text>
                   </VStack>
                 </VStack>
@@ -183,7 +183,7 @@ const Leaderboard = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {gameResult.data?.gameModels?.edges?.map(
+                    {gameResult.data?.numsGameModels?.edges?.map(
                       (edge: any, index) => (
                         <Tr
                           key={edge.node.game_id}
