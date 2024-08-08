@@ -125,7 +125,6 @@ const Leaderboard = () => {
                   </Text>
                   <VStack w="full" align="flex-start">
                     <HStack>
-                      <Text>Chain: </Text>
                       <RadioGroup
                         defaultValue="1"
                         onChange={(network) => {
@@ -142,15 +141,15 @@ const Leaderboard = () => {
                           }
                         }}
                       >
-                        <Stack direction="row">
-                          <Radio value="3">
-                            Slot
+                        <Stack direction="column">
+                          <Radio value="1">
+                            Sepolia (self-funded)
                           </Radio>
                           <Radio value="2">
                             Mainnet
                           </Radio>
-                          <Radio value="1">
-                            Sepolia
+                          <Radio value="3">
+                            Slot
                           </Radio>
                         </Stack>
                       </RadioGroup>
