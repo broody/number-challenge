@@ -10,10 +10,11 @@ import {
 import { Chain, sepolia } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller"
 import CartridgeConnector from "@cartridge/connector";
+import { shortString } from "starknet";
 
 function rpc(_chain: Chain) {
   return {
-    nodeUrl: "https://api.cartridge.gg/x/nums-slot/katana",
+    nodeUrl: "https://api.cartridge.gg/x/starknet/sepolia",
   };
 }
 
@@ -29,7 +30,9 @@ const policies = [
 ];
 
 const options: ControllerOptions = {
-  rpc: "https://api.cartridge.gg/x/nums-slot/katana"
+  paymaster: {
+     caller: shortString.encodeShortString("ANY_CALLER")
+  }
 };
 
 const connectors = [new CartridgeConnector(policies, options) as never as Connector];

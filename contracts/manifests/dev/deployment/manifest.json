@@ -1190,12 +1190,12 @@
       }
     ],
     "address": "0x1cc6503beb238fa8c3c07dee65da825ab2bde8317689dd42c3dbba4379cb6ef",
-    "transaction_hash": "0x141d75ee64c4e92dd3d849d5d09c832dc2b07715f12c7bcb3c6b9e18e5fefce",
-    "block_number": 3,
+    "transaction_hash": "0x4c58a8e3a02356acfd335004c8fd1b4b8576756fb4ba2593b6d7556d7eb3ad0",
+    "block_number": 5,
     "seed": "nums",
     "metadata": {
       "profile_name": "dev",
-      "rpc_url": "http://localhost:5050/"
+      "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
     },
     "manifest_name": "dojo-world"
   },
@@ -1211,8 +1211,8 @@
     {
       "kind": "DojoContract",
       "address": "0x1f6100e30fc2978767a0d24f3c197d888b195a77fe7efcb39843f768692a6af",
-      "class_hash": "0x2cf6647af7ce46762bf1b5f842bb04483386a29af1e18689888589298fa9af2",
-      "original_class_hash": "0x2cf6647af7ce46762bf1b5f842bb04483386a29af1e18689888589298fa9af2",
+      "class_hash": "0x56c2b4cd8530ec7eceba0ac5fe5cb71a498883445bdddec0eefd6f11821223c",
+      "original_class_hash": "0x56c2b4cd8530ec7eceba0ac5fe5cb71a498883445bdddec0eefd6f11821223c",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
