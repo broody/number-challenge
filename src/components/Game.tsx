@@ -30,6 +30,7 @@ const GameQuery = graphql(`
           player
           min_number
           max_number
+          max_slots
           remaining_slots
           next_number
         }
@@ -54,7 +55,7 @@ const Game = () => {
   const [slots, setSlots] = useState<number[]>(Array.from({ length: 20 }));
   const [next, setNext] = useState<number | null>();
   const [player, setPlayer] = useState<string>("");
-  const [remaining, setRemaining] = useState<number | null>(null);
+  const [remaining, setRemaining] = useState<number>(0);
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [numRange, setNumRange] = useState<string>();
@@ -78,26 +79,25 @@ const Game = () => {
 
   useEffect(() => {
     const gamesModel = queryResult.data?.numsGameModels?.edges?.[0]?.node;
-    if (!gamesModel) {
+    const slotsEdges = queryResult.data?.numsSlotModels?.edges;
+    if (!gamesModel || !slotsEdges) {
       return;
     }
+
+    setIsOwner(account && gamesModel.player === removeZeros(account.address) || false)
 
     // update if game progressed
-    if (gamesModel.remaining_slots === remaining) {
+    if (slotsEdges.length === gamesModel.max_slots! - remaining) {
       return;
     }
 
-    if (account && gamesModel.player === removeZeros(account.address)) {
-      setIsOwner(true);
-    }
-
-    setRemaining(gamesModel.remaining_slots);
+    setRemaining(gamesModel.remaining_slots || 0);
     setNext(gamesModel.next_number);
     setNumRange(gamesModel.min_number + " - " + gamesModel.max_number);
     setPlayer(gamesModel.player as string);
 
     const newSlots: number[] = Array.from({ length: 20 });
-    queryResult.data?.numsSlotModels?.edges?.forEach((edge: any) => {
+    slotsEdges.forEach((edge: any) => {
       newSlots[edge.node.index] = edge.node.number;
     });
 

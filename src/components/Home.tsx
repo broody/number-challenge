@@ -122,7 +122,7 @@ const Leaderboard = () => {
                   <Text>
                     The goal of the game is <strong>simple</strong> - given
                     randomly generated numbers, players must place each number
-                    ascending order.
+                    in ascending order.
                   </Text>
                   <VStack w="full" align="flex-start">
                     <HStack>
@@ -192,7 +192,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                            addAddressPadding(edge.node.player)
+                              addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"
