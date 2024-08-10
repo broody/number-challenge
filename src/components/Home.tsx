@@ -125,8 +125,7 @@ const Leaderboard = () => {
                     in ascending order.
                   </Text>
                   <VStack w="full" align="flex-start">
-                    <HStack>
-                      <Text>Chain: </Text>
+                    <VStack>
                       <RadioGroup
                         defaultValue="1"
                         onChange={(network) => {
@@ -143,13 +142,13 @@ const Leaderboard = () => {
                           }
                         }}
                       >
-                        <Stack direction="row">
+                        <Stack direction="column">
                           <Radio value="3">Slot</Radio>
-                          <Radio value="2">Mainnet</Radio>
                           <Radio value="1">Sepolia</Radio>
+                          <Radio value="2">Mainnet</Radio>
                         </Stack>
                       </RadioGroup>
-                    </HStack>
+                    </VStack>
                     <Text>
                       Total Games: {gameResult.data?.numsGameModels?.totalCount}
                     </Text>
