@@ -8,7 +8,7 @@ import {
   Connector,
 } from "@starknet-react/core";
 import { Chain, sepolia } from "@starknet-react/chains";
-import { ControllerOptions } from "@cartridge/controller"
+import { ControllerOptions } from "@cartridge/controller";
 import CartridgeConnector from "@cartridge/connector";
 import { shortString } from "starknet";
 
@@ -35,7 +35,9 @@ const options: ControllerOptions = {
   }
 };
 
-const connectors = [new CartridgeConnector(policies, options) as never as Connector];
+const connectors = [
+  new CartridgeConnector(policies, options) as never as Connector,
+];
 
 function App() {
   return (

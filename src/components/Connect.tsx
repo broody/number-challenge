@@ -11,6 +11,7 @@ import {
   useDisconnect,
   useExplorer,
 } from "@starknet-react/core";
+import useToast from "../hooks/toast";
 
 const CreatedEvent = graphql(`
   subscription Created($player: String) {
@@ -25,6 +26,7 @@ const Connect = () => {
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, account } = useAccount();
+  const { showTxn } = useToast();
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
   const navigate = useNavigate();
@@ -33,7 +35,6 @@ const Connect = () => {
 
   const [createdEvent] = useSubscription({
     query: CreatedEvent,
-    pause: !account,
     variables: {
       player: removeZeros(account?.address || ""),
     },
@@ -53,13 +54,15 @@ const Connect = () => {
 
     try {
       setCreating(true);
-      await account.execute([
+      const { transaction_hash } = await account.execute([
         {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
           entrypoint: "create_game",
           calldata: [1],
         },
       ]);
+
+      showTxn(transaction_hash);
     } catch (e) {
       setCreating(false);
     }

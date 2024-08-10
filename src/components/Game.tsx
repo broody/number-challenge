@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useAccount, useExplorer } from "@starknet-react/core";
 import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import useToast from "../hooks/toast";
 
 const GameQuery = graphql(`
   query GameQuery($gameId: u32) {
@@ -65,6 +66,7 @@ const Game = () => {
   const explorer = useExplorer();
   const { account } = useAccount();
   const { gameId } = useParams();
+  const { showTxn } = useToast();
   if (!gameId) {
     return <></>;
   }
@@ -73,7 +75,6 @@ const Game = () => {
   const [queryResult] = useQuery({
     query: GameQuery,
     variables: { gameId: parseInt(gameId) },
-    pause: !gameId,
   });
 
   const [eventEmitted] = useSubscription({
@@ -124,7 +125,7 @@ const Game = () => {
         },
       ]);
 
-      console.log(transaction_hash);
+      showTxn(transaction_hash);
     } catch (e) {
       console.error(e);
       setDisableAll(false);
