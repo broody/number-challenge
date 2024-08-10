@@ -11,6 +11,13 @@ const theme = extendTheme({
     heading: `'Kode Mono', monospace`,
     body: `'Kode Mono', monospace`,
   },
+  styles: {
+    global: {
+      "html, body": {
+        userSelect: "none", // Disable text selection for the entire app
+      },
+    },
+  },
 });
 
 export default theme;

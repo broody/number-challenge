@@ -109,7 +109,7 @@ const Leaderboard = () => {
                 <VStack spacing="30px" align="flex-start">
                   <Text>
                     Welcome to <strong>Number Challenge.</strong> A fully{" "}
-                    <strong>on-chain</strong> game built using{" "}
+                    <strong>onchain</strong> game built using{" "}
                     <Link href="https://www.dojoengine.org" isExternal>
                       [Dojo Engine]
                     </Link>{" "}
@@ -122,7 +122,7 @@ const Leaderboard = () => {
                   <Text>
                     The goal of the game is <strong>simple</strong> - given
                     randomly generated numbers, players must place each number
-                    in a <strong>slot</strong> in ascending order.
+                    ascending order.
                   </Text>
                   <VStack w="full" align="flex-start">
                     <HStack>

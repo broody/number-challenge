@@ -54,7 +54,7 @@ const Game = () => {
   const [slots, setSlots] = useState<number[]>(Array.from({ length: 20 }));
   const [next, setNext] = useState<number | null>();
   const [player, setPlayer] = useState<string>("");
-  const [remaining, setRemaining] = useState<number | null>();
+  const [remaining, setRemaining] = useState<number | null>(null);
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [numRange, setNumRange] = useState<string>();
@@ -78,7 +78,7 @@ const Game = () => {
 
   useEffect(() => {
     const gamesModel = queryResult.data?.numsGameModels?.edges?.[0]?.node;
-    if (!account || !gamesModel) {
+    if (!gamesModel) {
       return;
     }
 
@@ -87,14 +87,14 @@ const Game = () => {
       return;
     }
 
+    if (account && gamesModel.player === removeZeros(account.address)) {
+      setIsOwner(true);
+    }
+
     setRemaining(gamesModel.remaining_slots);
     setNext(gamesModel.next_number);
     setNumRange(gamesModel.min_number + " - " + gamesModel.max_number);
     setPlayer(gamesModel.player as string);
-
-    if (gamesModel.player === removeZeros(account.address)) {
-      setIsOwner(true);
-    }
 
     const newSlots: number[] = Array.from({ length: 20 });
     queryResult.data?.numsSlotModels?.edges?.forEach((edge: any) => {
