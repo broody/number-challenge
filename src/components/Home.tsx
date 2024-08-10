@@ -66,6 +66,7 @@ const Leaderboard = () => {
   const [offset, setOffset] = useState<number>(0);
   const { account } = useAccount();
   const { colorMode } = useColorMode();
+
   const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
     variables: {
@@ -108,7 +109,7 @@ const Leaderboard = () => {
                 <VStack spacing="30px" align="flex-start">
                   <Text>
                     Welcome to <strong>Number Challenge.</strong> A fully{" "}
-                    <strong>on-chain</strong> game built using{" "}
+                    <strong>onchain</strong> game built using{" "}
                     <Link href="https://www.dojoengine.org" isExternal>
                       [Dojo Engine]
                     </Link>{" "}
@@ -121,10 +122,10 @@ const Leaderboard = () => {
                   <Text>
                     The goal of the game is <strong>simple</strong> - given
                     randomly generated numbers, players must place each number
-                    in a <strong>slot</strong> in ascending order.
+                    in ascending order.
                   </Text>
                   <VStack w="full" align="flex-start">
-                    <HStack>
+                    <VStack>
                       <RadioGroup
                         defaultValue="1"
                         onChange={(network) => {
@@ -142,18 +143,12 @@ const Leaderboard = () => {
                         }}
                       >
                         <Stack direction="column">
-                          <Radio value="1">
-                            Sepolia (self-funded)
-                          </Radio>
-                          <Radio value="2">
-                            Mainnet
-                          </Radio>
-                          <Radio value="3">
-                            Slot
-                          </Radio>
+                          <Radio value="3">Slot</Radio>
+                          <Radio value="1">Sepolia (self-funded)</Radio>
+                          <Radio value="2">Mainnet</Radio>
                         </Stack>
                       </RadioGroup>
-                    </HStack>
+                    </VStack>
                     <Text>
                       Total Games: {gameResult.data?.numsGameModels?.totalCount}
                     </Text>
@@ -196,7 +191,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                            addAddressPadding(edge.node.player)
+                              addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"

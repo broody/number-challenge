@@ -3,14 +3,13 @@ import Game from "./components/Game";
 import Home from "./components/Home";
 import {
   StarknetConfig,
-  starkscan,
+  voyager,
   jsonRpcProvider,
   Connector,
 } from "@starknet-react/core";
 import { Chain, sepolia } from "@starknet-react/chains";
-import { ControllerOptions } from "@cartridge/controller"
+import { ControllerOptions } from "@cartridge/controller";
 import CartridgeConnector from "@cartridge/connector";
-import { shortString } from "starknet";
 
 const ETH_TOKEN_ADDRESS =
   "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
@@ -33,18 +32,20 @@ const policies = [
 ];
 
 const options: ControllerOptions = {
-  paymaster: {
-     caller: shortString.encodeShortString("ANY_CALLER")
-  },
+  // paymaster: {
+  //   caller: shortString.encodeShortString("ANY_CALLER")
+  // },
   prefunds: [
     {
       address: ETH_TOKEN_ADDRESS,
-      min: "100000000000000"
+      min: "1000000000000000"
     }
   ]
 };
 
-const connectors = [new CartridgeConnector(policies, options) as never as Connector];
+const connectors = [
+  new CartridgeConnector(policies, options) as never as Connector,
+];
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
       autoConnect
       chains={[sepolia]}
       connectors={connectors}
-      explorer={starkscan}
+      explorer={voyager}
       provider={jsonRpcProvider({ rpc })}
     >
       <Router>
