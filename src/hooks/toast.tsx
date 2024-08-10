@@ -14,13 +14,32 @@ const useToast = () => {
           <strong>{formatAddress(hash)}</strong>
         </Link>
       ),
-      duration: 1500,
       isClosable: true,
-      position: "bottom-left"
+      position: "bottom-left",
     });
+  };
+
+  const showError = (hash: string) => {
+    toast({
+      title: "Transaction Error",
+      description: (
+        <Link href={explorer.transaction(hash)} isExternal>
+          <strong>{formatAddress(hash)}</strong>
+        </Link>
+      ),
+      isClosable: true,
+      position: "bottom-left",
+      status: "error",
+    });
+  };
+
+  const dismiss = () => {
+    toast.closeAll();
   };
   return {
     showTxn,
+    showError,
+    dismiss,
   };
 };
 

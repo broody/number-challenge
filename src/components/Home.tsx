@@ -66,6 +66,7 @@ const Leaderboard = () => {
   const [offset, setOffset] = useState<number>(0);
   const { account } = useAccount();
   const { colorMode } = useColorMode();
+
   const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
     variables: {
@@ -143,15 +144,9 @@ const Leaderboard = () => {
                         }}
                       >
                         <Stack direction="row">
-                          <Radio value="3">
-                            Slot
-                          </Radio>
-                          <Radio value="2">
-                            Mainnet
-                          </Radio>
-                          <Radio value="1">
-                            Sepolia
-                          </Radio>
+                          <Radio value="3">Slot</Radio>
+                          <Radio value="2">Mainnet</Radio>
+                          <Radio value="1">Sepolia</Radio>
                         </Stack>
                       </RadioGroup>
                     </HStack>

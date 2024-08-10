@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { graphql } from "../graphql";
-import { useQuery, useSubscription } from "urql";
+import { useQuery } from "urql";
 import { useEffect, useState } from "react";
 import { formatAddress, removeZeros } from "../utils";
 import {
@@ -14,10 +14,13 @@ import {
   Text,
   VStack,
   useColorMode,
+  useInterval,
 } from "@chakra-ui/react";
 import { useAccount, useExplorer } from "@starknet-react/core";
 import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import useToast from "../hooks/toast";
+
+const REFRESH_INTERVAL = 1000;
 
 const GameQuery = graphql(`
   query GameQuery($gameId: u32) {
@@ -25,6 +28,7 @@ const GameQuery = graphql(`
       edges {
         node {
           player
+          min_number
           max_number
           remaining_slots
           next_number
@@ -46,77 +50,67 @@ const GameQuery = graphql(`
   }
 `);
 
-const EventSubscription = graphql(`
-  subscription EventEmitted($gameId: String) {
-    eventEmitted(keys: ["*", $gameId]) {
-      keys
-      data
-    }
-  }
-`);
-
 const Game = () => {
-  const [slots, setSlots] = useState<number[]>(Array.from({ length: 10 }));
-  const [next, setNext] = useState<number>();
+  const [slots, setSlots] = useState<number[]>(Array.from({ length: 20 }));
+  const [next, setNext] = useState<number | null>();
   const [player, setPlayer] = useState<string>("");
+  const [remaining, setRemaining] = useState<number | null>();
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [remaining, setRemaining] = useState<number>();
-  const [disableAll, setDisableAll] = useState<boolean>(false);
-  const [maxNum, setMaxNum] = useState<number>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [numRange, setNumRange] = useState<string>();
   const explorer = useExplorer();
   const { account } = useAccount();
   const { gameId } = useParams();
-  const { showTxn } = useToast();
+  const { showTxn, showError, dismiss } = useToast();
   if (!gameId) {
     return <></>;
   }
-  window.scrollTo(0, 0);
 
-  const [queryResult] = useQuery({
+  const [queryResult, reexecuteQuery] = useQuery({
     query: GameQuery,
     variables: { gameId: parseInt(gameId) },
+    requestPolicy: isOwner ? "network-only" : "cache-and-network",
   });
 
-  const [eventEmitted] = useSubscription({
-    query: EventSubscription,
-    variables: { gameId },
-  });
+  useInterval(() => {
+    isLoading && reexecuteQuery();
+  }, REFRESH_INTERVAL);
 
   useEffect(() => {
-    if (eventEmitted.data?.eventEmitted) {
-      const { data } = eventEmitted.data?.eventEmitted;
-      setNext(parseInt(data?.[2] || "0", 16));
-      setRemaining(parseInt(data?.[3] || "0", 16));
-      const newSlots = [...slots];
-      newSlots[parseInt(data?.[0] || "0", 16)] = parseInt(data?.[1] || "0", 16);
-      setSlots(newSlots);
-      setDisableAll(false);
+    const gamesModel = queryResult.data?.numsGameModels?.edges?.[0]?.node;
+    if (!account || !gamesModel) {
+      return;
     }
-  }, [eventEmitted]);
 
-  useEffect(() => {
-    queryResult.data?.numsGameModels?.edges?.forEach((edge: any) => {
-      setRemaining(edge.node.remaining_slots);
-      setNext(edge.node.next_number);
-      setPlayer(edge.node.player);
-      setMaxNum(edge.node.max_number);
+    // update if game progressed
+    if (gamesModel.remaining_slots === remaining) {
+      return;
+    }
 
-      if (edge.node.player === removeZeros(account?.address || "")) {
-        setIsOwner(true);
-      }
-    });
+    setRemaining(gamesModel.remaining_slots);
+    setNext(gamesModel.next_number);
+    setNumRange(gamesModel.min_number + " - " + gamesModel.max_number);
+    setPlayer(gamesModel.player as string);
+
+    if (gamesModel.player === removeZeros(account.address)) {
+      setIsOwner(true);
+    }
 
     const newSlots: number[] = Array.from({ length: 20 });
     queryResult.data?.numsSlotModels?.edges?.forEach((edge: any) => {
       newSlots[edge.node.index] = edge.node.number;
     });
+
     setSlots(newSlots);
+    setIsLoading(false);
+    dismiss();
   }, [queryResult, account]);
 
   const setSlot = async (slot: number): Promise<boolean> => {
     if (!account) return false;
 
     try {
+      setIsLoading(true);
       const { transaction_hash } = await account.execute([
         {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
@@ -126,9 +120,16 @@ const Game = () => {
       ]);
 
       showTxn(transaction_hash);
+
+      try {
+        // catch any txn errors (nonce err, etc) and reset state
+        await account.waitForTransaction(transaction_hash);
+      } catch (e) {
+        showError(transaction_hash);
+        throw new Error("transaction error");
+      }
     } catch (e) {
-      console.error(e);
-      setDisableAll(false);
+      setIsLoading(false);
       return false;
     }
 
@@ -170,12 +171,12 @@ const Game = () => {
               {slots.slice(0, 10).map((number, index) => {
                 return (
                   <Slot
+                    key={index}
                     index={index}
                     number={number}
                     isOwner={isOwner}
-                    disableAll={disableAll}
+                    disableAll={isLoading}
                     onClick={async (slot) => {
-                      setDisableAll(true);
                       return await setSlot(slot);
                     }}
                   />
@@ -186,12 +187,12 @@ const Game = () => {
               {slots.slice(10, 20).map((number, index) => {
                 return (
                   <Slot
+                    key={index + 10}
                     index={index + 10}
                     number={number}
                     isOwner={isOwner}
-                    disableAll={disableAll}
+                    disableAll={isLoading}
                     onClick={async (slot) => {
-                      setDisableAll(true);
                       return await setSlot(slot);
                     }}
                   />
@@ -216,9 +217,7 @@ const Game = () => {
               <Text>
                 Game ID: <strong>{gameId}</strong>
               </Text>
-              <Text>
-                Number Range: {maxNum && <strong>1 - {maxNum}</strong>}
-              </Text>
+              <Text>Number Range: {numRange}</Text>
               <Text>
                 Remaining: <strong>{remaining}</strong>
               </Text>
@@ -275,7 +274,6 @@ const Slot = ({
             onClick={async () => {
               setLoading(true);
               const success = await onClick(index);
-
               if (!success) {
                 setLoading(false);
               }

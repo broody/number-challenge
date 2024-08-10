@@ -13,6 +13,7 @@ export const graphql = initGraphQLTada<{
     Int: number;
     String: string;
     felt252: string;
+    ContractAddress: string;
     u64: number;
     u32: number;
     u16: number;
