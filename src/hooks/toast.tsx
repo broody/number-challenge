@@ -2,8 +2,6 @@ import { Link, useToast as useChakraToast } from "@chakra-ui/react";
 import { formatAddress } from "../utils";
 import { useExplorer } from "@starknet-react/core";
 
-const AUTO_DISMISS_SEC = 10000;
-
 const useToast = () => {
   const toast = useChakraToast();
   const explorer = useExplorer();
@@ -16,9 +14,9 @@ const useToast = () => {
           <strong>{formatAddress(hash)}</strong>
         </Link>
       ),
-      duration: AUTO_DISMISS_SEC,
+      duration: null,
       isClosable: true,
-      position: "bottom-left",
+      position: "bottom-right",
     });
   };
 
@@ -30,9 +28,9 @@ const useToast = () => {
           <strong>{formatAddress(hash)}</strong>
         </Link>
       ),
-      duration: AUTO_DISMISS_SEC,
+      duration: null,
       isClosable: true,
-      position: "bottom-left",
+      position: "bottom-right",
       status: "error",
     });
   };
