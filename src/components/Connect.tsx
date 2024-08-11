@@ -1,10 +1,8 @@
 import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { formatAddress, removeZeros } from "../utils";
+import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { graphql } from "gql.tada";
-import { useSubscription } from "urql";
+import { useState } from "react";
 import {
   useAccount,
   useConnect,
@@ -12,15 +10,6 @@ import {
   useExplorer,
 } from "@starknet-react/core";
 import useToast from "../hooks/toast";
-
-const CreatedEvent = graphql(`
-  subscription Created($player: String) {
-    eventEmitted(keys: ["*", "*", $player]) {
-      keys
-      data
-    }
-  }
-`);
 
 const Connect = () => {
   const { connect, connectors } = useConnect();
@@ -30,24 +19,7 @@ const Connect = () => {
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
   const navigate = useNavigate();
-
   const connector = connectors[0];
-
-  const [createdEvent] = useSubscription({
-    query: CreatedEvent,
-    variables: {
-      player: removeZeros(account?.address || ""),
-    },
-  });
-
-  useEffect(() => {
-    const gameId = createdEvent.data?.eventEmitted?.keys?.[1];
-    if (!gameId) {
-      return;
-    }
-
-    navigate(`/${gameId}`);
-  }, [createdEvent]);
 
   const newGame = async () => {
     if (!account) return;
@@ -63,7 +35,19 @@ const Connect = () => {
       ]);
 
       showTxn(transaction_hash);
+
+      const receipt = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 500,
+      });
+
+      // Parses for game idea from `Created` event
+      if (receipt.isSuccess()) {
+        navigate(`/${receipt.events[1].keys[1]}`);
+        return;
+      }
     } catch (e) {
+      console.error(e);
+    } finally {
       setCreating(false);
     }
   };
