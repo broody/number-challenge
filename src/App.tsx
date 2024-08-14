@@ -10,7 +10,9 @@ import {
 import { Chain, sepolia } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
 import CartridgeConnector from "@cartridge/connector";
-import { shortString } from "starknet";
+
+const ETH_TOKEN_ADDRESS =
+  "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
 
 function rpc(_chain: Chain) {
   return {
@@ -30,9 +32,15 @@ const policies = [
 ];
 
 const options: ControllerOptions = {
-  paymaster: {
-    caller: shortString.encodeShortString("ANY_CALLER"),
-  },
+  // paymaster: {
+  //   caller: shortString.encodeShortString("ANY_CALLER")
+  // },
+  prefunds: [
+    {
+      address: ETH_TOKEN_ADDRESS,
+      min: "1000000000000000"
+    }
+  ]
 };
 
 const connectors = [

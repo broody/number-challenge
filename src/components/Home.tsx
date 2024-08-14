@@ -144,7 +144,7 @@ const Leaderboard = () => {
                       >
                         <Stack direction="column">
                           <Radio value="3">Slot</Radio>
-                          <Radio value="1">Sepolia</Radio>
+                          <Radio value="1">Sepolia (self-funded)</Radio>
                           <Radio value="2">Mainnet</Radio>
                         </Stack>
                       </RadioGroup>
