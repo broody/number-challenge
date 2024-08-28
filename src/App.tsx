@@ -30,13 +30,14 @@ const policies = [
 ];
 
 const options: ControllerOptions = {
+  policies,
   paymaster: {
     caller: shortString.encodeShortString("ANY_CALLER"),
   },
 };
 
 const connectors = [
-  new CartridgeConnector(policies, options) as never as Connector,
+  new CartridgeConnector(options) as never as Connector,
 ];
 
 function App() {
