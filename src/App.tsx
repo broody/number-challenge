@@ -8,30 +8,37 @@ import {
   jsonRpcProvider,
 } from "@starknet-react/core";
 import { Chain, mainnet } from "@starknet-react/chains";
+import { ControllerOptions } from "@cartridge/controller";
 import CartridgeConnector from "@cartridge/connector";
+import { shortString } from "starknet";
 
 function rpc(_chain: Chain) {
   return {
-    nodeUrl: import.meta.env.VITE_RPC_URL,
+    nodeUrl: "https://api.cartridge.gg/x/starknet/mainnet",
   };
 }
 
+const policies = [
+  {
+    target: import.meta.env.VITE_ACTIONS_CONTRACT,
+    method: "create_game",
+  },
+  {
+    target: import.meta.env.VITE_ACTIONS_CONTRACT,
+    method: "set_slot",
+  },
+];
+
+const options: ControllerOptions = {
+  policies,
+  paymaster: {
+    caller: shortString.encodeShortString("ANY_CALLER"),
+  },
+  rpc: "https://api.cartridge.gg/x/starknet/mainnet"
+};
+
 const connectors = [
-  new CartridgeConnector(
-    [
-      {
-        target: import.meta.env.VITE_ACTIONS_CONTRACT,
-        method: "create",
-      },
-      {
-        target: import.meta.env.VITE_ACTIONS_CONTRACT,
-        method: "set_slot",
-      },
-    ],
-    {
-      rpc: import.meta.env.VITE_RPC_URL,
-    },
-  ) as never as Connector,
+  new CartridgeConnector(options) as never as Connector,
 ];
 
 function App() {

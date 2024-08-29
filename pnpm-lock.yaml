@@ -11,6 +11,9 @@ importers:
       '@cartridge/connector':
         specifier: ^0.3.42
         version: 0.3.42(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)
+      '@cartridge/controller':
+        specifier: ^0.3.42
+        version: 0.3.42
       '@chakra-ui/icons':
         specifier: ^2.1.1
         version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react@18.2.0)
