@@ -11,7 +11,7 @@ website = "https://number-challenge.vercel.app"
 default = "nums"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
 account_address = ""
 private_key = ""
 world_address = "0x5e29c6454f630f2e25fdc0ceb3eba089152c44a6c8f41ac3dfa58aa499a8e1f"
