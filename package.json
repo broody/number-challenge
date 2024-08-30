@@ -11,8 +11,8 @@
     "format": "prettier ./src --write"
   },
   "dependencies": {
-    "@cartridge/controller": "^0.3.42",
-    "@cartridge/connector": "^0.3.42",
+    "@cartridge/controller": "^0.3.44",
+    "@cartridge/connector": "^0.3.44",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
