@@ -3,9 +3,9 @@ import Game from "./components/Game";
 import Home from "./components/Home";
 import {
   StarknetConfig,
-  Connector,
-  starkscan,
+  voyager,
   jsonRpcProvider,
+  Connector,
 } from "@starknet-react/core";
 import { Chain, mainnet } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
@@ -47,7 +47,7 @@ function App() {
       autoConnect
       chains={[mainnet]}
       connectors={connectors}
-      explorer={starkscan}
+      explorer={voyager}
       provider={jsonRpcProvider({ rpc })}
     >
       <Router>

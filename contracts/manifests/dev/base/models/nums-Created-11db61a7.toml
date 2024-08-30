@@ -1,0 +1,32 @@
+kind = "DojoModel"
+class_hash = "0x9d63a7eee4dda1d021c0f82b6524561779f7dc16b396fdbc6c859f3f8470ba"
+original_class_hash = "0x9d63a7eee4dda1d021c0f82b6524561779f7dc16b396fdbc6c859f3f8470ba"
+abi = "manifests/dev/base/abis/models/nums-Created-11db61a7.json"
+tag = "nums-Created"
+qualified_path = "nums::systems::actions::actions::created"
+manifest_name = "nums-Created-11db61a7"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[members]]
+name = "min_number"
+type = "u16"
+key = false

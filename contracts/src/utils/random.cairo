@@ -1,17 +1,18 @@
 use starknet::ContractAddress;
 use starknet::get_contract_address;
+use core::pedersen::pedersen;
 
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 #[derive(Copy, Drop, Serde)]
-struct Random {
-    world: IWorldDispatcher,
-    seed: felt252,
-    nonce: usize,
+pub struct Random {
+    pub world: IWorldDispatcher,
+    pub seed: felt252,
+    pub nonce: usize,
 }
 
 #[generate_trait]
-impl RandomImpl of RandomTrait {
+pub impl RandomImpl of RandomTrait {
     // one instance by contract, then passed by ref to sub fns
     fn new(world: IWorldDispatcher) -> Random {
         Random { world, seed: seed(get_contract_address()), nonce: 0 }
@@ -19,7 +20,7 @@ impl RandomImpl of RandomTrait {
 
     fn next_seed(ref self: Random) -> felt252 {
         self.nonce += 1;
-        self.seed = pedersen::pedersen(self.seed, self.nonce.into());
+        self.seed = pedersen(self.seed, self.nonce.into());
         self.seed
     }
 
@@ -31,7 +32,7 @@ impl RandomImpl of RandomTrait {
     fn felt(ref self: Random) -> felt252 {
         let tx_hash = starknet::get_tx_info().unbox().transaction_hash;
         let seed = self.next_seed();
-        pedersen::pedersen(tx_hash, seed)
+        pedersen(tx_hash, seed)
     }
 
     fn occurs(ref self: Random, likelihood: u8) -> bool {
@@ -49,7 +50,6 @@ impl RandomImpl of RandomTrait {
         +Into<T, u256>,
         +TryInto<u128, T>,
         +PartialOrd<T>,
-        +Zeroable<T>,
         +Copy<T>,
         +Drop<T>
     >(
@@ -57,9 +57,7 @@ impl RandomImpl of RandomTrait {
     ) -> T {
         let seed: u256 = self.next_seed().into();
 
-        if min >= max {
-            return Zeroable::zero();
-        };
+        assert(min < max, 'min must be less than max');
 
         let range: u128 = max.into() - min.into();
         let rand = (seed.low % range) + min.into();
@@ -68,5 +66,5 @@ impl RandomImpl of RandomTrait {
 }
 
 fn seed(salt: ContractAddress) -> felt252 {
-    pedersen::pedersen(starknet::get_tx_info().unbox().transaction_hash, salt.into())
+    pedersen(starknet::get_tx_info().unbox().transaction_hash, salt.into())
 }

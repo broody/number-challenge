@@ -1,13 +1,13 @@
 use starknet::ContractAddress;
 
-#[derive(Model, Drop, Serde)]
-#[dojo::event]
-struct Slot {
+#[derive(Drop, Serde)]
+#[dojo::model]
+pub struct Slot {
     #[key]
-    game_id: u32,
+    pub game_id: u32,
     #[key]
-    player: ContractAddress,
+    pub player: ContractAddress,
     #[key]
-    slot: u8,
-    number: u16,
+    pub index: u8,
+    pub number: u16,
 }

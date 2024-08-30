@@ -22,16 +22,15 @@ import {
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Connect from "./Connect";
-import { formatEther } from "viem";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
-    gameModels(
+    numsGameModels(
       order: { direction: ASC, field: REMAINING_SLOTS }
       limit: 10
       offset: $offset
@@ -48,24 +47,12 @@ const GamesQuery = graphql(`
   }
 `);
 
-const StatsQuery = graphql(`
-  query Stats {
-    transactions(limit: 5) {
-      totalCount
-      edges {
-        node {
-          maxFee
-        }
-      }
-    }
-  }
-`);
-
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
   const { account } = useAccount();
   const { colorMode } = useColorMode();
+
   const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
     variables: {
@@ -73,23 +60,9 @@ const Leaderboard = () => {
     },
   });
 
-  const [statsResult] = useQuery({
-    query: StatsQuery,
-  });
-
-  const totalResult = gameResult.data?.gameModels?.edges
-    ? gameResult.data.gameModels?.edges.length
+  const totalResult = gameResult.data?.numsGameModels?.edges
+    ? gameResult.data.numsGameModels?.edges.length
     : 0;
-
-  const avgMaxFee = useMemo(() => {
-    if (!statsResult.data?.transactions?.edges) return BigInt(0);
-
-    const fees = statsResult.data.transactions.edges.map((edge: any) =>
-      BigInt(edge.node.maxFee),
-    );
-    const sum = fees.reduce((a: bigint, b: bigint) => a + b, BigInt(0));
-    return sum / BigInt(fees.length);
-  }, [statsResult]);
 
   return (
     <>
@@ -108,7 +81,7 @@ const Leaderboard = () => {
                 <VStack spacing="30px" align="flex-start">
                   <Text>
                     Welcome to <strong>Number Challenge.</strong> A fully{" "}
-                    <strong>on-chain</strong> game built using{" "}
+                    <strong>onchain</strong> game built using{" "}
                     <Link href="https://www.dojoengine.org" isExternal>
                       [Dojo Engine]
                     </Link>{" "}
@@ -121,11 +94,13 @@ const Leaderboard = () => {
                   <Text>
                     The goal of the game is <strong>simple</strong> - given
                     randomly generated numbers, players must place each number
-                    in a <strong>slot</strong> in ascending order.
+                    in ascending order.
                   </Text>
+                  <Text>
+                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
+                    </Text>
                   <VStack w="full" align="flex-start">
                     <HStack>
-                      <Text>Chain: </Text>
                       <RadioGroup
                         defaultValue="2"
                         onChange={(network) => {
@@ -142,30 +117,19 @@ const Leaderboard = () => {
                           }
                         }}
                       >
-                        <Stack direction="row">
+                        <Stack direction="column">
                           <Radio value="3">
                             Slot
-                          </Radio>
-                          <Radio value="2">
-                            Mainnet
                           </Radio>
                           <Radio value="1">
                             Sepolia
                           </Radio>
+                          <Radio value="2">
+                            Mainnet
+                          </Radio>
                         </Stack>
                       </RadioGroup>
                     </HStack>
-                    <Text>
-                      Total Games: {gameResult.data?.gameModels?.totalCount}
-                    </Text>
-                    <Text>
-                      Total Transactions:{" "}
-                      {statsResult.data?.transactions?.totalCount}
-                    </Text>
-                    <Text>
-                      Avg Txn Max Fee:{" "}
-                      {parseFloat(formatEther(avgMaxFee)).toFixed(5)} ETH
-                    </Text>
                   </VStack>
                 </VStack>
                 <Connect />
@@ -183,7 +147,7 @@ const Leaderboard = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {gameResult.data?.gameModels?.edges?.map(
+                    {gameResult.data?.numsGameModels?.edges?.map(
                       (edge: any, index) => (
                         <Tr
                           key={edge.node.game_id}
@@ -197,7 +161,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                            addAddressPadding(edge.node.player)
+                              addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"

@@ -1,66 +1,53 @@
 import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { formatAddress, removeZeros } from "../utils";
+import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { graphql } from "gql.tada";
-import { useSubscription } from "urql";
+import { useState } from "react";
 import {
   useAccount,
   useConnect,
   useDisconnect,
   useExplorer,
 } from "@starknet-react/core";
-
-const CreatedEvent = graphql(`
-  subscription Created($player: String) {
-    eventEmitted(keys: ["*", $player]) {
-      keys
-      data
-    }
-  }
-`);
+import useToast from "../hooks/toast";
 
 const Connect = () => {
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, account } = useAccount();
+  const { showTxn } = useToast();
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
   const navigate = useNavigate();
-
   const connector = connectors[0];
-
-  const [createdEvent] = useSubscription({
-    query: CreatedEvent,
-    pause: !account,
-    variables: {
-      player: removeZeros(account?.address || ""),
-    },
-  });
-
-  useEffect(() => {
-    const gameId = createdEvent.data?.eventEmitted?.keys?.[0];
-    if (!gameId) {
-      return;
-    }
-
-    navigate(`/${gameId}`);
-  }, [createdEvent]);
 
   const newGame = async () => {
     if (!account) return;
 
     try {
       setCreating(true);
-      await account.execute([
+      const { transaction_hash } = await account.execute([
         {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
-          entrypoint: "create",
-          calldata: [],
+          entrypoint: "create_game",
+          calldata: [1],
         },
       ]);
+
+      showTxn(transaction_hash);
+
+      const receipt = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 500,
+      });
+
+      // Parses for game idea from `Created` event
+      if (receipt.isSuccess()) {
+        navigate(`/${receipt.events[1].keys[1]}`);
+        return;
+      }
     } catch (e) {
+      console.error(e);
+    } finally {
       setCreating(false);
     }
   };

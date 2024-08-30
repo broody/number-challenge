@@ -1,17 +1,26 @@
-mod systems {
-    mod actions;
+pub mod systems {
+    pub mod actions;
 }
 
-mod models {
-    mod game;
-    mod slot;
+pub mod models {
+    pub mod game;
+    pub mod slot;
+    pub mod name;
+    pub mod config;
+    pub mod jackpot;
 }
 
-mod utils {
-    mod random;
+pub mod interfaces {
+    pub mod token;
 }
 
-mod tests {
-    mod test_world;
+pub mod utils {
+    pub mod random;
+}
+
+pub mod tests {
+    pub mod test_world;
+    pub mod test_reward;
+    pub mod test_jackpot;
 }
 
