@@ -42,7 +42,12 @@ const Connect = () => {
 
       // Parses for game idea from `Created` event
       if (receipt.isSuccess()) {
-        navigate(`/${receipt.events[1].keys[1]}`);
+        const createdEvent = receipt.events.find(
+          //({ keys }) => keys[0] === hash.getSelector("Created"),
+          ({ keys }) => keys[0] === "0x11db61a792d4cf77b4eb15fbbb09fdd57607f317a5eed4ac066ea8b0750bbb",
+        );
+
+        navigate(`/${createdEvent?.keys[1]}`);
         return;
       }
     } catch (e) {
