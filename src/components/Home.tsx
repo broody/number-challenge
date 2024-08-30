@@ -22,12 +22,11 @@ import {
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Connect from "./Connect";
-import { formatEther } from "viem";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -48,19 +47,6 @@ const GamesQuery = graphql(`
   }
 `);
 
-const StatsQuery = graphql(`
-  query Stats {
-    transactions(limit: 5) {
-      totalCount
-      edges {
-        node {
-          maxFee
-        }
-      }
-    }
-  }
-`);
-
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
@@ -74,28 +60,9 @@ const Leaderboard = () => {
     },
   });
 
-  const [statsResult] = useQuery({
-    query: StatsQuery,
-  });
-
   const totalResult = gameResult.data?.numsGameModels?.edges
     ? gameResult.data.numsGameModels?.edges.length
     : 0;
-
-  const avgMaxFee = useMemo(() => {
-    if (!statsResult.data?.transactions?.edges) return BigInt(0);
-
-    const fees = statsResult.data.transactions.edges.map((edge: any) =>
-      BigInt(edge.node.maxFee),
-    );
-    
-    if (fees.length === 0) {
-      return BigInt(0);
-    }
-
-    const sum = fees.reduce((a: bigint, b: bigint) => a + b, BigInt(0));
-    return sum / BigInt(fees.length);
-  }, [statsResult]);
 
   return (
     <>
@@ -129,6 +96,9 @@ const Leaderboard = () => {
                     randomly generated numbers, players must place each number
                     in ascending order.
                   </Text>
+                  <Text>
+                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
+                    </Text>
                   <VStack w="full" align="flex-start">
                     <VStack>
                       <RadioGroup
@@ -154,17 +124,6 @@ const Leaderboard = () => {
                         </Stack>
                       </RadioGroup>
                     </VStack>
-                    <Text>
-                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
-                    </Text>
-                    <Text>
-                      Total Transactions:{" "}
-                      {statsResult.data?.transactions?.totalCount}
-                    </Text>
-                    <Text>
-                      Avg Txn Max Fee:{" "}
-                      {parseFloat(formatEther(avgMaxFee)).toFixed(6)} ETH
-                    </Text>
                   </VStack>
                 </VStack>
                 <Connect />
