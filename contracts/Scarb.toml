@@ -1,5 +1,5 @@
 [package]
-cairo-version = "=2.7.0-rc.3"
+cairo-version = "=2.7.0"
 name = "nums"
 version = "0.1.0"
 edition = "2024_07"
@@ -8,26 +8,6 @@ edition = "2024_07"
 sierra-replace-ids = true
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.3" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.8" }
 
 [[target.dojo]]
-
-[tool.dojo.world.namespace]
-default = "nums"
-
-[tool.dojo.env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
-# account_address = ""
-# private_key = ""
-# rpc_url = "http://localhost:5050"
-# account_address = "0x6162896d1d7ab204c7ccac6dd5f8e9e7c25ecd5ae4fcb4ad32e57786bb46e03"
-# private_key = "0x1800000000300000180000000000030000000000003006001800006600"
-world_address = "0x1cc6503beb238fa8c3c07dee65da825ab2bde8317689dd42c3dbba4379cb6ef" 
-
-[tool.dojo.world]
-name = "Nums"
-seed = "nums"
-description = "On chain version of the Number Challenge or Blind Number Challenge game."
-cover_uri = "file://assets/cover.png"
-icon_uri = "file://assets/icon.png"
-website = "https://number-challenge.vercel.app"

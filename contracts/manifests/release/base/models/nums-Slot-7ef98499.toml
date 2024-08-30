@@ -1,0 +1,27 @@
+kind = "DojoModel"
+class_hash = "0x7b7eae9dcff3e665a5591e0a77e932273957127353d7d2f5fb7324d015a7bb6"
+original_class_hash = "0x7b7eae9dcff3e665a5591e0a77e932273957127353d7d2f5fb7324d015a7bb6"
+abi = "manifests/release/base/abis/models/nums-Slot-7ef98499.json"
+tag = "nums-Slot"
+qualified_path = "nums::models::slot::slot"
+manifest_name = "nums-Slot-7ef98499"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "index"
+type = "u8"
+key = true
+
+[[members]]
+name = "number"
+type = "u16"
+key = false

@@ -1,8 +1,9 @@
 kind = "DojoModel"
-class_hash = "0x756bcc7b327444dbabe7f8bb71118bbceda7ad7693c8e49ecb2cc10f3801a86"
-original_class_hash = "0x756bcc7b327444dbabe7f8bb71118bbceda7ad7693c8e49ecb2cc10f3801a86"
+class_hash = "0x2ef2c4de37f887c65e206c4d2e53f63e0d9fb91190a6055d6899a586cbb9625"
+original_class_hash = "0x2ef2c4de37f887c65e206c4d2e53f63e0d9fb91190a6055d6899a586cbb9625"
 abi = "manifests/dev/base/abis/models/nums-Rewarded-6a8b1a15.json"
 tag = "nums-Rewarded"
+qualified_path = "nums::systems::actions::actions::rewarded"
 manifest_name = "nums-Rewarded-6a8b1a15"
 
 [[members]]

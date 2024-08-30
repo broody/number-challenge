@@ -1,8 +1,9 @@
 kind = "DojoModel"
-class_hash = "0x3e2f56d1eed40adc4a259d3ef972fa5384e3f117c59fea5c09193f6f2887f04"
-original_class_hash = "0x3e2f56d1eed40adc4a259d3ef972fa5384e3f117c59fea5c09193f6f2887f04"
+class_hash = "0x9d63a7eee4dda1d021c0f82b6524561779f7dc16b396fdbc6c859f3f8470ba"
+original_class_hash = "0x9d63a7eee4dda1d021c0f82b6524561779f7dc16b396fdbc6c859f3f8470ba"
 abi = "manifests/dev/base/abis/models/nums-Created-11db61a7.json"
 tag = "nums-Created"
+qualified_path = "nums::systems::actions::actions::created"
 manifest_name = "nums-Created-11db61a7"
 
 [[members]]

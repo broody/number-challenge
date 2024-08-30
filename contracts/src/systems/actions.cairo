@@ -81,7 +81,7 @@ pub mod actions {
     impl ActionsImpl of IActions<ContractState> {
         fn set_config(ref world: IWorldDispatcher, config: Config) {
             let owner = get_caller_address();
-            assert!(world.is_owner(owner, WORLD), "Unauthorized owner");
+            assert!(world.is_owner(WORLD, owner), "Unauthorized owner");
             assert!(config.world_resource == WORLD, "Invalid config state");
 
             set!(world, (config));

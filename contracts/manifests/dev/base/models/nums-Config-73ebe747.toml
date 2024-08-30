@@ -1,8 +1,9 @@
 kind = "DojoModel"
-class_hash = "0x82c03d71d17d5baefafa60369e7799d4effa35843e4616d75a72efae5bf34d"
-original_class_hash = "0x82c03d71d17d5baefafa60369e7799d4effa35843e4616d75a72efae5bf34d"
+class_hash = "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0"
+original_class_hash = "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0"
 abi = "manifests/dev/base/abis/models/nums-Config-73ebe747.json"
 tag = "nums-Config"
+qualified_path = "nums::models::config::config"
 manifest_name = "nums-Config-73ebe747"
 
 [[members]]

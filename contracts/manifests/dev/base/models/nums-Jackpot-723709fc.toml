@@ -1,8 +1,9 @@
 kind = "DojoModel"
-class_hash = "0x330dd35108e8231b4d16712308577ad63d310bb3fe7bf0faf9bdac521e7ad2a"
-original_class_hash = "0x330dd35108e8231b4d16712308577ad63d310bb3fe7bf0faf9bdac521e7ad2a"
+class_hash = "0x73348bd3a0316593c2a6f98cd9ade23b7ea1f8c1de3ea0c8fc465f7c665b566"
+original_class_hash = "0x73348bd3a0316593c2a6f98cd9ade23b7ea1f8c1de3ea0c8fc465f7c665b566"
 abi = "manifests/dev/base/abis/models/nums-Jackpot-723709fc.json"
 tag = "nums-Jackpot"
+qualified_path = "nums::models::jackpot::jackpot"
 manifest_name = "nums-Jackpot-723709fc"
 
 [[members]]

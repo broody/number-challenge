@@ -88,6 +88,11 @@ const Leaderboard = () => {
     const fees = statsResult.data.transactions.edges.map((edge: any) =>
       BigInt(edge.node.maxFee),
     );
+    
+    if (fees.length === 0) {
+      return BigInt(0);
+    }
+
     const sum = fees.reduce((a: bigint, b: bigint) => a + b, BigInt(0));
     return sum / BigInt(fees.length);
   }, [statsResult]);
