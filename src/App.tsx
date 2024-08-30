@@ -32,7 +32,7 @@ const policies = [
 const options: ControllerOptions = {
   policies,
   paymaster: {
-    caller: shortString.encodeShortString("ANY_CALLER"),
+   caller: shortString.encodeShortString("ANY_CALLER"),
   },
 };
 
