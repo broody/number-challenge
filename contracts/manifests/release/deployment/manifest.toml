@@ -4,13 +4,13 @@ class_hash = "0xa349b743d361ce4567361475a89b84a386bb383448c6926954e5fe0b525597"
 original_class_hash = "0xa349b743d361ce4567361475a89b84a386bb383448c6926954e5fe0b525597"
 abi = "manifests/release/deployment/abis/dojo-world.json"
 address = "0x5e29c6454f630f2e25fdc0ceb3eba089152c44a6c8f41ac3dfa58aa499a8e1f"
-transaction_hash = "0x228efb72171e4a6bba9a644b19d9c03813fb128639e3b4df714b9aa4e6aae04"
+transaction_hash = "0x5aaa75f06eeacec20cde7457da3b8cf3f20531bb0eb0d7f43c86bb61227421d"
 seed = "nums"
 manifest_name = "dojo-world"
 
 [world.metadata]
 profile_name = "release"
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
 
 [base]
 kind = "Class"
