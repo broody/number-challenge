@@ -7,14 +7,14 @@ import {
   jsonRpcProvider,
   Connector,
 } from "@starknet-react/core";
-import { Chain, sepolia } from "@starknet-react/chains";
+import { Chain, mainnet } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
 import CartridgeConnector from "@cartridge/connector";
 import { shortString } from "starknet";
 
 function rpc(_chain: Chain) {
   return {
-    nodeUrl: "https://api.cartridge.gg/x/starknet/sepolia",
+    nodeUrl: "https://api.cartridge.gg/x/starknet/mainnet",
   };
 }
 
@@ -34,6 +34,7 @@ const options: ControllerOptions = {
   paymaster: {
     caller: shortString.encodeShortString("ANY_CALLER"),
   },
+  rpc: "https://api.cartridge.gg/x/starknet/mainnet"
 };
 
 const connectors = [
@@ -44,7 +45,7 @@ function App() {
   return (
     <StarknetConfig
       autoConnect
-      chains={[sepolia]}
+      chains={[mainnet]}
       connectors={connectors}
       explorer={voyager}
       provider={jsonRpcProvider({ rpc })}

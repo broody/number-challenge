@@ -100,9 +100,9 @@ const Leaderboard = () => {
                       Total Games: {gameResult.data?.numsGameModels?.totalCount}
                     </Text>
                   <VStack w="full" align="flex-start">
-                    <VStack>
+                    <HStack>
                       <RadioGroup
-                        defaultValue="1"
+                        defaultValue="2"
                         onChange={(network) => {
                           switch (network) {
                             case "1":
@@ -118,12 +118,18 @@ const Leaderboard = () => {
                         }}
                       >
                         <Stack direction="column">
-                          <Radio value="3">Slot</Radio>
-                          <Radio value="1">Sepolia</Radio>
-                          <Radio value="2">Mainnet</Radio>
+                          <Radio value="3">
+                            Slot
+                          </Radio>
+                          <Radio value="1">
+                            Sepolia
+                          </Radio>
+                          <Radio value="2">
+                            Mainnet
+                          </Radio>
                         </Stack>
                       </RadioGroup>
-                    </VStack>
+                    </HStack>
                   </VStack>
                 </VStack>
                 <Connect />

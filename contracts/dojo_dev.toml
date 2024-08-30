@@ -12,6 +12,6 @@ default = "nums"
 
 [env]
 rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
-account_address = ""
-private_key = ""
+account_address = "0x00dBD8a366Db7Af2aBC9AA5B72C9E357d0Ff83dfba2FE5B63CC7FfB5Cd0Df2Cd"
+private_key = "0x01404f7a7ca1e707726a9c283e3471f98a7767a30b4cbc1a3257971e1de35c60"
 world_address = "0x5e29c6454f630f2e25fdc0ceb3eba089152c44a6c8f41ac3dfa58aa499a8e1f"
