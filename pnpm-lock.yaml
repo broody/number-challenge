@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@cartridge/connector':
-        specifier: ^0.3.42
-        version: 0.3.42(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)
+        specifier: ^0.3.43
+        version: 0.3.43(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)
       '@cartridge/controller':
-        specifier: ^0.3.42
-        version: 0.3.42
+        specifier: ^0.3.43
+        version: 0.3.43
       '@chakra-ui/icons':
         specifier: ^2.1.1
         version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react@18.2.0)
@@ -234,11 +234,11 @@ packages:
     resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
     engines: {node: '>=6.9.0'}
 
-  '@cartridge/connector@0.3.42':
-    resolution: {integrity: sha512-d39UHxqiDqRCOp12SzrtCjMfquiY1w3T1VhY8LxPXO21aD7I5iER8TG0u/20d+1ZS7WeWRvb9nL/Tn7lJdOs+w==}
+  '@cartridge/connector@0.3.43':
+    resolution: {integrity: sha512-RU8IxFu2NG3fta0zddT/+82Bv1MyYQ92Z1XDwvj7WRCXGV2MdCwu8+etou7uCdwFkkZ3kiT1EB41ky6umVaOgg==}
 
-  '@cartridge/controller@0.3.42':
-    resolution: {integrity: sha512-0khdrqJaxLhkbK5pMX1qzprjx2voDvObh6uVLc2yrL21dZ+48p0EmR2NrYIhUYxKF0LfBu/VsnA24CNy4F3F4Q==}
+  '@cartridge/controller@0.3.43':
+    resolution: {integrity: sha512-naR4FiJVFU0BSFgOSVq7ttaGlQCA/cjGIV96b4SRuodTmkH0ViEwutsSX3zqWEyYP56Yn1xXWsEFf5ENa9X9eQ==}
 
   '@cartridge/penpal@6.2.3':
     resolution: {integrity: sha512-K8h9VqBfFPXcAFQNnvgBnejF/dp7249pS4jXu3NhNYR6JqMQxtcrDqfnPmJvbF4ECEBs+8Z2UiwlRQiKt5nNsg==}
@@ -2535,9 +2535,9 @@ snapshots:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  '@cartridge/connector@0.3.42(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)':
+  '@cartridge/connector@0.3.43(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)':
     dependencies:
-      '@cartridge/controller': 0.3.42
+      '@cartridge/controller': 0.3.43
       '@starknet-react/core': 2.6.0(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.11.0)
       starknet: 6.11.0
       typescript: 5.5.4
@@ -2546,7 +2546,7 @@ snapshots:
       - get-starknet-core
       - react
 
-  '@cartridge/controller@0.3.42':
+  '@cartridge/controller@0.3.43':
     dependencies:
       '@cartridge/penpal': 6.2.3
       base64url: 3.0.1
