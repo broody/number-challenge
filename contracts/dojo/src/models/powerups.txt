@@ -1,0 +1,10 @@
+* Reroll - Discard current next number and get a new one
+* Boost High/Low - On the next turn, next number is guaranteed to be in upper/lower half of slots
+* Erase - Remove any number on the board
+* Shift - Shift any existing slot up or down if there is room
+* Foresight - Get the number after the next
+* Double up - Multiple current number by 2
+* Halve - Divde the current number by 2, rounded up
+* Mirror - Reflect the current number to its complementary value (e.g., 10 becomes 990, 300 becomes 700)
+* Override - Place a number in a slot even if it breaks the ascending order, just this once
+* Wildcard - Change the current number to a wildcard

@@ -1,0 +1,3 @@
+nums erc20
+class_hash:
+address:

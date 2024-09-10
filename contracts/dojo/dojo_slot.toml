@@ -1,0 +1,17 @@
+[world]
+name = "Nums"
+seed = "nums"
+description = "On chain version of the Number Challenge or Blind Number Challenge game."
+cover_uri = "file://assets/cover.png"
+icon_uri = "file://assets/icon.png"
+website = "https://nums.gg"
+
+
+[namespace]
+default = "nums"
+
+[env]
+rpc_url = "https://api.cartridge.gg/x/nums-slot/katana"
+account_address = "0x7175e40c8c655ac4ce8938cab49e1723c51e094faf8949a7d99f2aa621f3910"
+private_key = "0x47cc3fd65241ae1044493dbce4bd0e4b28a01733b367342ff480b85fedbfbc5"
+world_address = "0x50c46c6f69ea9f12b24fcdd1569a584ae8893db0c70ea7884b605384da78ebc"
