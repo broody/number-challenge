@@ -15,18 +15,16 @@ import {
   SimpleGrid,
   Container,
   Link,
-  RadioGroup,
-  Stack,
-  Radio,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Connect from "./Connect";
+import { Chain, getCurrentCHain, onClickChain } from "../network";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -97,34 +95,9 @@ const Leaderboard = () => {
                     in ascending order.
                   </Text>
                   <Text>
-                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
-                    </Text>
-                  <VStack w="full" align="flex-start">
-                    <VStack>
-                      <RadioGroup
-                        defaultValue="1"
-                        onChange={(network) => {
-                          switch (network) {
-                            case "1":
-                              window.location.href = "https://nums.gg";
-                              break;
-                            case "2":
-                              window.location.href = "https://mainnet.nums.gg";
-                              break;
-                            case "3":
-                              window.location.href = "https://slot.nums.gg";
-                              break;
-                          }
-                        }}
-                      >
-                        <Stack direction="column">
-                          <Radio value="3">Slot</Radio>
-                          <Radio value="1">Sepolia</Radio>
-                          <Radio value="2">Mainnet</Radio>
-                        </Stack>
-                      </RadioGroup>
-                    </VStack>
-                  </VStack>
+                    Total Games: {gameResult.data?.numsGameModels?.totalCount}
+                  </Text>
+                  {NetworkSelection()}
                 </VStack>
                 <Connect />
               </VStack>
@@ -155,7 +128,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                              addAddressPadding(edge.node.player)
+                            addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"
@@ -201,6 +174,44 @@ const Leaderboard = () => {
         </VStack>
       </Container>
     </>
+  );
+};
+
+const NetworkSelection = () => {
+  const [selectedChain, setSelectedChain] = useState<Chain>();
+  useEffect(() => {
+    const chain = getCurrentCHain();
+    if (chain === "mainnet" || chain === "sepolia") {
+      setSelectedChain(chain);
+      return;
+    }
+
+    setSelectedChain("slot");
+  }, []);
+
+  const chains = [
+    { name: "Mainnet", id: "mainnet" },
+    { name: "Sepolia", id: "sepolia" },
+    { name: "Slot", id: "slot" },
+  ];
+
+  return (
+    <VStack w="full" align="flex-start">
+      {chains.map((chain) => (
+        <Text
+          key={chain.id}
+          cursor={selectedChain !== chain.id ? "pointer" : "default"}
+          color={selectedChain === chain.id ? "white" : "gray.500"}
+          fontWeight={selectedChain === chain.id ? "bold" : "normal"}
+          _hover={{
+            color: "white",
+          }}
+          onClick={() => onClickChain(chain.id as Chain)}
+        >
+          {chain.name} {selectedChain === chain.id && "<<<"}
+        </Text>
+      ))}
+    </VStack>
   );
 };
 

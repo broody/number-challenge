@@ -11,13 +11,14 @@ import {
 import { createClient as createWSClient } from "graphql-ws";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme/index.ts";
+import { getGraphqlUrl } from "./network.ts";
 
 const wsClient = createWSClient({
-  url: import.meta.env.VITE_GRAPHQL_WS_URL,
+  url: getGraphqlUrl().wsUrl,
 });
 
 const client = new Client({
-  url: import.meta.env.VITE_GRAPHQL_URL,
+  url: getGraphqlUrl().url,
   exchanges: [
     cacheExchange,
     fetchExchange,

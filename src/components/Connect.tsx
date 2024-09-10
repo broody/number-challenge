@@ -1,5 +1,4 @@
 import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -44,7 +43,9 @@ const Connect = () => {
       if (receipt.isSuccess()) {
         const createdEvent = receipt.events.find(
           //({ keys }) => keys[0] === hash.getSelector("Created"),
-          ({ keys }) => keys[0] === "0x11db61a792d4cf77b4eb15fbbb09fdd57607f317a5eed4ac066ea8b0750bbb",
+          ({ keys }) =>
+            keys[0] ===
+            "0x11db61a792d4cf77b4eb15fbbb09fdd57607f317a5eed4ac066ea8b0750bbb",
         );
 
         navigate(`/${createdEvent?.keys[1]}`);
@@ -82,7 +83,6 @@ const Connect = () => {
           </Link>
         </HStack>
         <HStack spacing="20px">
-          <ArrowRightIcon />
           {address ? (
             <Button isLoading={creating} onClick={newGame}>
               Create Game
@@ -96,8 +96,6 @@ const Connect = () => {
               Connect
             </Button>
           )}
-
-          <ArrowLeftIcon />
         </HStack>
       </VStack>
     </>

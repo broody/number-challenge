@@ -1,0 +1,67 @@
+kind = "DojoModel"
+class_hash = "0x66caa397edfd21198adaffacd4276f6a277b76eb59990cc1fe8d6fc6dba7eb5"
+original_class_hash = "0x66caa397edfd21198adaffacd4276f6a277b76eb59990cc1fe8d6fc6dba7eb5"
+abi = "manifests/sepolia/base/abis/models/nums-Jackpot-723709fc.json"
+tag = "nums-Jackpot"
+qualified_path = "nums::models::jackpot::jackpot"
+manifest_name = "nums-Jackpot-723709fc"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "threshold_offset"
+type = "u8"
+key = false
+
+[[members]]
+name = "winner"
+type = "Option<ContractAddress>"
+key = false
+
+[[members]]
+name = "token_type"
+type = "JackpotType"
+key = false
+
+[[members]]
+name = "token_address"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "token_total"
+type = "u256"
+key = false
+
+[[members]]
+name = "token_id"
+type = "Option<u256>"
+key = false
+
+[[members]]
+name = "fee"
+type = "u256"
+key = false
+
+[[members]]
+name = "fee_address"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "fee_total"
+type = "u256"
+key = false
+
+[[members]]
+name = "fee_recipient"
+type = "Option<ContractAddress>"
+key = false
+
+[[members]]
+name = "enable_powerups"
+type = "bool"
+key = false

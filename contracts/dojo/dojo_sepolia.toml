@@ -1,0 +1,16 @@
+[world]
+name = "Nums"
+seed = "nums"
+description = "On chain version of the Number Challenge or Blind Number Challenge game."
+cover_uri = "file://assets/cover.png"
+icon_uri = "file://assets/icon.png"
+website = "https://nums.gg"
+
+
+[namespace]
+default = "nums"
+
+[env]
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+account_address = "0x054f2b25070d70d49f1c1f7c10Ef2639889fDAc15894D3FBa1a03caF5603eCA3"
+private_key = "0x05eda7c8814edaba3a4773261dce972b95972cfc52053b37e7cc59120d31052d"

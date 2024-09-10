@@ -84,7 +84,9 @@ const Game = () => {
       return;
     }
 
-    setIsOwner(account && gamesModel.player === removeZeros(account.address) || false)
+    setIsOwner(
+      (account && gamesModel.player === removeZeros(account.address)) || false,
+    );
 
     // update if game progressed
     if (slotsEdges.length === gamesModel.max_slots! - remaining) {

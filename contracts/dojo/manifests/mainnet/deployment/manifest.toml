@@ -1,0 +1,341 @@
+[world]
+kind = "WorldContract"
+class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
+original_class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
+abi = "manifests/mainnet/deployment/abis/dojo-world.json"
+address = "0x50c46c6f69ea9f12b24fcdd1569a584ae8893db0c70ea7884b605384da78ebc"
+transaction_hash = "0x52e8c8a5547f99c65bff945602215db19197703f7bce69ba7053ad47ff1b31c"
+seed = "nums"
+manifest_name = "dojo-world"
+
+[world.metadata]
+profile_name = "mainnet"
+rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
+
+[base]
+kind = "Class"
+class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
+original_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
+abi = "manifests/mainnet/deployment/abis/dojo-base.json"
+tag = "dojo-base"
+manifest_name = "dojo-base"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x678847cc2d1d5c13d61ac37804ac60a361909d76d572f8536f6dbb727605581"
+class_hash = "0x6eb9011115364ecb5ded330e3da72a04b7de7900a4e7cc5d8d1b1f270102a98"
+original_class_hash = "0x6eb9011115364ecb5ded330e3da72a04b7de7900a4e7cc5d8d1b1f270102a98"
+base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
+abi = "manifests/mainnet/deployment/abis/contracts/nums-actions-2017c0bd.json"
+reads = []
+writes = []
+init_calldata = []
+tag = "nums-actions"
+systems = [
+    "set_config",
+    "set_name",
+    "claim_jackpot",
+]
+manifest_name = "nums-actions-2017c0bd"
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0"
+original_class_hash = "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0"
+abi = "manifests/mainnet/deployment/abis/models/nums-Config-73ebe747.json"
+tag = "nums-Config"
+qualified_path = "nums::models::config::config"
+manifest_name = "nums-Config-73ebe747"
+
+[[models.members]]
+name = "world_resource"
+type = "felt252"
+key = true
+
+[[models.members]]
+name = "game"
+type = "Option<GameConfig>"
+key = false
+
+[[models.members]]
+name = "reward"
+type = "Option<SlotReward>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x50deef93ee840fc7362b4da5eebcbb0264de8aaf7c922dded927cfcdeb9b1b"
+original_class_hash = "0x50deef93ee840fc7362b4da5eebcbb0264de8aaf7c922dded927cfcdeb9b1b"
+abi = "manifests/mainnet/deployment/abis/models/nums-Created-11db61a7.json"
+tag = "nums-Created"
+qualified_path = "nums::systems::actions::actions::created"
+manifest_name = "nums-Created-11db61a7"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "min_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "jackpot_id"
+type = "Option<u32>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x5e9c0224590a2780e65b2e38f2a592fdbb7cccf0d407462884df6da0dd87a6b"
+original_class_hash = "0x5e9c0224590a2780e65b2e38f2a592fdbb7cccf0d407462884df6da0dd87a6b"
+abi = "manifests/mainnet/deployment/abis/models/nums-Game-468c6d9d.json"
+tag = "nums-Game"
+qualified_path = "nums::models::game::game"
+manifest_name = "nums-Game-468c6d9d"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "min_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "remaining_slots"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "next_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "jackpot_id"
+type = "Option<u32>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x56ac3e144b43fae8775fd31f44c1714f816cbbf8af4fa0a9771cc0b4a752782"
+original_class_hash = "0x56ac3e144b43fae8775fd31f44c1714f816cbbf8af4fa0a9771cc0b4a752782"
+abi = "manifests/mainnet/deployment/abis/models/nums-Inserted-68a8cf4a.json"
+tag = "nums-Inserted"
+qualified_path = "nums::systems::actions::actions::inserted"
+manifest_name = "nums-Inserted-68a8cf4a"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "index"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "next_number"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "remaining_slots"
+type = "u8"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x66caa397edfd21198adaffacd4276f6a277b76eb59990cc1fe8d6fc6dba7eb5"
+original_class_hash = "0x66caa397edfd21198adaffacd4276f6a277b76eb59990cc1fe8d6fc6dba7eb5"
+abi = "manifests/mainnet/deployment/abis/models/nums-Jackpot-723709fc.json"
+tag = "nums-Jackpot"
+qualified_path = "nums::models::jackpot::jackpot"
+manifest_name = "nums-Jackpot-723709fc"
+
+[[models.members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "threshold_offset"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "winner"
+type = "Option<ContractAddress>"
+key = false
+
+[[models.members]]
+name = "token_type"
+type = "JackpotType"
+key = false
+
+[[models.members]]
+name = "token_address"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "token_total"
+type = "u256"
+key = false
+
+[[models.members]]
+name = "token_id"
+type = "Option<u256>"
+key = false
+
+[[models.members]]
+name = "fee"
+type = "u256"
+key = false
+
+[[models.members]]
+name = "fee_address"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "fee_total"
+type = "u256"
+key = false
+
+[[models.members]]
+name = "fee_recipient"
+type = "Option<ContractAddress>"
+key = false
+
+[[models.members]]
+name = "enable_powerups"
+type = "bool"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x20a00608ef3028157b51b05a51526fd3c3888026f91073f9b1f7dc01690dfc1"
+original_class_hash = "0x20a00608ef3028157b51b05a51526fd3c3888026f91073f9b1f7dc01690dfc1"
+abi = "manifests/mainnet/deployment/abis/models/nums-Name-3d781391.json"
+tag = "nums-Name"
+qualified_path = "nums::models::name::name"
+manifest_name = "nums-Name-3d781391"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "name"
+type = "felt252"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x2ef2c4de37f887c65e206c4d2e53f63e0d9fb91190a6055d6899a586cbb9625"
+original_class_hash = "0x2ef2c4de37f887c65e206c4d2e53f63e0d9fb91190a6055d6899a586cbb9625"
+abi = "manifests/mainnet/deployment/abis/models/nums-Rewarded-6a8b1a15.json"
+tag = "nums-Rewarded"
+qualified_path = "nums::systems::actions::actions::rewarded"
+manifest_name = "nums-Rewarded-6a8b1a15"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "token"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "amount"
+type = "u256"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x7b7eae9dcff3e665a5591e0a77e932273957127353d7d2f5fb7324d015a7bb6"
+original_class_hash = "0x7b7eae9dcff3e665a5591e0a77e932273957127353d7d2f5fb7324d015a7bb6"
+abi = "manifests/mainnet/deployment/abis/models/nums-Slot-7ef98499.json"
+tag = "nums-Slot"
+qualified_path = "nums::models::slot::slot"
+manifest_name = "nums-Slot-7ef98499"
+
+[[models.members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "index"
+type = "u8"
+key = true
+
+[[models.members]]
+name = "number"
+type = "u16"
+key = false
