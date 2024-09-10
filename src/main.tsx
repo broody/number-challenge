@@ -12,12 +12,41 @@ import { createClient as createWSClient } from "graphql-ws";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme/index.ts";
 
+type GraphqlUrl = {
+  url: string;
+  wsUrl: string;
+}
+
+const getGraphqlUrl = (): GraphqlUrl => {
+  const hostname = window.location.hostname;
+  if (import.meta.env.PROD) {
+    if (hostname.startsWith('mainnet.')) {
+      return {
+        url: import.meta.env.VITE_MAINNET_GRAPHQL_URL,
+        wsUrl: import.meta.env.VITE_MAINNET_GRAPHQL_WS_URL,
+      }
+    }
+
+    if (hostname.startsWith('slot.')) {
+      return {
+        url: import.meta.env.VITE_SLOT_GRAPHQL_URL,
+        wsUrl: import.meta.env.VITE_SLOT_GRAPHQL_WS_URL,
+      }
+    }
+  }
+
+  return {
+    url: import.meta.env.VITE_SEPOLIA_GRAPHQL_URL,
+    wsUrl: import.meta.env.VITE_SEPOLIA_GRAPHQL_WS_URL,
+  }
+}
+
 const wsClient = createWSClient({
-  url: import.meta.env.VITE_GRAPHQL_WS_URL,
+  url: getGraphqlUrl().wsUrl,
 });
 
 const client = new Client({
-  url: import.meta.env.VITE_GRAPHQL_URL,
+  url: getGraphqlUrl().url,
   exchanges: [
     cacheExchange,
     fetchExchange,

@@ -1,0 +1,20 @@
+[package]
+cairo-version = "=2.7.0"
+name = "nums"
+version = "0.1.0"
+edition = "2024_07"
+
+[cairo]
+sierra-replace-ids = true
+
+[dependencies]
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.12" }
+
+[[target.dojo]]
+
+[tool.fmt]
+sort-module-level-items = true
+
+[profile.slot]
+[profile.mainnet]
+[profile.sepolia]
