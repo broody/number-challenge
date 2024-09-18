@@ -10,7 +10,6 @@ import {
 import { Chain, sepolia } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
 import CartridgeConnector from "@cartridge/connector";
-import { shortString } from "starknet";
 
 function rpc(_chain: Chain) {
   return {
@@ -18,22 +17,22 @@ function rpc(_chain: Chain) {
   };
 }
 
-const policies = [
-  {
-    target: import.meta.env.VITE_ACTIONS_CONTRACT,
-    method: "create_game",
-  },
-  {
-    target: import.meta.env.VITE_ACTIONS_CONTRACT,
-    method: "set_slot",
-  },
-];
+// const policies = [
+//   {
+//     target: import.meta.env.VITE_ACTIONS_CONTRACT,
+//     method: "create_game",
+//   },
+//   {
+//     target: import.meta.env.VITE_ACTIONS_CONTRACT,
+//     method: "set_slot",
+//   },
+// ];
 
 const options: ControllerOptions = {
-  policies,
-  paymaster: {
-   caller: shortString.encodeShortString("ANY_CALLER"),
-  },
+  //policies,
+  // paymaster: {
+  //  caller: shortString.encodeShortString("ANY_CALLER"),
+  // },
 };
 
 const connectors = [
