@@ -2,7 +2,7 @@ import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   useAccount,
   useConnect,
@@ -20,6 +20,8 @@ const Connect = () => {
   const explorer = useExplorer();
   const navigate = useNavigate();
   const connector = connectors[0];
+
+  const [isDelegating, setIsDelegating] = useState<boolean>(false);
 
   const newGame = async () => {
     if (!account) return;
@@ -56,6 +58,23 @@ const Connect = () => {
       setCreating(false);
     }
   };
+
+  const setDelegate = useCallback(async () => {
+    if (!account) return;
+    setIsDelegating(true);
+    const { transaction_hash } = await account.execute([
+      {
+        contractAddress: account.address,
+        entrypoint: "set_delegate_account",
+        calldata: [
+          "0xdeadbeef"
+        ],
+      },
+    ]);
+
+    showTxn(transaction_hash);
+
+  }, [account]);
 
   return (
     <>
@@ -96,7 +115,9 @@ const Connect = () => {
               Connect
             </Button>
           )}
-
+          <Button isLoading={isDelegating} onClick={setDelegate}>
+            Set Delegate
+          </Button>
           <ArrowLeftIcon />
         </HStack>
       </VStack>
