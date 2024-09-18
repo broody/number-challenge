@@ -34,12 +34,10 @@ const options: ControllerOptions = {
   // paymaster: {
   //   caller: shortString.encodeShortString("ANY_CALLER"),
   // },
-  rpc: "https://api.cartridge.gg/x/starknet/mainnet"
+  rpc: "https://api.cartridge.gg/x/starknet/mainnet",
 };
 
-const connectors = [
-  new CartridgeConnector(options) as never as Connector,
-];
+const connectors = [new CartridgeConnector(options) as never as Connector];
 
 function App() {
   return (

@@ -2,7 +2,7 @@ import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
   useAccount,
   useConnect,
@@ -10,18 +10,17 @@ import {
   useExplorer,
 } from "@starknet-react/core";
 import useToast from "../hooks/toast";
+import CartridgeConnector from "@cartridge/connector";
 
 const Connect = () => {
-  const { connect, connectors } = useConnect();
+  const { connect } = useConnect();
   const { disconnect } = useDisconnect();
-  const { address, account } = useAccount();
+  const { address, account, connector } = useAccount();
   const { showTxn } = useToast();
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
   const navigate = useNavigate();
-  const connector = connectors[0];
-
-  const [isDelegating, setIsDelegating] = useState<boolean>(false);
+  const cartridgeConnector = connector as unknown as CartridgeConnector;
 
   const newGame = async () => {
     if (!account) return;
@@ -46,7 +45,9 @@ const Connect = () => {
       if (receipt.isSuccess()) {
         const createdEvent = receipt.events.find(
           //({ keys }) => keys[0] === hash.getSelector("Created"),
-          ({ keys }) => keys[0] === "0x11db61a792d4cf77b4eb15fbbb09fdd57607f317a5eed4ac066ea8b0750bbb",
+          ({ keys }) =>
+            keys[0] ===
+            "0x11db61a792d4cf77b4eb15fbbb09fdd57607f317a5eed4ac066ea8b0750bbb",
         );
 
         navigate(`/${createdEvent?.keys[1]}`);
@@ -58,23 +59,6 @@ const Connect = () => {
       setCreating(false);
     }
   };
-
-  const setDelegate = useCallback(async () => {
-    if (!account) return;
-    setIsDelegating(true);
-    const { transaction_hash } = await account.execute([
-      {
-        contractAddress: account.address,
-        entrypoint: "set_delegate_account",
-        calldata: [
-          "0xdeadbeef"
-        ],
-      },
-    ]);
-
-    showTxn(transaction_hash);
-
-  }, [account]);
 
   return (
     <>
@@ -115,8 +99,8 @@ const Connect = () => {
               Connect
             </Button>
           )}
-          <Button isLoading={isDelegating} onClick={setDelegate}>
-            Set Delegate
+          <Button>
+            <Button onClick={() => cartridgeConnector.openMenu()}>Menu</Button>
           </Button>
           <ArrowLeftIcon />
         </HStack>

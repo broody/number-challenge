@@ -97,8 +97,8 @@ const Leaderboard = () => {
                     in ascending order.
                   </Text>
                   <Text>
-                      Total Games: {gameResult.data?.numsGameModels?.totalCount}
-                    </Text>
+                    Total Games: {gameResult.data?.numsGameModels?.totalCount}
+                  </Text>
                   <VStack w="full" align="flex-start">
                     <HStack>
                       <RadioGroup
@@ -118,15 +118,9 @@ const Leaderboard = () => {
                         }}
                       >
                         <Stack direction="column">
-                          <Radio value="3">
-                            Slot
-                          </Radio>
-                          <Radio value="1">
-                            Sepolia
-                          </Radio>
-                          <Radio value="2">
-                            Mainnet
-                          </Radio>
+                          <Radio value="3">Slot</Radio>
+                          <Radio value="1">Sepolia</Radio>
+                          <Radio value="2">Mainnet</Radio>
                         </Stack>
                       </RadioGroup>
                     </HStack>
@@ -161,7 +155,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                              addAddressPadding(edge.node.player)
+                            addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"
