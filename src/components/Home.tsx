@@ -87,12 +87,20 @@ const Leaderboard = () => {
                     <Link href="https://www.starknet.io" isExternal>
                       [Starknet]
                     </Link>
-                    .
                   </Text>
                   <Text>
                     The goal of the game is <strong>simple</strong> - given
                     randomly generated numbers, players must place each number
-                    in ascending order.
+                    in ascending order
+                  </Text>
+                  <Text>
+                    All open sourced at{" "}
+                    <Link
+                      href="https://github.com/broody/number-challenge"
+                      isExternal
+                    >
+                      [Github]
+                    </Link>
                   </Text>
                   <Text>
                     Total Games: {gameResult.data?.numsGameModels?.totalCount}
