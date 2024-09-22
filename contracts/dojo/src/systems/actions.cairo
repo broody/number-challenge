@@ -77,7 +77,7 @@ pub mod actions {
         #[key]
         player: ContractAddress,
         token: ContractAddress,
-        amount: u256,
+        amount: u16,
     }
 
     #[abi(embed_v0)]

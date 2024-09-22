@@ -10,5 +10,5 @@ pub trait IToken<TState> {
 
 #[starknet::interface]
 pub trait INumsToken<TState> {
-    fn reward(ref self: TState, recipient: ContractAddress, amount: u256) -> bool;
+    fn reward(ref self: TState, recipient: ContractAddress, amount: u16) -> bool;
 }

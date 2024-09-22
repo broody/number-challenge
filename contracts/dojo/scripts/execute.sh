@@ -70,7 +70,7 @@ case "$COMMAND" in
         ;;
     set_config)
         echo "Setting config for profile: $PROFILE_NAME"
-        sozo execute $ADDRESS set_config -c 0,0,20,1000,0,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
         ;;
     *)
         echo "Error: Unknown command '$COMMAND'"

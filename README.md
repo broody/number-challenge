@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+# Number Challenge Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Number Challenge** is a fully onchain game built using [Dojo Engine](https://dojoengine.org) on [Starknet](https://starknet.io) that blends strategy and chance. The goal is to place 20 randomly generated numbers into slots in ascending order to win significant prizes.
 
-Currently, two official plugins are available:
+## Gameplay
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Number Range**: Each number ranges from **1 to 1000**.
+- **Sequential Placement**: Receive one random number at a time and place it immediately into one of 20 slots.
+- **Ascending Order**: All numbers must be placed in strictly increasing order.
+- **No Rearrangement**: Once a number is placed, it cannot be moved or swapped.
 
-## Expanding the ESLint configuration
+## Powerups (WIP)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Enhance your gameplay by purchasing and equipping powerups using NUMS tokens:
 
-- Configure the top-level `parserOptions` property like this:
+- **Reroll**: Discard the current number and receive a new one.
+- **Boost High/Low**: Next number is guaranteed to be in the upper or lower half of the range.
+- **Erase**: Remove a previously placed number.
+- **Shift**: Move a placed number up or down one slot if space allows.
+- **Foresight**: Preview the next number after the upcoming one.
+- **Double Up**: Multiply the current number by 2 (up to 1000).
+- **Halve**: Divide the current number by 2, rounding up.
+- **Mirror**: Transform the current number to its complementary value within the range.
+- **Override**: Place a number even if it breaks the ascending order, once per game.
+- **Wildcard**: Change the current number to any number of your choice.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+---
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+**Number Challenge** offers an engaging mix of luck and strategy. Plan your moves carefully, manage your resources wisely, and aim for the top of the leaderboard!

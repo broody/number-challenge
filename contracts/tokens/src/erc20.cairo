@@ -2,11 +2,10 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait INumsToken<TContractState> {
-    fn reward(ref self: TContractState, recipient: ContractAddress, amount: u256) -> bool;
+    fn reward(ref self: TContractState, recipient: ContractAddress, amount: u16) -> bool;
     fn set_rewards_caller(ref self: TContractState, caller: ContractAddress);
     fn revoke_owner(ref self: TContractState);
 }
-
 
 #[starknet::contract]
 mod NumsToken {
@@ -14,6 +13,7 @@ mod NumsToken {
     use openzeppelin::token::erc20::{ERC20Component, ERC20HooksEmptyImpl};
     use starknet::{ContractAddress, get_caller_address, contract_address_const};
     
+    use core::option::OptionTrait;
     use starknet::storage::{
         StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess
@@ -30,8 +30,8 @@ mod NumsToken {
     struct Storage {
         #[substorage(v0)]
         erc20: ERC20Component::Storage,
-        owner: ContractAddress,
-        rewards_caller: ContractAddress,
+        owner: Option<ContractAddress>,
+        rewards_caller: ContractAddress
     }
 
     #[event]
@@ -51,25 +51,25 @@ mod NumsToken {
 
         self.erc20.initializer(name, symbol);
         self.rewards_caller.write(rewards_caller);
-        self.owner.write(get_caller_address());
+        self.owner.write(Option::Some(get_caller_address()));
     }
 
     #[abi(embed_v0)]
     impl NumsTokenImpl of super::INumsToken<ContractState> {
-        fn reward(ref self: ContractState, recipient: ContractAddress, amount: u256) -> bool {
+        fn reward(ref self: ContractState, recipient: ContractAddress, amount: u16) -> bool {
             assert!(self.rewards_caller.read() == get_caller_address(), "Only the reward caller can mint tokens");
-            self.erc20.mint(recipient, amount);
+            self.erc20.mint(recipient, amount.into() * 10*18);
             true
         }
 
         fn set_rewards_caller(ref self: ContractState, caller: ContractAddress) {
-            assert!(self.owner.read() == get_caller_address(), "Only the owner can set the rewards caller");
+            assert!(self.owner.read() == Option::Some(get_caller_address()), "Only the owner can set the rewards caller");
             self.rewards_caller.write(caller);
         }
 
         fn revoke_owner(ref self: ContractState) {
-            assert!(self.owner.read() == get_caller_address(), "Only the owner can revoke ownership");
-            self.owner.write(contract_address_const::<0>());
+            assert!(self.owner.read() == Option::Some(get_caller_address()), "Only the owner can revoke ownership");
+            self.owner.write(Option::None);
         }
     }
 }
