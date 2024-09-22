@@ -10,5 +10,6 @@ pub trait IToken<TState> {
 
 #[starknet::interface]
 pub trait INumsToken<TState> {
+    // amount is in 10*18 units
     fn reward(ref self: TState, recipient: ContractAddress, amount: u16) -> bool;
 }

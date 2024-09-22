@@ -15,6 +15,7 @@ import {
   SimpleGrid,
   Container,
   Link,
+  Box,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
@@ -25,6 +26,9 @@ import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Connect from "./Connect";
 import { Chain, getCurrentCHain, onClickChain } from "../network";
+import { DojoIcon } from "./icons/Dojo";
+import { StarknetIcon } from "./icons/Starknet";
+import { GithubIcon } from "./icons/Github";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -67,7 +71,7 @@ const Leaderboard = () => {
       <Container h="100vh">
         <VStack h="100%" justify={["none", "none", "center"]}>
           <SimpleGrid
-            columns={[1, 1, 2]}
+            columns={[1, 1, 1, 2]}
             h={["auto", "auto", "700px"]}
             w={["100%", "100%", "1200px"]}
             spacing={["80px", "80px", "30px"]}
@@ -78,33 +82,43 @@ const Leaderboard = () => {
                 <Heading>Number Challenge</Heading>
                 <VStack spacing="30px" align="flex-start">
                   <Text>
-                    Welcome to <strong>Number Challenge.</strong> A fully{" "}
-                    <strong>onchain</strong> game built using{" "}
-                    <Link href="https://www.dojoengine.org" isExternal>
-                      [Dojo Engine]
-                    </Link>{" "}
-                    on{" "}
-                    <Link href="https://www.starknet.io" isExternal>
-                      [Starknet]
-                    </Link>
+                    Welcome to <strong>Number Challenge</strong>, a fully{" "}
+                    <strong>onchain</strong> game!
                   </Text>
                   <Text>
-                    The goal of the game is <strong>simple</strong> - given
-                    randomly generated numbers, players must place each number
-                    in ascending order
+                    The goal is <strong>simple</strong>: place randomly
+                    generated numbers in ascending order.
                   </Text>
-                  <Text>
-                    All open sourced at{" "}
-                    <Link
-                      href="https://github.com/broody/number-challenge"
-                      isExternal
-                    >
-                      [Github]
-                    </Link>
-                  </Text>
-                  <Text>
-                    Total Games: {gameResult.data?.numsGameModels?.totalCount}
-                  </Text>
+                  <VStack w="full" align="flex-start">
+                    <HStack w="full">
+                      <Text flex="1">Built with</Text>
+                      <Box flex="2">
+                        <Link href="https://www.dojoengine.org" isExternal fontWeight="bold">
+                          <DojoIcon /> Dojo Engine
+                        </Link>
+                      </Box>
+                    </HStack>
+                    <HStack w="full">
+                      <Text flex="1">Lives on</Text>
+                      <Box flex="2">
+                        <Link href="https://www.starknet.io" isExternal fontWeight="bold">
+                          <StarknetIcon /> Starknet
+                        </Link>
+                      </Box>
+                    </HStack>
+                    <HStack w="full">
+                      <Text flex="1">Opensourced</Text>
+                      <Box flex="2">
+                        <Link
+                          fontWeight="bold"
+                          href="https://github.com/broody/number-challenge"
+                          isExternal
+                        >
+                          <GithubIcon /> Github
+                        </Link>
+                      </Box>
+                    </HStack>
+                  </VStack>
                   {NetworkSelection()}
                 </VStack>
                 <Connect />
@@ -199,8 +213,8 @@ const NetworkSelection = () => {
 
   const chains = [
     { name: "Mainnet", id: "mainnet" },
-    { name: "Sepolia", id: "sepolia" },
-    { name: "Slot", id: "slot" },
+    { name: "Sepolia (Testnet)", id: "sepolia" },
+    { name: "Slot (L3)", id: "slot" },
   ];
 
   return (

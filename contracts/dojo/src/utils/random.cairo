@@ -53,7 +53,7 @@ pub impl RandomImpl of RandomTrait {
 
         assert(min < max, 'min must be less than max');
 
-        let range: u128 = max.into() - min.into();
+        let range: u128 = max.into() - min.into() + 1; // includes max
         let rand = (seed.low % range) + min.into();
         rand.try_into().unwrap()
     }

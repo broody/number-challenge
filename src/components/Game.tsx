@@ -209,6 +209,8 @@ const Game = () => {
             display={["none", "none", "flex"]}
           >
             <VStack align="flex-start">
+              <Heading fontSize="24px">Next Number: <strong>{next}</strong></Heading>
+              <br />
               <Text>
                 Player:{" "}
                 <Link href={explorer.contract(player)} isExternal>
@@ -216,23 +218,10 @@ const Game = () => {
                 </Link>
                 {isOwner && " (you)"}
               </Text>
-              <Text>
-                Game ID: <strong>{gameId}</strong>
-              </Text>
               <Text>Number Range: {numRange}</Text>
               <Text>
-                Remaining: <strong>{remaining}</strong>
+                Remaining Slots: <strong>{remaining}</strong>
               </Text>
-              <VStack w="100%" mt="40px">
-                <Heading fontSize="24px">Next Number</Heading>
-                <HStack spacing="20px">
-                  <ArrowRightIcon />
-                  <Text fontSize="20px">
-                    <strong>{next}</strong>
-                  </Text>
-                  <ArrowLeftIcon />
-                </HStack>
-              </VStack>
             </VStack>
           </VStack>
         </SimpleGrid>
