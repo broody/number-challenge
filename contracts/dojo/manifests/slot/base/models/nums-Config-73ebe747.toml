@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0"
-original_class_hash = "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0"
+class_hash = "0x3975496c291fcb4f04808aea61be4b9ae37c91e89b9cb98c548d09ad367f482"
+original_class_hash = "0x3975496c291fcb4f04808aea61be4b9ae37c91e89b9cb98c548d09ad367f482"
 abi = "manifests/slot/base/abis/models/nums-Config-73ebe747.json"
 tag = "nums-Config"
 qualified_path = "nums::models::config::config"

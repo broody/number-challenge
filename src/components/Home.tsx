@@ -93,15 +93,23 @@ const Leaderboard = () => {
                     <HStack w="full">
                       <Text flex="1">Built with</Text>
                       <Box flex="2">
-                        <Link href="https://www.dojoengine.org" isExternal fontWeight="bold">
+                        <Link
+                          href="https://www.dojoengine.org"
+                          isExternal
+                          fontWeight="bold"
+                        >
                           <DojoIcon /> Dojo Engine
                         </Link>
                       </Box>
                     </HStack>
                     <HStack w="full">
-                      <Text flex="1">Lives on</Text>
+                      <Text flex="1">Deployed to</Text>
                       <Box flex="2">
-                        <Link href="https://www.starknet.io" isExternal fontWeight="bold">
+                        <Link
+                          href="https://www.starknet.io"
+                          isExternal
+                          fontWeight="bold"
+                        >
                           <StarknetIcon /> Starknet
                         </Link>
                       </Box>

@@ -261,7 +261,7 @@
       },
       {
         "name": "amount",
-        "type": "core::integer::u256"
+        "type": "core::integer::u16"
       }
     ]
   },

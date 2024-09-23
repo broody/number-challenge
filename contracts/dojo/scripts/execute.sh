@@ -11,6 +11,7 @@ fi
 # Get the command and profile name from the command line arguments
 COMMAND="$1"
 PROFILE_NAME="$2"
+TOKEN_ADDRESS="$3"
 
 # Get the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -63,6 +64,7 @@ case "$COMMAND" in
         sozo auth grant writer m:Game,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
         sozo auth grant writer m:Config,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
         sozo auth grant writer m:Jackpot,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        sozo auth grant writer m:Reward,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
         ;;
     create_game)
         echo "Creating game for profile: $PROFILE_NAME"
@@ -70,7 +72,9 @@ case "$COMMAND" in
         ;;
     set_config)
         echo "Setting config for profile: $PROFILE_NAME"
-        sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        # no rewards
+        # sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        sozo execute $ADDRESS set_config -c 0,0,20,1000,1,0,$TOKEN_ADDRESS,9,10,1,13,2,14,4,15,8,16,16,17,32,18,64,19,128,20,256 --profile $PROFILE_NAME
         ;;
     *)
         echo "Error: Unknown command '$COMMAND'"

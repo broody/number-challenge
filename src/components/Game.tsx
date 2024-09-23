@@ -36,6 +36,14 @@ const GameQuery = graphql(`
         }
       }
     }
+    numsRewardModels(where: {game_id: $gameId}) {
+      edges {
+        node {
+          total_rewards
+          next_reward
+        }
+      }
+    }
     numsSlotModels(
       where: { game_id: $gameId }
       order: { direction: ASC, field: NUMBER }
@@ -59,6 +67,9 @@ const Game = () => {
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [numRange, setNumRange] = useState<string>();
+  const [isRewardsActive, setIsRewardsActive] = useState<boolean>(false);
+  const [totalRewards, setTotalRewards] = useState<number | null>(null);
+  const [nextReward, setNextReward] = useState<number | null>(null);
   const explorer = useExplorer();
   const { account } = useAccount();
   const { gameId } = useParams();
@@ -79,6 +90,7 @@ const Game = () => {
 
   useEffect(() => {
     const gamesModel = queryResult.data?.numsGameModels?.edges?.[0]?.node;
+    const rewardsModel = queryResult.data?.numsRewardModels?.edges?.[0]?.node;
     const slotsEdges = queryResult.data?.numsSlotModels?.edges;
     if (!gamesModel || !slotsEdges) {
       return;
@@ -104,6 +116,14 @@ const Game = () => {
     });
 
     setSlots(newSlots);
+
+    if (rewardsModel) {
+      setIsRewardsActive(true);
+      setTotalRewards(rewardsModel.total_rewards as number);
+      setNextReward(rewardsModel.next_reward as number);
+    }
+
+
     setIsLoading(false);
     dismiss();
   }, [queryResult, account]);
@@ -209,8 +229,7 @@ const Game = () => {
             display={["none", "none", "flex"]}
           >
             <VStack align="flex-start">
-              <Heading fontSize="24px">Next Number: <strong>{next}</strong></Heading>
-              <br />
+              <Heading fontSize="24px" mb="10px">Next Number: <strong>{next}</strong></Heading>
               <Text>
                 Player:{" "}
                 <Link href={explorer.contract(player)} isExternal>
@@ -222,6 +241,16 @@ const Game = () => {
               <Text>
                 Remaining Slots: <strong>{remaining}</strong>
               </Text>
+              <br />
+              <Heading fontSize="18px" mb="10px">$NUMS Rewards [{isRewardsActive ? "ACTIVE" : "INACTIVE"}]</Heading>
+              {isRewardsActive && <>
+                <Text>
+                Next: <strong>{nextReward}</strong>
+              </Text>
+              <Text>
+                Total Earned: <strong>{totalRewards}</strong>
+              </Text>
+              </>}
             </VStack>
           </VStack>
         </SimpleGrid>

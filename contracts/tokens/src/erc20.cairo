@@ -56,9 +56,10 @@ mod NumsToken {
 
     #[abi(embed_v0)]
     impl NumsTokenImpl of super::INumsToken<ContractState> {
+        // restrict amount to u16 so upper limit is 0xFFFF tokens
         fn reward(ref self: ContractState, recipient: ContractAddress, amount: u16) -> bool {
             assert!(self.rewards_caller.read() == get_caller_address(), "Only the reward caller can mint tokens");
-            self.erc20.mint(recipient, amount.into() * 10*18);
+            self.erc20.mint(recipient, amount.into() * 1000000000000000000);
             true
         }
 

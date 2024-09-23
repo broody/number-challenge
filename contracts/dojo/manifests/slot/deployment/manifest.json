@@ -1235,7 +1235,7 @@
       }
     ],
     "address": "0x50c46c6f69ea9f12b24fcdd1569a584ae8893db0c70ea7884b605384da78ebc",
-    "transaction_hash": "0x3291547c686fa529741a2c1425a39902d38953353ab1a6589a43321c0bb16c7",
+    "transaction_hash": "0x4626070ab5fa81071732fca11d15fd34a03175640d96aacc7e0430784360f35",
     "block_number": 3,
     "seed": "nums",
     "metadata": {
@@ -1256,8 +1256,8 @@
     {
       "kind": "DojoContract",
       "address": "0x678847cc2d1d5c13d61ac37804ac60a361909d76d572f8536f6dbb727605581",
-      "class_hash": "0x6eb9011115364ecb5ded330e3da72a04b7de7900a4e7cc5d8d1b1f270102a98",
-      "original_class_hash": "0x6eb9011115364ecb5ded330e3da72a04b7de7900a4e7cc5d8d1b1f270102a98",
+      "class_hash": "0x56224d9b97a1bb3b595d7ef11cbb31f609130ab6f1e777457c22de272768f2c",
+      "original_class_hash": "0x56224d9b97a1bb3b595d7ef11cbb31f609130ab6f1e777457c22de272768f2c",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1522,7 +1522,7 @@
             },
             {
               "name": "amount",
-              "type": "core::integer::u256"
+              "type": "core::integer::u16"
             }
           ]
         },
@@ -1812,8 +1812,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0",
-      "original_class_hash": "0x22317d1e2e395fda19418777edff53f518cf61c2ec188a46b90c83bec29f4b0",
+      "class_hash": "0x3975496c291fcb4f04808aea61be4b9ae37c91e89b9cb98c548d09ad367f482",
+      "original_class_hash": "0x3975496c291fcb4f04808aea61be4b9ae37c91e89b9cb98c548d09ad367f482",
       "abi": [
         {
           "type": "impl",
@@ -2216,20 +2216,6 @@
         },
         {
           "type": "struct",
-          "name": "core::integer::u256",
-          "members": [
-            {
-              "name": "low",
-              "type": "core::integer::u128"
-            },
-            {
-              "name": "high",
-              "type": "core::integer::u128"
-            }
-          ]
-        },
-        {
-          "type": "struct",
           "name": "nums::models::config::RewardLevel",
           "members": [
             {
@@ -2238,7 +2224,7 @@
             },
             {
               "name": "amount",
-              "type": "core::integer::u256"
+              "type": "core::integer::u16"
             }
           ]
         },
@@ -4765,18 +4751,18 @@
           "key": true
         },
         {
-          "name": "token",
-          "type": "ContractAddress",
+          "name": "total_rewards",
+          "type": "u32",
           "key": false
         },
         {
-          "name": "amount",
-          "type": "u256",
+          "name": "next_reward",
+          "type": "u16",
           "key": false
         }
       ],
-      "class_hash": "0x2ef2c4de37f887c65e206c4d2e53f63e0d9fb91190a6055d6899a586cbb9625",
-      "original_class_hash": "0x2ef2c4de37f887c65e206c4d2e53f63e0d9fb91190a6055d6899a586cbb9625",
+      "class_hash": "0x11edf83d746011b4eb5143b68ee14f13296087c7a0cfb92d22a6b22fc7ad1f",
+      "original_class_hash": "0x11edf83d746011b4eb5143b68ee14f13296087c7a0cfb92d22a6b22fc7ad1f",
       "abi": [
         {
           "type": "impl",
@@ -5142,26 +5128,12 @@
         },
         {
           "type": "impl",
-          "name": "rewardedImpl",
-          "interface_name": "nums::systems::actions::actions::Irewarded"
+          "name": "rewardImpl",
+          "interface_name": "nums::models::game::Ireward"
         },
         {
           "type": "struct",
-          "name": "core::integer::u256",
-          "members": [
-            {
-              "name": "low",
-              "type": "core::integer::u128"
-            },
-            {
-              "name": "high",
-              "type": "core::integer::u128"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "nums::systems::actions::actions::Rewarded",
+          "name": "nums::models::game::Reward",
           "members": [
             {
               "name": "game_id",
@@ -5172,18 +5144,18 @@
               "type": "core::starknet::contract_address::ContractAddress"
             },
             {
-              "name": "token",
-              "type": "core::starknet::contract_address::ContractAddress"
+              "name": "total_rewards",
+              "type": "core::integer::u32"
             },
             {
-              "name": "amount",
-              "type": "core::integer::u256"
+              "name": "next_reward",
+              "type": "core::integer::u16"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "nums::systems::actions::actions::Irewarded",
+          "name": "nums::models::game::Ireward",
           "items": [
             {
               "type": "function",
@@ -5191,7 +5163,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "nums::systems::actions::actions::Rewarded"
+                  "type": "nums::models::game::Reward"
                 }
               ],
               "outputs": [],
@@ -5201,14 +5173,14 @@
         },
         {
           "type": "event",
-          "name": "nums::systems::actions::actions::rewarded::Event",
+          "name": "nums::models::game::reward::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "tag": "nums-Rewarded",
-      "qualified_path": "nums::systems::actions::actions::rewarded",
-      "manifest_name": "nums-Rewarded-6a8b1a15"
+      "tag": "nums-Reward",
+      "qualified_path": "nums::models::game::reward",
+      "manifest_name": "nums-Reward-5a0970e8"
     },
     {
       "kind": "DojoModel",

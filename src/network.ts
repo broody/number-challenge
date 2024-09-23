@@ -2,8 +2,12 @@ export type Chain = "sepolia" | "mainnet" | "slot";
 
 export const getCurrentCHain = (): Chain => {
   const hostname = window.location.hostname;
-  console.log({hostname})
-  if (hostname.startsWith("slot.") || hostname.includes("ngrok-free") || hostname === "localhost") {
+  console.log({ hostname });
+  if (
+    hostname.startsWith("slot.") ||
+    hostname.includes("ngrok-free") ||
+    hostname === "localhost"
+  ) {
     return "slot";
   }
   if (hostname.startsWith("mainnet.")) {
@@ -33,13 +37,17 @@ type GraphqlUrl = {
 
 export const getGraphqlUrl = (): GraphqlUrl => {
   const hostname = window.location.hostname;
-  if (hostname.startsWith("slot.") || hostname.includes("ngrok-free") || hostname === "localhost") {
+  if (
+    hostname.startsWith("slot.") ||
+    hostname.includes("ngrok-free") ||
+    hostname === "localhost"
+  ) {
     return {
       url: import.meta.env.VITE_SLOT_GRAPHQL_URL,
       wsUrl: import.meta.env.VITE_SLOT_GRAPHQL_WS_URL,
     };
   }
-  
+
   if (hostname.startsWith("mainnet.")) {
     return {
       url: import.meta.env.VITE_MAINNET_GRAPHQL_URL,
@@ -55,10 +63,13 @@ export const getGraphqlUrl = (): GraphqlUrl => {
 
 export const getRpc = (): string => {
   const hostname = window.location.hostname;
-  if (hostname.startsWith("slot.") || hostname.includes("ngrok-free") || hostname === "localhost") {
+  if (
+    hostname.startsWith("slot.") ||
+    hostname.includes("ngrok-free") ||
+    hostname === "localhost"
+  ) {
     return import.meta.env.VITE_SLOT_RPC_URL;
   }
-
 
   if (hostname.startsWith("mainnet.")) {
     return import.meta.env.VITE_MAINNET_RPC_URL;
