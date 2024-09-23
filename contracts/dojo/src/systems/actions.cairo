@@ -1,11 +1,11 @@
 use nums::models::config::Config;
-use starknet::ContractAddress;
 use nums::models::jackpot::JackpotType;
+use starknet::ContractAddress;
 
 #[dojo::interface]
 pub trait IActions {
     fn create_jackpot(
-        ref world: IWorldDispatcher, 
+        ref world: IWorldDispatcher,
         threshold_offset: u8,
         token_type: JackpotType,
         token_address: ContractAddress,
@@ -26,10 +26,10 @@ pub trait IActions {
 #[dojo::contract]
 pub mod actions {
     use core::array::ArrayTrait;
-    use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
     use nums::interfaces::token::{INumsTokenDispatcher, INumsTokenDispatcherTrait};
+    use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
     use nums::models::config::{Config, SlotReward, SlotRewardTrait};
-    use nums::models::game::{Game, GameTrait};
+    use nums::models::game::{Game, Reward, GameTrait};
     use nums::models::jackpot::{Jackpot, JackpotType};
     use nums::models::name::Name;
     use nums::models::slot::Slot;
@@ -66,18 +66,6 @@ pub mod actions {
         max_number: u16,
         min_number: u16,
         jackpot_id: Option<u32>,
-    }
-
-    #[derive(Copy, Drop, Serde)]
-    #[dojo::event]
-    #[dojo::model]
-    pub struct Rewarded {
-        #[key]
-        game_id: u32,
-        #[key]
-        player: ContractAddress,
-        token: ContractAddress,
-        amount: u16,
     }
 
     #[abi(embed_v0)]
@@ -117,10 +105,10 @@ pub mod actions {
             set!(
                 world,
                 (Jackpot {
-                    jackpot_id, 
+                    jackpot_id,
                     threshold_offset,
-                    winner: Option::None, 
-                    token_type, 
+                    winner: Option::None,
+                    token_type,
                     token_address,
                     token_total,
                     token_id,
@@ -147,22 +135,29 @@ pub mod actions {
             let game_id = world.uuid();
             let player = get_caller_address();
             let mut rand = RandomImpl::new(world);
-            let next_number = rand.between::<u16>(config.min_number + 1, config.max_number);
+            let next_number = rand.between::<u16>(config.min_number, config.max_number);
+            if let Option::Some(reward) = get!(world, (WORLD), Config).reward {
+                assert!(reward.levels.len() > 0, "Reward levels not set");
+                set!(
+                    world,
+                    (Reward {
+                        game_id, player, total_rewards: 0, next_reward: *reward.levels[0].amount
+                    })
+                );
+            }
 
             set!(
                 world,
-                (
-                    Game {
-                        game_id,
-                        player,
-                        max_slots: config.max_slots,
-                        remaining_slots: config.max_slots,
-                        max_number: config.max_number,
-                        min_number: config.min_number,
-                        next_number,
-                        jackpot_id,
-                    },
-                )
+                (Game {
+                    game_id,
+                    player,
+                    max_slots: config.max_slots,
+                    remaining_slots: config.max_slots,
+                    max_number: config.max_number,
+                    min_number: config.min_number,
+                    next_number,
+                    jackpot_id,
+                })
             );
 
             emit!(
@@ -235,6 +230,18 @@ pub mod actions {
             game.next_number = next_number;
             game.remaining_slots -= 1;
 
+            // Slot reward
+            if let Option::Some(reward) = get!(world, (WORLD), Config).reward {
+                let (address, amount) = reward.compute(game.level());
+                let (_, next_reward) = reward.compute(game.level() + 1);
+                INumsTokenDispatcher { contract_address: address }.reward(player, amount);
+
+                let mut game_reward = get!(world, (game_id, player), Reward);
+                game_reward.total_rewards += amount.into();
+                game_reward.next_reward = next_reward;
+                set!(world, (game_reward));
+            }
+
             set!(world, (game, Slot { game_id, player, index: target_idx, number: target_number }));
 
             emit!(
@@ -248,14 +255,6 @@ pub mod actions {
                     remaining_slots: game.remaining_slots
                 }
             );
-
-            // Slot reward
-            if let Option::Some(reward) = get!(world, (WORLD), Config).reward {
-                let (address, amount) = reward.compute(game.level());
-                INumsTokenDispatcher { contract_address: address }.reward(player, amount);
-
-                emit!(world, Rewarded { game_id, player, token: address, amount });
-            }
 
             next_number
         }
@@ -281,7 +280,7 @@ pub mod actions {
         /// Claims the jackpot for a specific game. Ensures that the player is authorized and that
         /// the jackpot has not been claimed before.
         /// Transfers the jackpot token to the player and updates the jackpot state.
-        /// 
+        ///
         /// # Arguments
         /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `game_id` - The identifier of the game.
@@ -301,7 +300,7 @@ pub mod actions {
                 }
 
                 idx += 1_u8;
-                if idx == (game.max_slots - jackpot.threshold_offset ) {
+                if idx == (game.max_slots - jackpot.threshold_offset) {
                     break;
                 }
             };

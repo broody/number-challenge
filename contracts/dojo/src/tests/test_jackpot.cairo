@@ -52,7 +52,6 @@ mod tests {
     #[test]
     fn test_create_jackpot() {
         let (_world, mut action_dispatcher) = STATE();
-
     }
 }
 

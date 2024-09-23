@@ -104,6 +104,8 @@ mod tests {
             max_number: 1000_u16,
             min_number: 0_u16,
             next_number: 42_u16,
+            total_rewarded: 0_u32,
+            next_reward: 0_u16,
             jackpot_id: Option::None,
         };
 
