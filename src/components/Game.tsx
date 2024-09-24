@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatAddress, removeZeros } from "../utils";
 import {
   Box,
@@ -16,9 +16,10 @@ import {
   useColorMode,
   useInterval,
 } from "@chakra-ui/react";
-import { useAccount, useExplorer } from "@starknet-react/core";
+import { useAccount, useExplorer, useNetwork } from "@starknet-react/core";
 import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import useToast from "../hooks/toast";
+import { getCurrentChain } from "../network";
 
 const REFRESH_INTERVAL = 1000;
 
@@ -72,6 +73,7 @@ const Game = () => {
   const [nextReward, setNextReward] = useState<number | null>(null);
   const explorer = useExplorer();
   const { account } = useAccount();
+  const { chain } = useNetwork();
   const { gameId } = useParams();
   const { showTxn, showError, dismiss } = useToast();
   if (!gameId) {
@@ -126,6 +128,25 @@ const Game = () => {
     setIsLoading(false);
     dismiss();
   }, [queryResult, account]);
+
+  const numsErc20Link = useMemo(() => {
+    switch (getCurrentChain()) {
+      case "sepolia":
+        return (
+          "https://sepolia.voyager.online/token/" +
+          import.meta.env.VITE_NUMS_ERC20
+        );
+      case "mainnet":
+        return (
+          "https://voyager.online/token/" + import.meta.env.VITE_NUMS_ERC20
+        );
+      case "slot":
+        return (
+          "https://sepolia.voyager.online/token/" +
+          import.meta.env.VITE_NUMS_ERC20
+        );
+    }
+  }, [getCurrentChain]);
 
   const setSlot = async (slot: number): Promise<boolean> => {
     if (!account) return false;
@@ -244,7 +265,12 @@ const Game = () => {
               </Text>
               <br />
               <HStack mb="10px">
-                <Heading fontSize="18px">$NUMS Rewards </Heading>
+                <Heading fontSize="18px">
+                  <Link href={numsErc20Link} isExternal>
+                    $NUMS
+                  </Link>{" "}
+                  Rewards{" "}
+                </Heading>
                 <Heading
                   fontSize="18px"
                   color={isRewardsActive ? "green.400" : "red.400"}

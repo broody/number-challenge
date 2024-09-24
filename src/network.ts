@@ -1,8 +1,7 @@
 export type Chain = "sepolia" | "mainnet" | "slot";
 
-export const getCurrentCHain = (): Chain => {
+export const getCurrentChain = (): Chain => {
   const hostname = window.location.hostname;
-  console.log({ hostname });
   if (
     hostname.startsWith("slot.") ||
     hostname.includes("ngrok-free") ||

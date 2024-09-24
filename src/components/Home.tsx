@@ -25,7 +25,7 @@ import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Connect from "./Connect";
-import { Chain, getCurrentCHain, onClickChain } from "../network";
+import { Chain, getCurrentChain, onClickChain } from "../network";
 import { DojoIcon } from "./icons/Dojo";
 import { StarknetIcon } from "./icons/Starknet";
 import { GithubIcon } from "./icons/Github";
@@ -210,7 +210,7 @@ const Leaderboard = () => {
 const NetworkSelection = () => {
   const [selectedChain, setSelectedChain] = useState<Chain>();
   useEffect(() => {
-    const chain = getCurrentCHain();
+    const chain = getCurrentChain();
     if (chain === "mainnet" || chain === "sepolia") {
       setSelectedChain(chain);
       return;
