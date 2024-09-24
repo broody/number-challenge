@@ -36,7 +36,7 @@ const GameQuery = graphql(`
         }
       }
     }
-    numsRewardModels(where: {game_id: $gameId}) {
+    numsRewardModels(where: { game_id: $gameId }) {
       edges {
         node {
           total_rewards
@@ -122,7 +122,6 @@ const Game = () => {
       setTotalRewards(rewardsModel.total_rewards as number);
       setNextReward(rewardsModel.next_reward as number);
     }
-
 
     setIsLoading(false);
     dismiss();
@@ -229,7 +228,9 @@ const Game = () => {
             display={["none", "none", "flex"]}
           >
             <VStack align="flex-start">
-              <Heading fontSize="24px" mb="10px">Next Number: <strong>{next}</strong></Heading>
+              <Heading fontSize="24px" mb="10px">
+                Next Number: <strong>{next}</strong>
+              </Heading>
               <Text>
                 Player:{" "}
                 <Link href={explorer.contract(player)} isExternal>
@@ -242,15 +243,25 @@ const Game = () => {
                 Remaining Slots: <strong>{remaining}</strong>
               </Text>
               <br />
-              <Heading fontSize="18px" mb="10px">$NUMS Rewards [{isRewardsActive ? "ACTIVE" : "INACTIVE"}]</Heading>
-              {isRewardsActive && <>
-                <Text>
-                Next: <strong>{nextReward}</strong>
-              </Text>
-              <Text>
-                Total Earned: <strong>{totalRewards}</strong>
-              </Text>
-              </>}
+              <HStack mb="10px">
+                <Heading fontSize="18px">$NUMS Rewards </Heading>
+                <Heading
+                  fontSize="18px"
+                  color={isRewardsActive ? "green.400" : "red.400"}
+                >
+                  [ {isRewardsActive ? "ACTIVE" : "INACTIVE"} ]
+                </Heading>
+              </HStack>
+              {isRewardsActive && (
+                <>
+                  <Text>
+                    Next: <strong>{nextReward}</strong>
+                  </Text>
+                  <Text>
+                    Total Earned: <strong>{totalRewards}</strong>
+                  </Text>
+                </>
+              )}
             </VStack>
           </VStack>
         </SimpleGrid>
