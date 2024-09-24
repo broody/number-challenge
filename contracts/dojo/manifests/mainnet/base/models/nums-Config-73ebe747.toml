@@ -1,0 +1,22 @@
+kind = "DojoModel"
+class_hash = "0x3975496c291fcb4f04808aea61be4b9ae37c91e89b9cb98c548d09ad367f482"
+original_class_hash = "0x3975496c291fcb4f04808aea61be4b9ae37c91e89b9cb98c548d09ad367f482"
+abi = "manifests/mainnet/base/abis/models/nums-Config-73ebe747.json"
+tag = "nums-Config"
+qualified_path = "nums::models::config::config"
+manifest_name = "nums-Config-73ebe747"
+
+[[members]]
+name = "world_resource"
+type = "felt252"
+key = true
+
+[[members]]
+name = "game"
+type = "Option<GameConfig>"
+key = false
+
+[[members]]
+name = "reward"
+type = "Option<SlotReward>"
+key = false

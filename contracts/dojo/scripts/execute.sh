@@ -74,7 +74,11 @@ case "$COMMAND" in
         echo "Setting config for profile: $PROFILE_NAME"
         # no rewards
         # sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        sozo execute $ADDRESS set_config -c 0,0,20,1000,1,0,$TOKEN_ADDRESS,9,10,1,13,2,14,4,15,8,16,16,17,32,18,64,19,128,20,256 --profile $PROFILE_NAME
+        if [ -z "$TOKEN_ADDRESS" ]; then
+            sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        else
+            sozo execute $ADDRESS set_config -c 0,0,20,1000,1,0,$TOKEN_ADDRESS,9,10,1,13,2,14,4,15,8,16,16,17,32,18,64,19,128,20,256 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        fi
         ;;
     *)
         echo "Error: Unknown command '$COMMAND'"
