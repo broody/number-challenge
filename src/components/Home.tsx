@@ -16,19 +16,21 @@ import {
   Container,
   Link,
   Box,
+  Flex,
+  Spacer,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
-import Connect from "./Connect";
-import { Chain, getCurrentChain, onClickChain } from "../network";
+import Connect from "./Create";
 import { DojoIcon } from "./icons/Dojo";
 import { StarknetIcon } from "./icons/Starknet";
 import { GithubIcon } from "./icons/Github";
+import Header from "./Header";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -69,13 +71,14 @@ const Leaderboard = () => {
   return (
     <>
       <Container h="100vh">
+        <Header />
         <VStack h="100%" justify={["none", "none", "center"]}>
           <SimpleGrid
             columns={[1, 1, 1, 2]}
             h={["auto", "auto", "700px"]}
             w={["100%", "100%", "1200px"]}
-            spacing={["80px", "80px", "30px"]}
-            py="50px"
+            spacing={["80px", "80px", "140px"]}
+            mt={["100px", "100px", "30px"]}
           >
             <VStack justifyItems="center" spacing="80px">
               <VStack spacing="30px">
@@ -89,46 +92,59 @@ const Leaderboard = () => {
                     The goal is <strong>simple</strong>: place randomly
                     generated numbers in ascending order.
                   </Text>
-                  <VStack w="full" align="flex-start">
-                    <HStack w="full">
-                      <Text flex="1">Built with</Text>
-                      <Box flex="2">
-                        <Link
-                          href="https://www.dojoengine.org"
-                          isExternal
-                          fontWeight="bold"
-                        >
-                          <DojoIcon /> Dojo Engine
-                        </Link>
-                      </Box>
-                    </HStack>
-                    <HStack w="full">
-                      <Text flex="1">Deployed to</Text>
-                      <Box flex="2">
-                        <Link
-                          href="https://www.starknet.io"
-                          isExternal
-                          fontWeight="bold"
-                        >
-                          <StarknetIcon /> Starknet
-                        </Link>
-                      </Box>
-                    </HStack>
-                    <HStack w="full">
-                      <Text flex="1">Opensourced</Text>
-                      <Box flex="2">
-                        <Link
-                          fontWeight="bold"
-                          href="https://github.com/broody/number-challenge"
-                          isExternal
-                        >
-                          <GithubIcon /> Github
-                        </Link>
-                      </Box>
-                    </HStack>
+                  {/* <Text>
+                    Earn{" "}
+                    <Link href={numsErc20Link()} isExternal>
+                      $NUMS
+                    </Link>{" "}
+                    and purchase powerups to better your odds!
+                  </Text> */}
+                  <VStack w="full" mt="30px">
+                    <ContentWithDots
+                      leftContent={<Text>Framework</Text>}
+                      rightContent={
+                        <Box>
+                          <Link
+                            href="https://www.dojoengine.org"
+                            isExternal
+                            fontWeight="bold"
+                          >
+                            Dojo Engine <DojoIcon />
+                          </Link>
+                        </Box>
+                      }
+                    />
+                    <ContentWithDots
+                      leftContent={<Text>Blockchain</Text>}
+                      rightContent={
+                        <Box>
+                          <Link
+                            href="https://www.starknet.io"
+                            isExternal
+                            fontWeight="bold"
+                          >
+                            Starknet <StarknetIcon />
+                          </Link>
+                        </Box>
+                      }
+                    />
+                    <ContentWithDots
+                      leftContent={<Text>Source Code</Text>}
+                      rightContent={
+                        <Box>
+                          <Link
+                            fontWeight="bold"
+                            href="https://github.com/broody/number-challenge"
+                            isExternal
+                          >
+                            Github <GithubIcon />
+                          </Link>
+                        </Box>
+                      }
+                    />
                   </VStack>
-                  {NetworkSelection()}
                 </VStack>
+                <Spacer minH="20px" />
                 <Connect />
               </VStack>
             </VStack>
@@ -158,7 +174,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                            addAddressPadding(edge.node.player)
+                              addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"
@@ -207,41 +223,30 @@ const Leaderboard = () => {
   );
 };
 
-const NetworkSelection = () => {
-  const [selectedChain, setSelectedChain] = useState<Chain>();
-  useEffect(() => {
-    const chain = getCurrentChain();
-    if (chain === "mainnet" || chain === "sepolia") {
-      setSelectedChain(chain);
-      return;
-    }
+const DottedSeparator = () => (
+  <Box
+    flex="1"
+    height="1em"
+    backgroundImage="radial-gradient(circle, gray 1px, transparent 1px)"
+    backgroundSize="5px 5px"
+    backgroundPosition="bottom"
+    backgroundRepeat="repeat-x"
+  />
+);
 
-    setSelectedChain("slot");
-  }, []);
-
-  const chains = [
-    { name: "Mainnet", id: "mainnet" },
-    { name: "Sepolia (Testnet)", id: "sepolia" },
-    { name: "Slot (L3)", id: "slot" },
-  ];
-
+const ContentWithDots = ({
+  leftContent,
+  rightContent,
+}: {
+  leftContent: React.ReactNode;
+  rightContent: React.ReactNode;
+}) => {
   return (
-    <VStack w="full" align="flex-start">
-      {chains.map((chain) => (
-        <Text
-          key={chain.id}
-          cursor={selectedChain !== chain.id ? "pointer" : "default"}
-          color={selectedChain === chain.id ? "white" : "gray.500"}
-          fontWeight={selectedChain === chain.id ? "bold" : "normal"}
-          _hover={{
-            color: "white",
-          }}
-          onClick={() => onClickChain(chain.id as Chain)}
-        >
-          {chain.name} {selectedChain === chain.id && "<<<"}
-        </Text>
-      ))}
-    </VStack>
+    <Flex alignItems="baseline" width="100%">
+      <Text marginRight="10px">{leftContent}</Text>
+      <DottedSeparator />
+      <Text marginLeft="10px">{rightContent}</Text>
+    </Flex>
   );
 };
 

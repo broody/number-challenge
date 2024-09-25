@@ -1,24 +1,22 @@
 import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
-import { formatAddress } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useExplorer,
-} from "@starknet-react/core";
+import { useEffect, useState } from "react";
+import CartridgeConnector from "@cartridge/connector";
+import { useAccount, useExplorer } from "@starknet-react/core";
 import useToast from "../hooks/toast";
 
-const Connect = () => {
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { address, account } = useAccount();
+const Create = () => {
+  const { address, account, connector } = useAccount();
   const { showTxn } = useToast();
   const [creating, setCreating] = useState<boolean>(false);
   const explorer = useExplorer();
   const navigate = useNavigate();
-  const connector = connectors[0];
+  const [username, setUsername] = useState<string>("");
+  const cartridgeConnector = connector as never as CartridgeConnector;
+
+  useEffect(() => {
+    cartridgeConnector?.username()?.then(setUsername);
+  }, [cartridgeConnector]);
 
   const newGame = async () => {
     if (!account) return;
@@ -60,14 +58,14 @@ const Connect = () => {
 
   return (
     <>
-      <VStack w="100%" h="120px" spacing="20px" justify="center">
+      <VStack w="100%" h="120px" spacing="20px">
         <HStack>
           <Text>
             Hello,{" "}
             {address ? (
               <>
                 <Link href={explorer.contract(address)} isExternal>
-                  <strong>{formatAddress(address)}</strong>
+                  <strong>{username}</strong>
                 </Link>
               </>
             ) : (
@@ -75,25 +73,11 @@ const Connect = () => {
             )}
             .
           </Text>
-          <Link
-            display={address ? "block" : "none"}
-            onClick={() => disconnect()}
-          >
-            [Disconnect]
-          </Link>
         </HStack>
         <HStack spacing="20px">
-          {address ? (
+          {address && (
             <Button isLoading={creating} onClick={newGame}>
               Create Game
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                connect({ connector });
-              }}
-            >
-              Connect
             </Button>
           )}
         </HStack>
@@ -102,4 +86,4 @@ const Connect = () => {
   );
 };
 
-export default Connect;
+export default Create;
