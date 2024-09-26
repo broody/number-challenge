@@ -150,6 +150,7 @@ const Game = () => {
         throw new Error("transaction error");
       }
     } catch (e) {
+      console.log({ e });
       setIsLoading(false);
       return false;
     }

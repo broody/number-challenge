@@ -1,5 +1,6 @@
 pub mod systems {
-    pub mod actions;
+    pub mod game_actions;
+    pub mod jackpot_actions;
 }
 
 pub mod models {

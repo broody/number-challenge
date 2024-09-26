@@ -174,7 +174,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                              addAddressPadding(edge.node.player)
+                            addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"

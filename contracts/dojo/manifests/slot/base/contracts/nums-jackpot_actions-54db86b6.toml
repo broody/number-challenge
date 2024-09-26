@@ -1,0 +1,11 @@
+kind = "DojoContract"
+class_hash = "0x1ff5cc10664ce000fb70f577d93931a1eb901f21ec4f5e0bf999272b6309db"
+original_class_hash = "0x1ff5cc10664ce000fb70f577d93931a1eb901f21ec4f5e0bf999272b6309db"
+base_class_hash = "0x0"
+abi = "manifests/slot/base/abis/contracts/nums-jackpot_actions-54db86b6.json"
+reads = []
+writes = []
+init_calldata = []
+tag = "nums-jackpot_actions"
+systems = ["claim_jackpot"]
+manifest_name = "nums-jackpot_actions-54db86b6"

@@ -7,20 +7,38 @@ pub enum JackpotType {
     ERC1155,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq)]
+#[derive(Drop, Serde, PartialEq)]
 #[dojo::model]
 pub struct Jackpot {
     #[key]
     pub jackpot_id: u32,
-    pub threshold_offset: u8,
+    pub win_condition: u8,
     pub winner: Option<ContractAddress>,
-    pub token_type: JackpotType,
-    pub token_address: ContractAddress,
-    pub token_total: u256,
-    pub token_id: Option<u256>,
-    pub fee: u256,
-    pub fee_address: ContractAddress,
-    pub fee_total: u256,
-    pub fee_recipient: Option<ContractAddress>, // if no recipient, jackpot is for the house
-    pub enable_powerups: bool,
+    pub info: Option<Info>,
+    pub token: Token,
+    pub fee: Option<Fee>,
+    pub powerups: bool,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+pub struct Token {
+    pub id: Option<u256>,
+    pub address: ContractAddress,
+    pub ty: JackpotType,
+    pub total: u256,
+}
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
+pub struct Fee {
+    pub address: ContractAddress,
+    pub amount: u256,
+    pub total: u256,
+    pub recipient: Option<ContractAddress>, // if no recipient, jackpot is for the house
+}
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
+pub struct Info {
+    pub title: ByteArray,
+    pub description: ByteArray,
+    pub sponsor_url: ByteArray,
 }

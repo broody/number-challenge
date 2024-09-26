@@ -11,7 +11,7 @@ fi
 # Get the command and profile name from the command line arguments
 COMMAND="$1"
 PROFILE_NAME="$2"
-TOKEN_ADDRESS="$3"
+TOKEN_ADDR="$3"
 
 # Get the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -25,8 +25,8 @@ if [ ! -f "$TOML_FILE" ]; then
     exit 1
 fi
 
-# Find the address where tag = "nums-actions"
-ADDRESS=$(awk '/\[\[contracts\]\]/,/tag = "nums-actions"/ {
+# Find the address where tag = "nums-game_actions"
+GAME_ACTIONS_ADDR=$(awk '/\[\[contracts\]\]/,/tag = "nums-game_actions"/ {
     if ($1 == "address" && $2 == "=") {
         gsub(/[",]/, "", $3)
         print $3
@@ -34,14 +34,20 @@ ADDRESS=$(awk '/\[\[contracts\]\]/,/tag = "nums-actions"/ {
     }
 }' "$TOML_FILE")
 
-# Check if address was found
-if [ -z "$ADDRESS" ]; then
-    echo "Error: Could not find address for tag 'nums-actions'"
+JACKPOT_ACTIONS_ADDR=0x2bbabf6d7bfdcf570890e02648004b1c5ec1aaa17be81779b384abe28078eba
+
+if [ -z "$JACKPOT_ACTIONS_ADDR" ]; then
+    echo "Error: Could not find address for tag 'nums-jackpot_actions'"
+    exit 1
+fi
+
+if [ -z "$GAME_ACTIONS_ADDR" ]; then
+    echo "Error: Could not find address for tag 'nums-game_actions'"
     exit 1
 fi
 
 # Find the WorldContract address
-WORLD_ADDRESS=$(awk '/\[world\]/,/address =/ {
+WORLD_ADDR=$(awk '/\[world\]/,/address =/ {
     if ($1 == "address" && $2 == "=") {
         gsub(/[",]/, "", $3)
         print $3
@@ -50,7 +56,7 @@ WORLD_ADDRESS=$(awk '/\[world\]/,/address =/ {
 }' "$TOML_FILE")
 
 # Check if WorldContract address was found
-if [ -z "$WORLD_ADDRESS" ]; then
+if [ -z "$WORLD_ADDR" ]; then
     echo "Error: Could not find WorldContract address"
     exit 1
 fi
@@ -59,26 +65,30 @@ fi
 case "$COMMAND" in
     auth)
         echo "Granting authentication for profile: $PROFILE_NAME"
-        sozo auth grant writer m:Name,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        sozo auth grant writer m:Slot,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        sozo auth grant writer m:Game,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        sozo auth grant writer m:Config,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        sozo auth grant writer m:Jackpot,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        sozo auth grant writer m:Reward,$ADDRESS --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        ;;
-    create_game)
-        echo "Creating game for profile: $PROFILE_NAME"
-        sozo execute $ADDRESS create_game -c 0x1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        sozo auth grant writer m:Name,$GAME_ACTIONS_ADDR --profile $PROFILE_NAME --world $WORLD_ADDR
+        sozo auth grant writer m:Slot,$GAME_ACTIONS_ADDR --profile $PROFILE_NAME --world $WORLD_ADDR
+        sozo auth grant writer m:Game,$GAME_ACTIONS_ADDR --profile $PROFILE_NAME --world $WORLD_ADDR
+        sozo auth grant writer m:Config,$GAME_ACTIONS_ADDR --profile $PROFILE_NAME --world $WORLD_ADDR
+        sozo auth grant writer m:Reward,$GAME_ACTIONS_ADDR --profile $PROFILE_NAME --world $WORLD_ADDR
+        sozo auth grant writer m:Jackpot,$JACKPOT_ACTIONS_ADDR --profile $PROFILE_NAME --world $WORLD_ADDR
         ;;
     set_config)
         echo "Setting config for profile: $PROFILE_NAME"
         # no rewards
-        # sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
-        if [ -z "$TOKEN_ADDRESS" ]; then
-            sozo execute $ADDRESS set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+        # sozo execute $GAME_ACTIONS_ADDR set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDR
+        if [ -z "$TOKEN_ADDR" ]; then
+            sozo execute $GAME_ACTIONS_ADDR set_config -c 0,0,20,1000,1,1 --profile $PROFILE_NAME --world $WORLD_ADDR
         else
-            sozo execute $ADDRESS set_config -c 0,0,20,1000,1,0,$TOKEN_ADDRESS,9,10,1,13,2,14,4,15,8,16,16,17,32,18,64,19,128,20,256 --profile $PROFILE_NAME --world $WORLD_ADDRESS
+            sozo execute $GAME_ACTIONS_ADDR set_config -c 0,0,20,1000,1,0,$TOKEN_ADDR,9,10,1,13,2,14,4,15,8,16,16,17,32,18,64,19,128,20,256 --profile $PROFILE_NAME --world $WORLD_ADDR
         fi
+        ;;
+    create_jackpot)
+        echo "Creating jackpot for profile: $PROFILE_NAME"
+        sozo execute $JACKPOT_ACTIONS_ADDR create_jackpot -c 1,1,1,0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7,0,0x1234,0,1,0 --profile $PROFILE_NAME --world $WORLD_ADDR
+        ;;
+    create_game)
+        echo "Creating game for profile: $PROFILE_NAME"
+        sozo execute $GAME_ACTIONS_ADDR create_game -c 0x0,0x6 --profile $PROFILE_NAME --world $WORLD_ADDR
         ;;
     *)
         echo "Error: Unknown command '$COMMAND'"
@@ -87,4 +97,4 @@ case "$COMMAND" in
         ;;
 esac
 
-echo "Command '$COMMAND' executed successfully with address: $ADDRESS for profile: $PROFILE_NAME and world: $WORLD_ADDRESS"
+echo "Command '$COMMAND' executed successfully for profile: $PROFILE_NAME and world: $WORLD_ADDR"
