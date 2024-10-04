@@ -22,7 +22,7 @@ import {
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatAddress } from "../utils";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
@@ -30,7 +30,9 @@ import Connect from "./Create";
 import { DojoIcon } from "./icons/Dojo";
 import { StarknetIcon } from "./icons/Starknet";
 import { GithubIcon } from "./icons/Github";
+import CartridgeConnector from "@cartridge/connector";
 import Header from "./Header";
+import { ControllerAccounts } from "@cartridge/controller";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -54,8 +56,11 @@ const GamesQuery = graphql(`
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
-  const { account } = useAccount();
+  const { account, connector } = useAccount();
   const { colorMode } = useColorMode();
+  const [controllerAccounts, setControllerAccounts] =
+    useState<ControllerAccounts>();
+  const cartridgeConnector = connector as never as CartridgeConnector;
 
   const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
@@ -63,6 +68,16 @@ const Leaderboard = () => {
       offset,
     },
   });
+
+  useEffect(() => {
+    if (!gameResult.data || !cartridgeConnector?.controller) return;
+
+    const addresses =
+      gameResult.data.numsGameModels?.edges?.map((g) => g!.node!.player!) || [];
+    cartridgeConnector.controller
+      .fetchControllers(addresses)
+      .then((accounts) => setControllerAccounts(accounts));
+  }, [gameResult, cartridgeConnector]);
 
   const totalResult = gameResult.data?.numsGameModels?.edges
     ? gameResult.data.numsGameModels?.edges.length
@@ -174,7 +189,7 @@ const Leaderboard = () => {
                           }}
                           bgColor={
                             account?.address ===
-                              addAddressPadding(edge.node.player)
+                            addAddressPadding(edge.node.player)
                               ? colorMode === "light"
                                 ? "green.100"
                                 : "green.400"
@@ -183,7 +198,9 @@ const Leaderboard = () => {
                         >
                           <Td>{index + offset + 1}</Td>
                           <Td>
-                            {formatAddress(edge.node.player)}{" "}
+                            {controllerAccounts?.[
+                              addAddressPadding(edge.node.player)
+                            ] ?? formatAddress(edge.node.player)}{" "}
                             {account?.address === edge.node.player && (
                               <>(you)</>
                             )}
