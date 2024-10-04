@@ -73,7 +73,9 @@ const Header = ({
             <strong>{formatAddress(address)}</strong>
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() => cartridgeConnector.controller.openSettings()}>
+            <MenuItem
+              onClick={() => cartridgeConnector.controller.openSettings()}
+            >
               Settings
             </MenuItem>
             <MenuItem onClick={() => disconnect()}>Disconnect</MenuItem>
