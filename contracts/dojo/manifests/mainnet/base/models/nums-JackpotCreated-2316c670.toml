@@ -1,0 +1,17 @@
+kind = "DojoModel"
+class_hash = "0x7dee8e1a7a4d23ba83256bc5a757d7df5ef96d5af1e7454f58bca06e4c610f1"
+original_class_hash = "0x7dee8e1a7a4d23ba83256bc5a757d7df5ef96d5af1e7454f58bca06e4c610f1"
+abi = "manifests/mainnet/base/abis/models/nums-JackpotCreated-2316c670.json"
+tag = "nums-JackpotCreated"
+qualified_path = "nums::systems::jackpot_actions::jackpot_actions::jackpot_created"
+manifest_name = "nums-JackpotCreated-2316c670"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "token"
+type = "Token"
+key = false

@@ -1,0 +1,42 @@
+kind = "DojoModel"
+class_hash = "0x140eecaa1e7a3c531d5a652d5e5c3fb0c848b2cefb705de15351c75db43c28c"
+original_class_hash = "0x140eecaa1e7a3c531d5a652d5e5c3fb0c848b2cefb705de15351c75db43c28c"
+abi = "manifests/sepolia/base/abis/models/nums-Jackpot-723709fc.json"
+tag = "nums-Jackpot"
+qualified_path = "nums::models::jackpot::jackpot"
+manifest_name = "nums-Jackpot-723709fc"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "win_condition"
+type = "u8"
+key = false
+
+[[members]]
+name = "winner"
+type = "Option<ContractAddress>"
+key = false
+
+[[members]]
+name = "info"
+type = "Option<Info>"
+key = false
+
+[[members]]
+name = "token"
+type = "Token"
+key = false
+
+[[members]]
+name = "fee"
+type = "Option<Fee>"
+key = false
+
+[[members]]
+name = "powerups"
+type = "bool"
+key = false
