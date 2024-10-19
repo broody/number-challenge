@@ -1,6 +1,6 @@
 kind = "DojoContract"
-class_hash = "0x521759df2489b7c743e19ff7761f1eaa00e63b76eb2a2e381b6af7cfd63161c"
-original_class_hash = "0x521759df2489b7c743e19ff7761f1eaa00e63b76eb2a2e381b6af7cfd63161c"
+class_hash = "0x4cd9084be73f252ab8bcb68b39820e709b06d017ebfabd9d854a596a53812ff"
+original_class_hash = "0x4cd9084be73f252ab8bcb68b39820e709b06d017ebfabd9d854a596a53812ff"
 base_class_hash = "0x0"
 abi = "manifests/slot/base/abis/contracts/nums-jackpot_actions-54db86b6.json"
 reads = []

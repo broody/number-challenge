@@ -12,6 +12,7 @@ pub enum JackpotType {
 pub struct Jackpot {
     #[key]
     pub jackpot_id: u32,
+    pub creator: ContractAddress,
     pub win_condition: u8,
     pub winner: Option<ContractAddress>,
     pub info: Option<Info>,

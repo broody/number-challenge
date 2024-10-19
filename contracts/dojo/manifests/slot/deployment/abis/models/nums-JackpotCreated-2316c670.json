@@ -363,54 +363,8 @@
   },
   {
     "type": "impl",
-    "name": "jackpotImpl",
-    "interface_name": "nums::models::jackpot::Ijackpot"
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "nums::models::jackpot::Info",
-    "members": [
-      {
-        "name": "title",
-        "type": "core::byte_array::ByteArray"
-      },
-      {
-        "name": "description",
-        "type": "core::byte_array::ByteArray"
-      },
-      {
-        "name": "sponsor_url",
-        "type": "core::byte_array::ByteArray"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<nums::models::jackpot::Info>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "nums::models::jackpot::Info"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
+    "name": "jackpot_createdImpl",
+    "interface_name": "nums::systems::jackpot_actions::jackpot_actions::Ijackpot_created"
   },
   {
     "type": "struct",
@@ -482,95 +436,21 @@
   },
   {
     "type": "struct",
-    "name": "nums::models::jackpot::Fee",
-    "members": [
-      {
-        "name": "address",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "amount",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "total",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "recipient",
-        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<nums::models::jackpot::Fee>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "nums::models::jackpot::Fee"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::bool",
-    "variants": [
-      {
-        "name": "False",
-        "type": "()"
-      },
-      {
-        "name": "True",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "nums::models::jackpot::Jackpot",
+    "name": "nums::systems::jackpot_actions::jackpot_actions::JackpotCreated",
     "members": [
       {
         "name": "jackpot_id",
         "type": "core::integer::u32"
       },
       {
-        "name": "creator",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "win_condition",
-        "type": "core::integer::u8"
-      },
-      {
-        "name": "winner",
-        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
-      },
-      {
-        "name": "info",
-        "type": "core::option::Option::<nums::models::jackpot::Info>"
-      },
-      {
         "name": "token",
         "type": "nums::models::jackpot::Token"
-      },
-      {
-        "name": "fee",
-        "type": "core::option::Option::<nums::models::jackpot::Fee>"
-      },
-      {
-        "name": "powerups",
-        "type": "core::bool"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "nums::models::jackpot::Ijackpot",
+    "name": "nums::systems::jackpot_actions::jackpot_actions::Ijackpot_created",
     "items": [
       {
         "type": "function",
@@ -578,7 +458,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "nums::models::jackpot::Jackpot"
+            "type": "nums::systems::jackpot_actions::jackpot_actions::JackpotCreated"
           }
         ],
         "outputs": [],
@@ -588,7 +468,7 @@
   },
   {
     "type": "event",
-    "name": "nums::models::jackpot::jackpot::Event",
+    "name": "nums::systems::jackpot_actions::jackpot_actions::jackpot_created::Event",
     "kind": "enum",
     "variants": []
   }

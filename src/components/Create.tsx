@@ -27,7 +27,7 @@ const Create = () => {
         {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
           entrypoint: "create_game",
-          calldata: [1],
+          calldata: [1], // no jackpot yet
         },
       ]);
 
@@ -37,13 +37,13 @@ const Create = () => {
         retryInterval: 500,
       });
 
-      // Parses for game idea from `Created` event
+      // Parses for game idea from `GameCreated` event
       if (receipt.isSuccess()) {
         const createdEvent = receipt.events.find(
-          //({ keys }) => keys[0] === hash.getSelector("Created"),
+          //({ keys }) => keys[0] === hash.getSelector("GameCreated"),
           ({ keys }) =>
             keys[0] ===
-            "0x11db61a792d4cf77b4eb15fbbb09fdd57607f317a5eed4ac066ea8b0750bbb",
+            "0x613f127a45b984440eb97077f485d7718ffff0d065fa4c427774abd166fba2b",
         );
 
         navigate(`/${createdEvent?.keys[1]}`);

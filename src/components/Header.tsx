@@ -74,11 +74,6 @@ const Header = ({
           </MenuButton>
           <MenuList>
             <MenuItem
-              onClick={() => cartridgeConnector.controller.openProfile()}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
               onClick={() => cartridgeConnector.controller.openSettings()}
             >
               Settings

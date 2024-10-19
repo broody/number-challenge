@@ -76,14 +76,15 @@ pub mod jackpot_actions {
                 "Win condition cannot be more than slots available"
             );
 
+            let creator = get_caller_address();
             ITokenDispatcher { contract_address: token.address }
-                .transferFrom(get_caller_address(), get_contract_address(), token.total);
+                .transferFrom( creator, get_contract_address(), token.total);
 
             let jackpot_id = world.uuid();
             set!(
                 world,
                 (Jackpot {
-                    jackpot_id, win_condition, winner: Option::None, info, token, fee, powerups,
+                    jackpot_id, win_condition, winner: Option::None, info, token, fee, powerups, creator,
                 })
             );
 

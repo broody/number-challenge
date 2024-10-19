@@ -34,7 +34,7 @@ GAME_ACTIONS_ADDR=$(awk '/\[\[contracts\]\]/,/tag = "nums-game_actions"/ {
     }
 }' "$TOML_FILE")
 
-JACKPOT_ACTIONS_ADDR=0x2bbabf6d7bfdcf570890e02648004b1c5ec1aaa17be81779b384abe28078eba
+JACKPOT_ACTIONS_ADDR=0x757277be717167d860501f4eab213a233896dbe4ba37e85c71b46e059135281
 
 if [ -z "$JACKPOT_ACTIONS_ADDR" ]; then
     echo "Error: Could not find address for tag 'nums-jackpot_actions'"

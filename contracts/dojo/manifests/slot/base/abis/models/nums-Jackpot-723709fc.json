@@ -539,6 +539,10 @@
         "type": "core::integer::u32"
       },
       {
+        "name": "creator",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
         "name": "win_condition",
         "type": "core::integer::u8"
       },
