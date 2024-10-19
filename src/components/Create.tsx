@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CartridgeConnector from "@cartridge/connector";
 import { useAccount, useExplorer } from "@starknet-react/core";
 import useToast from "../hooks/toast";
+import { CallData } from "starknet";
 
 const Create = () => {
   const { address, account, connector } = useAccount();
@@ -25,6 +26,14 @@ const Create = () => {
       setCreating(true);
       const { transaction_hash } = await account.execute([
         {
+          contractAddress: import.meta.env.VITE_VRF_CONTRACT,
+          entrypoint: 'request_random',
+          calldata: CallData.compile({
+            caller: import.meta.env.VITE_ACTIONS_CONTRACT,
+            source: {type: 0, address: account.address}
+          })
+        },
+        {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
           entrypoint: "create_game",
           calldata: [1], // no jackpot yet
@@ -40,7 +49,7 @@ const Create = () => {
       // Parses for game idea from `GameCreated` event
       if (receipt.isSuccess()) {
         const createdEvent = receipt.events.find(
-          //({ keys }) => keys[0] === hash.getSelector("GameCreated"),
+          // no idea what this key is, previously it would've been hash of `GameCreated`
           ({ keys }) =>
             keys[0] ===
             "0x613f127a45b984440eb97077f485d7718ffff0d065fa4c427774abd166fba2b",

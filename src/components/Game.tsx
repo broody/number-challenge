@@ -19,6 +19,7 @@ import {
 import { useAccount, useExplorer } from "@starknet-react/core";
 import useToast from "../hooks/toast";
 import Header from "./Header";
+import { CallData } from "starknet";
 
 const REFRESH_INTERVAL = 1000;
 
@@ -133,6 +134,14 @@ const Game = () => {
     try {
       setIsLoading(true);
       const { transaction_hash } = await account.execute([
+        {
+          contractAddress: import.meta.env.VITE_VRF_CONTRACT,
+          entrypoint: 'request_random',
+          calldata: CallData.compile({
+            caller: import.meta.env.VITE_ACTIONS_CONTRACT,
+            source: {source_type: 0, address: account.address}
+          })
+        },
         {
           contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
           entrypoint: "set_slot",

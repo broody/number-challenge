@@ -28,6 +28,10 @@ const policies = [
     target: import.meta.env.VITE_ACTIONS_CONTRACT,
     method: "set_slot",
   },
+  {
+    target: import.meta.env.VITE_VRF_CONTRACT,
+    method: "request_random"
+  }
 ];
 
 const options: ControllerOptions = {
