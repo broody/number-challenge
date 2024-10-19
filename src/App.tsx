@@ -36,6 +36,7 @@ const options: ControllerOptions = {
   paymaster: {
     caller: shortString.encodeShortString("ANY_CALLER"),
   },
+  profileUrl: "https://profile.cartridge.gg",
 };
 
 const connectors = [new CartridgeConnector(options) as never as Connector];

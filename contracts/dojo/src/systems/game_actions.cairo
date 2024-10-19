@@ -3,20 +3,7 @@ use nums::models::jackpot::JackpotType;
 use starknet::ContractAddress;
 
 #[dojo::interface]
-pub trait IActions {
-    fn create_jackpot(
-        ref world: IWorldDispatcher,
-        threshold_offset: u8,
-        token_type: JackpotType,
-        token_address: ContractAddress,
-        token_total: u256,
-        token_id: Option<u256>,
-        fee: u256,
-        fee_address: ContractAddress,
-        fee_recipient: Option<ContractAddress>,
-        enable_powerups: bool,
-    ) -> u32;
-    fn claim_jackpot(ref world: IWorldDispatcher, game_id: u32);
+pub trait IGameActions {
     fn create_game(ref world: IWorldDispatcher, jackpot_id: Option<u32>) -> (u32, u16);
     fn set_config(ref world: IWorldDispatcher, config: Config);
     fn set_slot(ref world: IWorldDispatcher, game_id: u32, target_idx: u8) -> u16;
@@ -24,8 +11,9 @@ pub trait IActions {
 }
 
 #[dojo::contract]
-pub mod actions {
+pub mod game_actions {
     use core::array::ArrayTrait;
+    use core::num::traits::Zero;
     use nums::interfaces::token::{INumsTokenDispatcher, INumsTokenDispatcherTrait};
     use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
     use nums::models::config::{Config, SlotReward, SlotRewardTrait};
@@ -36,11 +24,11 @@ pub mod actions {
     use nums::utils::random::{Random, RandomImpl};
 
     use starknet::{ContractAddress, get_caller_address};
-    use super::IActions;
+    use super::IGameActions;
 
     const WORLD: felt252 = 0;
 
-    #[derive(Copy, Drop, Serde)]
+    #[derive(Drop, Serde)]
     #[dojo::event]
     #[dojo::model]
     pub struct Inserted {
@@ -54,10 +42,10 @@ pub mod actions {
         remaining_slots: u8
     }
 
-    #[derive(Copy, Drop, Serde)]
+    #[derive(Drop, Serde)]
     #[dojo::event]
     #[dojo::model]
-    pub struct Created {
+    pub struct GameCreated {
         #[key]
         game_id: u32,
         #[key]
@@ -69,58 +57,13 @@ pub mod actions {
     }
 
     #[abi(embed_v0)]
-    impl ActionsImpl of IActions<ContractState> {
+    impl GameActionsImpl of IGameActions<ContractState> {
         fn set_config(ref world: IWorldDispatcher, config: Config) {
             let owner = get_caller_address();
             assert!(world.is_owner(WORLD, owner), "Unauthorized owner");
             assert!(config.world_resource == WORLD, "Invalid config state");
 
             set!(world, (config));
-        }
-
-        fn create_jackpot(
-            ref world: IWorldDispatcher,
-            threshold_offset: u8,
-            token_type: JackpotType,
-            token_address: ContractAddress,
-            token_total: u256,
-            token_id: Option<u256>,
-            fee: u256,
-            fee_address: ContractAddress,
-            fee_recipient: Option<ContractAddress>,
-            enable_powerups: bool,
-        ) -> u32 {
-            if fee_recipient.is_some() {
-                panic!("Fee recipient not implemented");
-            }
-
-            if token_type != JackpotType::ERC20 {
-                panic!("Only ERC20 tokens are supported");
-            }
-
-            ITokenDispatcher { contract_address: token_address }
-                .transfer(get_caller_address(), token_total);
-
-            let jackpot_id = world.uuid();
-            set!(
-                world,
-                (Jackpot {
-                    jackpot_id,
-                    threshold_offset,
-                    winner: Option::None,
-                    token_type,
-                    token_address,
-                    token_total,
-                    token_id,
-                    fee,
-                    fee_total: 0,
-                    fee_address,
-                    fee_recipient,
-                    enable_powerups,
-                })
-            );
-
-            jackpot_id
         }
 
         /// Creates a new game instance, initializes its state, and emits a creation event.
@@ -162,7 +105,7 @@ pub mod actions {
 
             emit!(
                 world,
-                Created {
+                GameCreated {
                     game_id,
                     player,
                     max_slots: config.max_slots,
@@ -174,6 +117,7 @@ pub mod actions {
 
             if let Option::Some(jackpot_id) = jackpot_id {
                 let jackpot = get!(world, (jackpot_id), Jackpot);
+                assert!(jackpot.token.address.is_non_zero(), "No jackpot exists");
                 assert!(jackpot.winner.is_none(), "Jackpot already won");
                 // TODO: Transfer fee token
             }
@@ -274,45 +218,6 @@ pub mod actions {
 
             name_model.name = name;
             set!(world, (name_model));
-        }
-
-
-        /// Claims the jackpot for a specific game. Ensures that the player is authorized and that
-        /// the jackpot has not been claimed before.
-        /// Transfers the jackpot token to the player and updates the jackpot state.
-        ///
-        /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
-        /// * `game_id` - The identifier of the game.
-        fn claim_jackpot(ref world: IWorldDispatcher, game_id: u32) {
-            let player = get_caller_address();
-            let game = get!(world, (game_id, player), Game);
-            let jackpot_id = game.jackpot_id.expect('Jackpot not defined');
-            let mut jackpot = get!(world, (jackpot_id), Jackpot);
-            assert!(jackpot.winner.is_none(), "Jackpot already won");
-
-            let mut nums = ArrayTrait::<u16>::new();
-            let mut idx = 0_u8;
-            loop {
-                let slot = get!(world, (game_id, player, idx), Slot);
-                if slot.number != 0 {
-                    nums.append(slot.number);
-                }
-
-                idx += 1_u8;
-                if idx == (game.max_slots - jackpot.threshold_offset) {
-                    break;
-                }
-            };
-
-            assert!(game.is_valid(@nums), "Invalid game state");
-
-            // TODO: support erc721 and erc1155 jackpot types
-            ITokenDispatcher { contract_address: jackpot.token_address }
-                .transfer(game.player, jackpot.token_total);
-
-            jackpot.winner = Option::Some(game.player);
-            set!(world, (jackpot));
         }
     }
 

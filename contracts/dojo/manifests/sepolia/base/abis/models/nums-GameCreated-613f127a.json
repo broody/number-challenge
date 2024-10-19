@@ -363,12 +363,12 @@
   },
   {
     "type": "impl",
-    "name": "createdImpl",
-    "interface_name": "nums::systems::actions::actions::Icreated"
+    "name": "game_createdImpl",
+    "interface_name": "nums::systems::game_actions::game_actions::Igame_created"
   },
   {
     "type": "struct",
-    "name": "nums::systems::actions::actions::Created",
+    "name": "nums::systems::game_actions::game_actions::GameCreated",
     "members": [
       {
         "name": "game_id",
@@ -398,7 +398,7 @@
   },
   {
     "type": "interface",
-    "name": "nums::systems::actions::actions::Icreated",
+    "name": "nums::systems::game_actions::game_actions::Igame_created",
     "items": [
       {
         "type": "function",
@@ -406,7 +406,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "nums::systems::actions::actions::Created"
+            "type": "nums::systems::game_actions::game_actions::GameCreated"
           }
         ],
         "outputs": [],
@@ -416,7 +416,7 @@
   },
   {
     "type": "event",
-    "name": "nums::systems::actions::actions::created::Event",
+    "name": "nums::systems::game_actions::game_actions::game_created::Event",
     "kind": "enum",
     "variants": []
   }

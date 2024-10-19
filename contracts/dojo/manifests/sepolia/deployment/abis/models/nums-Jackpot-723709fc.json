@@ -381,19 +381,33 @@
     ]
   },
   {
+    "type": "struct",
+    "name": "nums::models::jackpot::Info",
+    "members": [
+      {
+        "name": "title",
+        "type": "core::byte_array::ByteArray"
+      },
+      {
+        "name": "description",
+        "type": "core::byte_array::ByteArray"
+      },
+      {
+        "name": "sponsor_url",
+        "type": "core::byte_array::ByteArray"
+      }
+    ]
+  },
+  {
     "type": "enum",
-    "name": "nums::models::jackpot::JackpotType",
+    "name": "core::option::Option::<nums::models::jackpot::Info>",
     "variants": [
       {
-        "name": "ERC20",
-        "type": "()"
+        "name": "Some",
+        "type": "nums::models::jackpot::Info"
       },
       {
-        "name": "ERC721",
-        "type": "()"
-      },
-      {
-        "name": "ERC1155",
+        "name": "None",
         "type": "()"
       }
     ]
@@ -428,6 +442,82 @@
   },
   {
     "type": "enum",
+    "name": "nums::models::jackpot::JackpotType",
+    "variants": [
+      {
+        "name": "ERC20",
+        "type": "()"
+      },
+      {
+        "name": "ERC721",
+        "type": "()"
+      },
+      {
+        "name": "ERC1155",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::Token",
+    "members": [
+      {
+        "name": "id",
+        "type": "core::option::Option::<core::integer::u256>"
+      },
+      {
+        "name": "address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "ty",
+        "type": "nums::models::jackpot::JackpotType"
+      },
+      {
+        "name": "total",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::Fee",
+    "members": [
+      {
+        "name": "address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "total",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "recipient",
+        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::jackpot::Fee>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::jackpot::Fee"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "enum",
     "name": "core::bool",
     "variants": [
       {
@@ -449,7 +539,11 @@
         "type": "core::integer::u32"
       },
       {
-        "name": "threshold_offset",
+        "name": "creator",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "win_condition",
         "type": "core::integer::u8"
       },
       {
@@ -457,39 +551,19 @@
         "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
       },
       {
-        "name": "token_type",
-        "type": "nums::models::jackpot::JackpotType"
+        "name": "info",
+        "type": "core::option::Option::<nums::models::jackpot::Info>"
       },
       {
-        "name": "token_address",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "token_total",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "token_id",
-        "type": "core::option::Option::<core::integer::u256>"
+        "name": "token",
+        "type": "nums::models::jackpot::Token"
       },
       {
         "name": "fee",
-        "type": "core::integer::u256"
+        "type": "core::option::Option::<nums::models::jackpot::Fee>"
       },
       {
-        "name": "fee_address",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "fee_total",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "fee_recipient",
-        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
-      },
-      {
-        "name": "enable_powerups",
+        "name": "powerups",
         "type": "core::bool"
       }
     ]

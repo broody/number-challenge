@@ -1,0 +1,17 @@
+kind = "DojoModel"
+class_hash = "0x42b45b5b3a4d23929c8ea5210d76a86ba6a937eb03efd6c377e3aed7892e956"
+original_class_hash = "0x42b45b5b3a4d23929c8ea5210d76a86ba6a937eb03efd6c377e3aed7892e956"
+abi = "manifests/sepolia/base/abis/models/nums-JackpotClaimed-175ae387.json"
+tag = "nums-JackpotClaimed"
+qualified_path = "nums::systems::jackpot_actions::jackpot_actions::jackpot_claimed"
+manifest_name = "nums-JackpotClaimed-175ae387"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = false

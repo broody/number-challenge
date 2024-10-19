@@ -1,0 +1,37 @@
+kind = "DojoModel"
+class_hash = "0x67499b3089307162959114402eae1309abf589160f1f67c273becad4d7b7150"
+original_class_hash = "0x67499b3089307162959114402eae1309abf589160f1f67c273becad4d7b7150"
+abi = "manifests/sepolia/base/abis/models/nums-GameCreated-613f127a.json"
+tag = "nums-GameCreated"
+qualified_path = "nums::systems::game_actions::game_actions::game_created"
+manifest_name = "nums-GameCreated-613f127a"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "max_slots"
+type = "u8"
+key = false
+
+[[members]]
+name = "max_number"
+type = "u16"
+key = false
+
+[[members]]
+name = "min_number"
+type = "u16"
+key = false
+
+[[members]]
+name = "jackpot_id"
+type = "Option<u32>"
+key = false

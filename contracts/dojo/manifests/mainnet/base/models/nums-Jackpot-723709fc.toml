@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x66caa397edfd21198adaffacd4276f6a277b76eb59990cc1fe8d6fc6dba7eb5"
-original_class_hash = "0x66caa397edfd21198adaffacd4276f6a277b76eb59990cc1fe8d6fc6dba7eb5"
+class_hash = "0x13fa8c926a1fa02eed4635099fbfa4f42e0f2ed08b1ab2a25b84caf312b301a"
+original_class_hash = "0x13fa8c926a1fa02eed4635099fbfa4f42e0f2ed08b1ab2a25b84caf312b301a"
 abi = "manifests/mainnet/base/abis/models/nums-Jackpot-723709fc.json"
 tag = "nums-Jackpot"
 qualified_path = "nums::models::jackpot::jackpot"
@@ -12,7 +12,12 @@ type = "u32"
 key = true
 
 [[members]]
-name = "threshold_offset"
+name = "creator"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "win_condition"
 type = "u8"
 key = false
 
@@ -22,46 +27,21 @@ type = "Option<ContractAddress>"
 key = false
 
 [[members]]
-name = "token_type"
-type = "JackpotType"
+name = "info"
+type = "Option<Info>"
 key = false
 
 [[members]]
-name = "token_address"
-type = "ContractAddress"
-key = false
-
-[[members]]
-name = "token_total"
-type = "u256"
-key = false
-
-[[members]]
-name = "token_id"
-type = "Option<u256>"
+name = "token"
+type = "Token"
 key = false
 
 [[members]]
 name = "fee"
-type = "u256"
+type = "Option<Fee>"
 key = false
 
 [[members]]
-name = "fee_address"
-type = "ContractAddress"
-key = false
-
-[[members]]
-name = "fee_total"
-type = "u256"
-key = false
-
-[[members]]
-name = "fee_recipient"
-type = "Option<ContractAddress>"
-key = false
-
-[[members]]
-name = "enable_powerups"
+name = "powerups"
 type = "bool"
 key = false
