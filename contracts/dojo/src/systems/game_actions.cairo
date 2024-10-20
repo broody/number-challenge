@@ -77,7 +77,7 @@ pub mod game_actions {
             let config = get!(world, (WORLD), Config).game.expect('Game config not set');
             let game_id = world.uuid();
             let player = get_caller_address();
-            let mut rand = RandomImpl::new_vrf(world);
+            let mut rand = RandomImpl::new(world);
             let next_number = rand.between::<u16>(config.min_number, config.max_number);
             if let Option::Some(reward) = get!(world, (WORLD), Config).reward {
                 assert!(reward.levels.len() > 0, "Reward levels not set");
@@ -169,7 +169,7 @@ pub mod game_actions {
 
             // Update game state
             let target_number = game.next_number;
-            let mut rand = RandomImpl::new_vrf(world);
+            let mut rand = RandomImpl::new(world);
             let next_number = next_random(rand, @nums, game.min_number, game.max_number);
             game.next_number = next_number;
             game.remaining_slots -= 1;
