@@ -368,6 +368,58 @@
   },
   {
     "type": "enum",
+    "name": "core::option::Option::<core::integer::u64>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::KingOfTheHill",
+    "members": [
+      {
+        "name": "extension_time",
+        "type": "core::option::Option::<core::integer::u64>"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::PartialVictory",
+    "members": [
+      {
+        "name": "slots_required",
+        "type": "core::integer::u16"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "nums::models::jackpot::JackpotMode",
+    "variants": [
+      {
+        "name": "KING_OF_THE_HILL",
+        "type": "nums::models::jackpot::KingOfTheHill"
+      },
+      {
+        "name": "PARTIAL_VICTORY",
+        "type": "nums::models::jackpot::PartialVictory"
+      },
+      {
+        "name": "FULL_HOUSE",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "enum",
     "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
     "variants": [
       {
@@ -442,7 +494,7 @@
   },
   {
     "type": "enum",
-    "name": "nums::models::jackpot::JackpotType",
+    "name": "nums::models::jackpot::TokenType",
     "variants": [
       {
         "name": "ERC20",
@@ -472,7 +524,7 @@
       },
       {
         "name": "ty",
-        "type": "nums::models::jackpot::JackpotType"
+        "type": "nums::models::jackpot::TokenType"
       },
       {
         "name": "total",
@@ -543,8 +595,8 @@
         "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "win_condition",
-        "type": "core::integer::u8"
+        "name": "mode",
+        "type": "nums::models::jackpot::JackpotMode"
       },
       {
         "name": "winner",

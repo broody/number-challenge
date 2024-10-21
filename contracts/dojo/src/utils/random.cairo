@@ -5,9 +5,9 @@ use starknet::ContractAddress;
 use starknet::get_contract_address;
 use starknet::contract_address_const;
 use starknet::get_caller_address;
-use cartridge_vrf::IVrfProviderDispatcher;
-use cartridge_vrf::IVrfProviderDispatcherTrait;
-use cartridge_vrf::Source;
+// use cartridge_vrf::IVrfProviderDispatcher;
+// use cartridge_vrf::IVrfProviderDispatcherTrait;
+// use cartridge_vrf::Source;
 
 const VRF_PROVIDER_ADDRESS: felt252 = 0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f;
 
@@ -25,11 +25,11 @@ pub impl RandomImpl of RandomTrait {
     }
 
     // https://docs.cartridge.gg/vrf/overview
-    fn new_vrf(world: IWorldDispatcher) -> Random {
-        let vrf_provider = IVrfProviderDispatcher { contract_address: contract_address_const::<VRF_PROVIDER_ADDRESS>() };
-        let seed = vrf_provider.consume_random(Source::Nonce(get_caller_address()));
-        Random { world, seed, nonce: 0 }
-    }
+    // fn new_vrf(world: IWorldDispatcher) -> Random {
+    //     let vrf_provider = IVrfProviderDispatcher { contract_address: contract_address_const::<VRF_PROVIDER_ADDRESS>() };
+    //     let seed = vrf_provider.consume_random(Source::Nonce(get_caller_address()));
+    //     Random { world, seed, nonce: 0 }
+    // }
 
     fn next_seed(ref self: Random) -> felt252 {
         self.nonce += 1;

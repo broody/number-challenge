@@ -132,33 +132,15 @@
     "interface_name": "nums::systems::jackpot_actions::IJackpotActions"
   },
   {
-    "type": "struct",
-    "name": "nums::models::jackpot::Info",
-    "members": [
-      {
-        "name": "title",
-        "type": "core::byte_array::ByteArray"
-      },
-      {
-        "name": "description",
-        "type": "core::byte_array::ByteArray"
-      },
-      {
-        "name": "sponsor_url",
-        "type": "core::byte_array::ByteArray"
-      }
-    ]
-  },
-  {
     "type": "enum",
-    "name": "core::option::Option::<nums::models::jackpot::Info>",
+    "name": "core::bool",
     "variants": [
       {
-        "name": "Some",
-        "type": "nums::models::jackpot::Info"
+        "name": "False",
+        "type": "()"
       },
       {
-        "name": "None",
+        "name": "True",
         "type": "()"
       }
     ]
@@ -193,7 +175,7 @@
   },
   {
     "type": "enum",
-    "name": "nums::models::jackpot::TokenType",
+    "name": "nums::models::jackpot::token::TokenType",
     "variants": [
       {
         "name": "ERC20",
@@ -211,7 +193,7 @@
   },
   {
     "type": "struct",
-    "name": "nums::models::jackpot::Token",
+    "name": "nums::models::jackpot::token::Token",
     "members": [
       {
         "name": "id",
@@ -223,75 +205,11 @@
       },
       {
         "name": "ty",
-        "type": "nums::models::jackpot::TokenType"
+        "type": "nums::models::jackpot::token::TokenType"
       },
       {
         "name": "total",
         "type": "core::integer::u256"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "nums::models::jackpot::Fee",
-    "members": [
-      {
-        "name": "address",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "amount",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "total",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "recipient",
-        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<nums::models::jackpot::Fee>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "nums::models::jackpot::Fee"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::bool",
-    "variants": [
-      {
-        "name": "False",
-        "type": "()"
-      },
-      {
-        "name": "True",
-        "type": "()"
       }
     ]
   },
@@ -301,22 +219,30 @@
     "items": [
       {
         "type": "function",
-        "name": "create_jackpot",
+        "name": "create_king_jackpot",
         "inputs": [
           {
-            "name": "info",
-            "type": "core::option::Option::<nums::models::jackpot::Info>"
+            "name": "title",
+            "type": "core::felt252"
           },
           {
-            "name": "token",
-            "type": "nums::models::jackpot::Token"
-          },
-          {
-            "name": "fee",
-            "type": "core::option::Option::<nums::models::jackpot::Fee>"
+            "name": "expiration",
+            "type": "core::integer::u64"
           },
           {
             "name": "powerups",
+            "type": "core::bool"
+          },
+          {
+            "name": "token",
+            "type": "nums::models::jackpot::token::Token"
+          },
+          {
+            "name": "extension_time",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "transfer",
             "type": "core::bool"
           }
         ],
@@ -329,7 +255,75 @@
       },
       {
         "type": "function",
+        "name": "create_conditional_jackpot",
+        "inputs": [
+          {
+            "name": "title",
+            "type": "core::felt252"
+          },
+          {
+            "name": "expiration",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "powerups",
+            "type": "core::bool"
+          },
+          {
+            "name": "token",
+            "type": "nums::models::jackpot::token::Token"
+          },
+          {
+            "name": "slots_required",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "transfer",
+            "type": "core::bool"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u32"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "verify_jackpot",
+        "inputs": [
+          {
+            "name": "jackpot_id",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "verified",
+            "type": "core::bool"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
         "name": "claim_jackpot",
+        "inputs": [
+          {
+            "name": "game_id",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "transfer",
+            "type": "core::bool"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "crown_me",
         "inputs": [
           {
             "name": "game_id",

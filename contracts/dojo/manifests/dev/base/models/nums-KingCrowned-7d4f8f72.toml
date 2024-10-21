@@ -1,0 +1,22 @@
+kind = "DojoModel"
+class_hash = "0x5380815aaf4f941a54bf3f4814adefdcef06f0e8ff9f5722efc9d0e1b3ea12f"
+original_class_hash = "0x5380815aaf4f941a54bf3f4814adefdcef06f0e8ff9f5722efc9d0e1b3ea12f"
+abi = "manifests/dev/base/abis/models/nums-KingCrowned-7d4f8f72.json"
+tag = "nums-KingCrowned"
+qualified_path = "nums::systems::jackpot_actions::jackpot_actions::king_crowned"
+manifest_name = "nums-KingCrowned-7d4f8f72"
+
+[[members]]
+name = "game_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = false

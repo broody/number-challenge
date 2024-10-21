@@ -396,7 +396,7 @@
   },
   {
     "type": "enum",
-    "name": "nums::models::jackpot::TokenType",
+    "name": "nums::models::jackpot::token::TokenType",
     "variants": [
       {
         "name": "ERC20",
@@ -414,7 +414,7 @@
   },
   {
     "type": "struct",
-    "name": "nums::models::jackpot::Token",
+    "name": "nums::models::jackpot::token::Token",
     "members": [
       {
         "name": "id",
@@ -426,7 +426,7 @@
       },
       {
         "name": "ty",
-        "type": "nums::models::jackpot::TokenType"
+        "type": "nums::models::jackpot::token::TokenType"
       },
       {
         "name": "total",
@@ -444,7 +444,7 @@
       },
       {
         "name": "token",
-        "type": "nums::models::jackpot::Token"
+        "type": "nums::models::jackpot::token::Token"
       }
     ]
   },

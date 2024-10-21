@@ -5,9 +5,9 @@ mod tests {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
     use nums::{
-        systems::{actions::{actions, IActionsDispatcher, IActionsDispatcherTrait}},
+        systems::{game_actions::{game_actions, IGameActionsDispatcher, IGameActionsDispatcherTrait}},
         models::{
-            jackpot::{Jackpot, jackpot}, game::{Game, GameTrait, game}, slot::{Slot, slot},
+            jackpot::jackpot::{Jackpot, jackpot}, game::{Game, GameTrait, game}, slot::{Slot, slot},
             name::{Name, name}, config::{Config, GameConfig, config}
         }
     };
@@ -27,12 +27,12 @@ mod tests {
         let mut models = array![config::TEST_CLASS_HASH,];
         let world = spawn_test_world(["nums"].span(), models.span());
         let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
-        let actions_system = IActionsDispatcher { contract_address };
+            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let game_actions = IGameActionsDispatcher { contract_address };
 
         world.grant_writer(Model::<Config>::selector(), contract_address);
 
-        actions_system.set_config(CONFIG());
+        game_actions.set_config(CONFIG());
     }
 
     #[test]
@@ -42,13 +42,13 @@ mod tests {
         let world = spawn_test_world(["nums"].span(), models.span());
 
         let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
-        let actions_system = IActionsDispatcher { contract_address };
+            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let game_actions = IGameActionsDispatcher { contract_address };
 
         let unauthorized_caller = starknet::contract_address_const::<0x1337>();
         starknet::testing::set_contract_address(unauthorized_caller);
 
-        actions_system.set_config(CONFIG());
+        game_actions.set_config(CONFIG());
     }
 
     #[test]
@@ -64,17 +64,17 @@ mod tests {
         let world = spawn_test_world(["nums"].span(), models.span());
 
         let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
-        let actions_system = IActionsDispatcher { contract_address };
+            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let game_actions = IGameActionsDispatcher { contract_address };
 
         world.grant_writer(Model::<Game>::selector(), contract_address);
         world.grant_writer(Model::<Config>::selector(), contract_address);
         world.grant_writer(Model::<Jackpot>::selector(), contract_address);
         world.grant_writer(Model::<Slot>::selector(), contract_address);
 
-        actions_system.set_config(CONFIG());
+        game_actions.set_config(CONFIG());
 
-        let (game_id, first_number) = actions_system.create_game(Option::None);
+        let (game_id, first_number) = game_actions.create_game(Option::None);
         let game = get!(world, (game_id, caller), Game);
         let remaining = game.remaining_slots;
         assert(game.next_number == first_number, 'next number create is wrong');
@@ -82,15 +82,15 @@ mod tests {
         // set transaction hash so seed is "random"
         set_transaction_hash(42);
 
-        let next_number = actions_system.set_slot(game_id, 6);
+        let next_number = game_actions.set_slot(game_id, 6);
         let game = get!(world, (game_id, caller), Game);
         assert(game.next_number == next_number, 'next number set slot is wrong');
         assert(game.remaining_slots == remaining - 1, 'remaining slots is wrong');
 
         if next_number > first_number {
-            actions_system.set_slot(game_id, 7);
+            game_actions.set_slot(game_id, 7);
         } else {
-            actions_system.set_slot(game_id, 5);
+            game_actions.set_slot(game_id, 5);
         }
     }
 
@@ -104,8 +104,6 @@ mod tests {
             max_number: 1000_u16,
             min_number: 0_u16,
             next_number: 42_u16,
-            total_rewarded: 0_u32,
-            next_reward: 0_u16,
             jackpot_id: Option::None,
         };
 
@@ -130,17 +128,17 @@ mod tests {
         let world = spawn_test_world(["nums"].span(), models.span());
 
         let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
-        let actions_system = IActionsDispatcher { contract_address };
+            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let game_actions = IGameActionsDispatcher { contract_address };
 
         world.grant_writer(Model::<Game>::selector(), contract_address);
         world.grant_writer(Model::<Config>::selector(), contract_address);
         world.grant_writer(Model::<Name>::selector(), contract_address);
 
-        actions_system.set_config(CONFIG());
+        game_actions.set_config(CONFIG());
 
-        let (game_id, _) = actions_system.create_game(Option::None);
-        actions_system.set_name(game_id, 'test_name');
+        let (game_id, _) = game_actions.create_game(Option::None);
+        game_actions.set_name(game_id, 'test_name');
 
         let name = get!(world, (game_id, caller), Name);
         assert!(name.name == 'test_name', "name is wrong");
