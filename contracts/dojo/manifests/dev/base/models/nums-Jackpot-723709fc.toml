@@ -1,0 +1,57 @@
+kind = "DojoModel"
+class_hash = "0x6a21fdb4091946ed7f43d2c38e1ba1cc17aa7dc08c967f67bc6dcbf4c9ec56d"
+original_class_hash = "0x6a21fdb4091946ed7f43d2c38e1ba1cc17aa7dc08c967f67bc6dcbf4c9ec56d"
+abi = "manifests/dev/base/abis/models/nums-Jackpot-723709fc.json"
+tag = "nums-Jackpot"
+qualified_path = "nums::models::jackpot::jackpot::jackpot"
+manifest_name = "nums-Jackpot-723709fc"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "title"
+type = "felt252"
+key = false
+
+[[members]]
+name = "creator"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "mode"
+type = "JackpotMode"
+key = false
+
+[[members]]
+name = "expiration"
+type = "u64"
+key = false
+
+[[members]]
+name = "powerups"
+type = "bool"
+key = false
+
+[[members]]
+name = "token"
+type = "Token"
+key = false
+
+[[members]]
+name = "winner"
+type = "Option<ContractAddress>"
+key = false
+
+[[members]]
+name = "claimed"
+type = "bool"
+key = false
+
+[[members]]
+name = "verified"
+type = "bool"
+key = false

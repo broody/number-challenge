@@ -363,94 +363,30 @@
   },
   {
     "type": "impl",
-    "name": "jackpot_createdImpl",
-    "interface_name": "nums::systems::jackpot_actions::jackpot_actions::Ijackpot_created"
+    "name": "metadataImpl",
+    "interface_name": "nums::models::jackpot::metadata::Imetadata"
   },
   {
     "type": "struct",
-    "name": "core::integer::u256",
-    "members": [
-      {
-        "name": "low",
-        "type": "core::integer::u128"
-      },
-      {
-        "name": "high",
-        "type": "core::integer::u128"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<core::integer::u256>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "nums::models::jackpot::TokenType",
-    "variants": [
-      {
-        "name": "ERC20",
-        "type": "()"
-      },
-      {
-        "name": "ERC721",
-        "type": "()"
-      },
-      {
-        "name": "ERC1155",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "nums::models::jackpot::Token",
-    "members": [
-      {
-        "name": "id",
-        "type": "core::option::Option::<core::integer::u256>"
-      },
-      {
-        "name": "address",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "ty",
-        "type": "nums::models::jackpot::TokenType"
-      },
-      {
-        "name": "total",
-        "type": "core::integer::u256"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::JackpotCreated",
+    "name": "nums::models::jackpot::metadata::Metadata",
     "members": [
       {
         "name": "jackpot_id",
         "type": "core::integer::u32"
       },
       {
-        "name": "token",
-        "type": "nums::models::jackpot::Token"
+        "name": "description",
+        "type": "core::byte_array::ByteArray"
+      },
+      {
+        "name": "sponsor_url",
+        "type": "core::byte_array::ByteArray"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::Ijackpot_created",
+    "name": "nums::models::jackpot::metadata::Imetadata",
     "items": [
       {
         "type": "function",
@@ -458,7 +394,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "nums::systems::jackpot_actions::jackpot_actions::JackpotCreated"
+            "type": "nums::models::jackpot::metadata::Metadata"
           }
         ],
         "outputs": [],
@@ -468,7 +404,7 @@
   },
   {
     "type": "event",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::jackpot_created::Event",
+    "name": "nums::models::jackpot::metadata::metadata::Event",
     "kind": "enum",
     "variants": []
   }

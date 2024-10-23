@@ -1,5 +1,4 @@
 use nums::models::config::Config;
-use nums::models::jackpot::JackpotType;
 use starknet::ContractAddress;
 
 #[dojo::interface]
@@ -18,7 +17,7 @@ pub mod game_actions {
     use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
     use nums::models::config::{Config, SlotReward, SlotRewardTrait};
     use nums::models::game::{Game, Reward, GameTrait};
-    use nums::models::jackpot::{Jackpot, JackpotType};
+    use nums::models::jackpot::jackpot::Jackpot;
     use nums::models::name::Name;
     use nums::models::slot::Slot;
     use nums::utils::random::{Random, RandomImpl};

@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 
-#[derive(Drop, Serde)]
+#[derive(Debug, Drop, Serde)]
 #[dojo::model]
 pub struct Slot {
     #[key]

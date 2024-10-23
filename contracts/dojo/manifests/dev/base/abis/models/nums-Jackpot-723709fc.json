@@ -363,8 +363,64 @@
   },
   {
     "type": "impl",
-    "name": "jackpot_createdImpl",
-    "interface_name": "nums::systems::jackpot_actions::jackpot_actions::Ijackpot_created"
+    "name": "jackpotImpl",
+    "interface_name": "nums::models::jackpot::jackpot::Ijackpot"
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::mode::KingOfTheHill",
+    "members": [
+      {
+        "name": "extension_time",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "king",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "remaining_slots",
+        "type": "core::integer::u8"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::mode::ConditionalVictory",
+    "members": [
+      {
+        "name": "slots_required",
+        "type": "core::integer::u8"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "nums::models::jackpot::mode::JackpotMode",
+    "variants": [
+      {
+        "name": "KING_OF_THE_HILL",
+        "type": "nums::models::jackpot::mode::KingOfTheHill"
+      },
+      {
+        "name": "CONDITIONAL_VICTORY",
+        "type": "nums::models::jackpot::mode::ConditionalVictory"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
   },
   {
     "type": "struct",
@@ -396,7 +452,7 @@
   },
   {
     "type": "enum",
-    "name": "nums::models::jackpot::TokenType",
+    "name": "nums::models::jackpot::token::TokenType",
     "variants": [
       {
         "name": "ERC20",
@@ -414,7 +470,7 @@
   },
   {
     "type": "struct",
-    "name": "nums::models::jackpot::Token",
+    "name": "nums::models::jackpot::token::Token",
     "members": [
       {
         "name": "id",
@@ -426,7 +482,7 @@
       },
       {
         "name": "ty",
-        "type": "nums::models::jackpot::TokenType"
+        "type": "nums::models::jackpot::token::TokenType"
       },
       {
         "name": "total",
@@ -435,22 +491,68 @@
     ]
   },
   {
+    "type": "enum",
+    "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
     "type": "struct",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::JackpotCreated",
+    "name": "nums::models::jackpot::jackpot::Jackpot",
     "members": [
       {
         "name": "jackpot_id",
         "type": "core::integer::u32"
       },
       {
+        "name": "title",
+        "type": "core::felt252"
+      },
+      {
+        "name": "creator",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "mode",
+        "type": "nums::models::jackpot::mode::JackpotMode"
+      },
+      {
+        "name": "expiration",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "powerups",
+        "type": "core::bool"
+      },
+      {
         "name": "token",
-        "type": "nums::models::jackpot::Token"
+        "type": "nums::models::jackpot::token::Token"
+      },
+      {
+        "name": "winner",
+        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
+      },
+      {
+        "name": "claimed",
+        "type": "core::bool"
+      },
+      {
+        "name": "verified",
+        "type": "core::bool"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::Ijackpot_created",
+    "name": "nums::models::jackpot::jackpot::Ijackpot",
     "items": [
       {
         "type": "function",
@@ -458,7 +560,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "nums::systems::jackpot_actions::jackpot_actions::JackpotCreated"
+            "type": "nums::models::jackpot::jackpot::Jackpot"
           }
         ],
         "outputs": [],
@@ -468,7 +570,7 @@
   },
   {
     "type": "event",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::jackpot_created::Event",
+    "name": "nums::models::jackpot::jackpot::jackpot::Event",
     "kind": "enum",
     "variants": []
   }

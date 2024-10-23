@@ -9,7 +9,7 @@ sierra-replace-ids = true
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.16" }
-cartridge_vrf = { git = "https://github.com/cartridge-gg/vrf", rev = "3fc0229"}
+#cartridge_vrf = { git = "https://github.com/cartridge-gg/vrf", rev = "3fc0229"}
 
 [[target.dojo]]
 

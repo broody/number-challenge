@@ -128,34 +128,16 @@
   },
   {
     "type": "impl",
-    "name": "JackpotActions",
-    "interface_name": "nums::systems::jackpot_actions::IJackpotActions"
-  },
-  {
-    "type": "struct",
-    "name": "nums::models::jackpot::Info",
-    "members": [
-      {
-        "name": "title",
-        "type": "core::byte_array::ByteArray"
-      },
-      {
-        "name": "description",
-        "type": "core::byte_array::ByteArray"
-      },
-      {
-        "name": "sponsor_url",
-        "type": "core::byte_array::ByteArray"
-      }
-    ]
+    "name": "GameActionsImpl",
+    "interface_name": "nums::systems::game_actions::IGameActions"
   },
   {
     "type": "enum",
-    "name": "core::option::Option::<nums::models::jackpot::Info>",
+    "name": "core::option::Option::<core::integer::u32>",
     "variants": [
       {
         "name": "Some",
-        "type": "nums::models::jackpot::Info"
+        "type": "core::integer::u32"
       },
       {
         "name": "None",
@@ -165,79 +147,29 @@
   },
   {
     "type": "struct",
-    "name": "core::integer::u256",
+    "name": "nums::models::config::GameConfig",
     "members": [
       {
-        "name": "low",
-        "type": "core::integer::u128"
+        "name": "max_slots",
+        "type": "core::integer::u8"
       },
       {
-        "name": "high",
-        "type": "core::integer::u128"
+        "name": "max_number",
+        "type": "core::integer::u16"
+      },
+      {
+        "name": "min_number",
+        "type": "core::integer::u16"
       }
     ]
   },
   {
     "type": "enum",
-    "name": "core::option::Option::<core::integer::u256>",
+    "name": "core::option::Option::<nums::models::config::GameConfig>",
     "variants": [
       {
         "name": "Some",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "nums::models::jackpot::TokenType",
-    "variants": [
-      {
-        "name": "ERC20",
-        "type": "()"
-      },
-      {
-        "name": "ERC721",
-        "type": "()"
-      },
-      {
-        "name": "ERC1155",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "nums::models::jackpot::Token",
-    "members": [
-      {
-        "name": "id",
-        "type": "core::option::Option::<core::integer::u256>"
-      },
-      {
-        "name": "address",
-        "type": "core::starknet::contract_address::ContractAddress"
-      },
-      {
-        "name": "ty",
-        "type": "nums::models::jackpot::TokenType"
-      },
-      {
-        "name": "total",
-        "type": "core::integer::u256"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "core::starknet::contract_address::ContractAddress"
+        "type": "nums::models::config::GameConfig"
       },
       {
         "name": "None",
@@ -247,33 +179,39 @@
   },
   {
     "type": "struct",
-    "name": "nums::models::jackpot::Fee",
+    "name": "nums::models::config::RewardLevel",
     "members": [
       {
-        "name": "address",
-        "type": "core::starknet::contract_address::ContractAddress"
+        "name": "level",
+        "type": "core::integer::u8"
       },
       {
         "name": "amount",
-        "type": "core::integer::u256"
+        "type": "core::integer::u16"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::config::SlotReward",
+    "members": [
+      {
+        "name": "token",
+        "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "total",
-        "type": "core::integer::u256"
-      },
-      {
-        "name": "recipient",
-        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
+        "name": "levels",
+        "type": "core::array::Array::<nums::models::config::RewardLevel>"
       }
     ]
   },
   {
     "type": "enum",
-    "name": "core::option::Option::<nums::models::jackpot::Fee>",
+    "name": "core::option::Option::<nums::models::config::SlotReward>",
     "variants": [
       {
         "name": "Some",
-        "type": "nums::models::jackpot::Fee"
+        "type": "nums::models::config::SlotReward"
       },
       {
         "name": "None",
@@ -282,58 +220,86 @@
     ]
   },
   {
-    "type": "enum",
-    "name": "core::bool",
-    "variants": [
+    "type": "struct",
+    "name": "nums::models::config::Config",
+    "members": [
       {
-        "name": "False",
-        "type": "()"
+        "name": "world_resource",
+        "type": "core::felt252"
       },
       {
-        "name": "True",
-        "type": "()"
+        "name": "game",
+        "type": "core::option::Option::<nums::models::config::GameConfig>"
+      },
+      {
+        "name": "reward",
+        "type": "core::option::Option::<nums::models::config::SlotReward>"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "nums::systems::jackpot_actions::IJackpotActions",
+    "name": "nums::systems::game_actions::IGameActions",
     "items": [
       {
         "type": "function",
-        "name": "create_jackpot",
+        "name": "create_game",
         "inputs": [
           {
-            "name": "info",
-            "type": "core::option::Option::<nums::models::jackpot::Info>"
-          },
-          {
-            "name": "token",
-            "type": "nums::models::jackpot::Token"
-          },
-          {
-            "name": "fee",
-            "type": "core::option::Option::<nums::models::jackpot::Fee>"
-          },
-          {
-            "name": "powerups",
-            "type": "core::bool"
+            "name": "jackpot_id",
+            "type": "core::option::Option::<core::integer::u32>"
           }
         ],
         "outputs": [
           {
-            "type": "core::integer::u32"
+            "type": "(core::integer::u32, core::integer::u16)"
           }
         ],
         "state_mutability": "external"
       },
       {
         "type": "function",
-        "name": "claim_jackpot",
+        "name": "set_config",
+        "inputs": [
+          {
+            "name": "config",
+            "type": "nums::models::config::Config"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_slot",
         "inputs": [
           {
             "name": "game_id",
             "type": "core::integer::u32"
+          },
+          {
+            "name": "target_idx",
+            "type": "core::integer::u8"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u16"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "set_name",
+        "inputs": [
+          {
+            "name": "game_id",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "name",
+            "type": "core::felt252"
           }
         ],
         "outputs": [],
@@ -344,11 +310,11 @@
   {
     "type": "impl",
     "name": "IDojoInitImpl",
-    "interface_name": "nums::systems::jackpot_actions::jackpot_actions::IDojoInit"
+    "interface_name": "nums::systems::game_actions::game_actions::IDojoInit"
   },
   {
     "type": "interface",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::IDojoInit",
+    "name": "nums::systems::game_actions::game_actions::IDojoInit",
     "items": [
       {
         "type": "function",
@@ -408,7 +374,7 @@
   },
   {
     "type": "event",
-    "name": "nums::systems::jackpot_actions::jackpot_actions::Event",
+    "name": "nums::systems::game_actions::game_actions::Event",
     "kind": "enum",
     "variants": [
       {

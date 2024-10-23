@@ -1,0 +1,22 @@
+kind = "DojoModel"
+class_hash = "0x5f2c1dd82047e701c6be35cc8d3ebb4a58bfb68845a62142de80c3221ec314c"
+original_class_hash = "0x5f2c1dd82047e701c6be35cc8d3ebb4a58bfb68845a62142de80c3221ec314c"
+abi = "manifests/dev/base/abis/models/nums-Metadata-69d7e1a6.json"
+tag = "nums-Metadata"
+qualified_path = "nums::models::jackpot::metadata::metadata"
+manifest_name = "nums-Metadata-69d7e1a6"
+
+[[members]]
+name = "jackpot_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "description"
+type = "ByteArray"
+key = false
+
+[[members]]
+name = "sponsor_url"
+type = "ByteArray"
+key = false
