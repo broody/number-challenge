@@ -19,6 +19,7 @@ import {
 import { useAccount, useExplorer } from "@starknet-react/core";
 import useToast from "../hooks/toast";
 import Header from "./Header";
+import { num } from "starknet";
 
 const REFRESH_INTERVAL = 1000;
 

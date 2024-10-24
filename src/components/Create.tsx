@@ -1,7 +1,7 @@
 import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import CartridgeConnector from "@cartridge/connector";
+import ControllerConnector from "@cartridge/connector/controller";
 import { useAccount, useExplorer } from "@starknet-react/core";
 import useToast from "../hooks/toast";
 
@@ -12,11 +12,11 @@ const Create = () => {
   const explorer = useExplorer();
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
-  const cartridgeConnector = connector as never as CartridgeConnector;
+  const controllerConnector = connector as never as ControllerConnector;
 
   useEffect(() => {
-    cartridgeConnector?.username()?.then(setUsername);
-  }, [cartridgeConnector]);
+    controllerConnector?.username()?.then(setUsername);
+  }, [controllerConnector]);
 
   const newGame = async () => {
     if (!account) return;
