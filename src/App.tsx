@@ -9,8 +9,7 @@ import {
 } from "@starknet-react/core";
 import { Chain, sepolia, mainnet } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
-import CartridgeConnector from "@cartridge/connector";
-import { shortString } from "starknet";
+import ControllerConnector from "@cartridge/connector/controller";
 import { getRpc } from "./network";
 
 function rpc(_chain: Chain) {
@@ -37,13 +36,9 @@ const policies = [
 const options: ControllerOptions = {
   rpc: getRpc(),
   policies,
-  paymaster: {
-    caller: shortString.encodeShortString("ANY_CALLER"),
-  },
-  profileUrl: "https://profile.cartridge.gg",
 };
 
-const connectors = [new CartridgeConnector(options) as never as Connector];
+const connectors = [new ControllerConnector(options) as never as Connector];
 
 function App() {
   return (

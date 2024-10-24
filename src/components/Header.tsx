@@ -8,7 +8,7 @@ import {
   MenuList,
   Spacer,
 } from "@chakra-ui/react";
-import CartridgeConnector from "@cartridge/connector";
+import ControllerConnector from "@cartridge/connector/controller";
 import { Chain, getCurrentChain, onClickChain } from "../network";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { formatAddress } from "../utils";
@@ -24,7 +24,7 @@ const Header = ({
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, connector } = useAccount();
-  const cartridgeConnector = connector as never as CartridgeConnector;
+  const controllerConnector = connector as never as ControllerConnector;
 
   const chains = [
     { name: "Mainnet", id: "mainnet" },
@@ -74,7 +74,7 @@ const Header = ({
           </MenuButton>
           <MenuList>
             <MenuItem
-              onClick={() => cartridgeConnector.controller.openSettings()}
+              onClick={() => controllerConnector.controller.openSettings()}
             >
               Settings
             </MenuItem>
