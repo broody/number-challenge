@@ -10,21 +10,19 @@ pub trait IJackpotActions {
         title: felt252,
         expiration: u64,
         powerups: bool,
-        token: Token,
+        token: Option<Token>,
         extension_time: u64,
-        transfer: bool,
     ) -> u32;   
     fn create_conditional_victory(
         ref world: IWorldDispatcher,
         title: felt252,
         expiration: u64,
         powerups: bool,
-        token: Token,
+        token: Option<Token>,
         slots_required: u8,
-        transfer: bool,
     ) -> u32;
     fn verify(ref world: IWorldDispatcher, jackpot_id: u32, verified: bool);
-    fn claim(ref world: IWorldDispatcher, game_id: u32, transfer: bool);
+    fn claim(ref world: IWorldDispatcher, game_id: u32);
     fn king_me(ref world: IWorldDispatcher, game_id: u32);
 }
 
@@ -55,7 +53,7 @@ pub mod jackpot_actions {
     pub struct JackpotCreated {
         #[key]
         jackpot_id: u32,
-        token: Token,
+        token: Option<Token>,
     }
 
     #[derive(Drop, Serde)]
@@ -87,9 +85,8 @@ pub mod jackpot_actions {
             title: felt252,
             expiration: u64,
             powerups: bool,
-            token: Token,
-            slots_required: u8,
-            transfer: bool,
+            token: Option<Token>,
+            slots_required: u8
         ) -> u32 {
             let config = get!(world, (WORLD), Config).game.expect('game config not set');
             assert(slots_required <= config.max_slots, 'cannot require > max slots');
@@ -105,7 +102,6 @@ pub mod jackpot_actions {
                 expiration,
                 powerups,
                 token,
-                transfer,
             )
         }
 
@@ -114,10 +110,13 @@ pub mod jackpot_actions {
             title: felt252,
             expiration: u64,
             powerups: bool,
-            token: Token,
+            token: Option<Token>,
             extension_time: u64,
-            transfer: bool,
         ) -> u32 {
+            if expiration == 0 && extension_time > 0 {
+                panic!("cannot set extension with no expiration");
+            }
+
             let config = get!(world, (WORLD), Config).game.expect('game config not set');
             let mode = JackpotMode::KING_OF_THE_HILL(
                 KingOfTheHill {
@@ -132,8 +131,7 @@ pub mod jackpot_actions {
                 mode,
                 expiration,
                 powerups,
-                token,
-                transfer,
+                token
             )
         }
     
@@ -144,7 +142,7 @@ pub mod jackpot_actions {
         /// # Arguments
         /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `game_id` - The identifier of the game.
-        fn claim(ref world: IWorldDispatcher, game_id: u32, transfer: bool) {
+        fn claim(ref world: IWorldDispatcher, game_id: u32) {
             let player = get_caller_address();
             let game = get!(world, (game_id, player), Game);
             let config = get!(world, (WORLD), Config).game.expect('game config not set');
@@ -174,9 +172,9 @@ pub mod jackpot_actions {
             set!(world, (jackpot));
             emit!(world, JackpotClaimed { game_id, jackpot_id, player });
 
-            if transfer {
-                ITokenDispatcher { contract_address: jackpot.token.address }
-                    .transfer(game.player, jackpot.token.total);
+            if let Option::Some(token) = jackpot.token {
+                ITokenDispatcher { contract_address: token.address }
+                    .transfer(game.player, token.total);
             }
         }
 
@@ -255,18 +253,12 @@ pub mod jackpot_actions {
             mode: JackpotMode,
             expiration: u64,
             powerups: bool,
-            token: Token,
-            transfer: bool,
+            token: Option<Token>,
         ) -> u32{
-            if token.ty != TokenType::ERC20 {
-                panic!("Only ERC20 tokens are supported");
-            }
-
             if expiration > 0 {
                 assert!(expiration > get_block_timestamp(), "Expiration already passed")
             }
 
-            assert!(token.total.is_non_zero(), "Token total cannot be zero");
             let creator = get_caller_address();
             let jackpot_id = world.uuid();
             set!(
@@ -287,7 +279,10 @@ pub mod jackpot_actions {
 
             emit!(world, JackpotCreated { jackpot_id, token });
 
-            if transfer {
+            if let Option::Some(token) = token {
+                assert(token.ty == TokenType::ERC20, 'only ERC20 supported');
+                assert(token.total.is_non_zero(), 'total cannot be zero');
+
                 ITokenDispatcher { contract_address: token.address }
                     .transferFrom( get_caller_address(), get_contract_address(), token.total);    
             }

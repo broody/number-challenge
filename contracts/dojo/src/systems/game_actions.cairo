@@ -116,7 +116,6 @@ pub mod game_actions {
 
             if let Option::Some(jackpot_id) = jackpot_id {
                 let jackpot = get!(world, (jackpot_id), Jackpot);
-                assert!(jackpot.token.address.is_non_zero(), "No jackpot exists");
                 assert!(jackpot.winner.is_none(), "Jackpot already won");
                 // TODO: Transfer fee token
             }

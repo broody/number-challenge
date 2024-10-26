@@ -214,12 +214,26 @@
     ]
   },
   {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::jackpot::token::Token>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::jackpot::token::Token"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
     "type": "interface",
     "name": "nums::systems::jackpot_actions::IJackpotActions",
     "items": [
       {
         "type": "function",
-        "name": "create_king_jackpot",
+        "name": "create_king_of_the_hill",
         "inputs": [
           {
             "name": "title",
@@ -235,15 +249,11 @@
           },
           {
             "name": "token",
-            "type": "nums::models::jackpot::token::Token"
+            "type": "core::option::Option::<nums::models::jackpot::token::Token>"
           },
           {
             "name": "extension_time",
             "type": "core::integer::u64"
-          },
-          {
-            "name": "transfer",
-            "type": "core::bool"
           }
         ],
         "outputs": [
@@ -255,7 +265,7 @@
       },
       {
         "type": "function",
-        "name": "create_conditional_jackpot",
+        "name": "create_conditional_victory",
         "inputs": [
           {
             "name": "title",
@@ -271,15 +281,11 @@
           },
           {
             "name": "token",
-            "type": "nums::models::jackpot::token::Token"
+            "type": "core::option::Option::<nums::models::jackpot::token::Token>"
           },
           {
             "name": "slots_required",
             "type": "core::integer::u8"
-          },
-          {
-            "name": "transfer",
-            "type": "core::bool"
           }
         ],
         "outputs": [
@@ -291,7 +297,7 @@
       },
       {
         "type": "function",
-        "name": "verify_jackpot",
+        "name": "verify",
         "inputs": [
           {
             "name": "jackpot_id",
@@ -307,15 +313,11 @@
       },
       {
         "type": "function",
-        "name": "claim_jackpot",
+        "name": "claim",
         "inputs": [
           {
             "name": "game_id",
             "type": "core::integer::u32"
-          },
-          {
-            "name": "transfer",
-            "type": "core::bool"
           }
         ],
         "outputs": [],
@@ -323,7 +325,7 @@
       },
       {
         "type": "function",
-        "name": "crown_me",
+        "name": "king_me",
         "inputs": [
           {
             "name": "game_id",

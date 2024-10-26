@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x537f9783ea85ce5b766f4ec348700e874ff6aa029fc0a0f2ae484fce2d60b88"
-original_class_hash = "0x537f9783ea85ce5b766f4ec348700e874ff6aa029fc0a0f2ae484fce2d60b88"
+class_hash = "0x50af3b457e3f167ed69046018bb4b30cb1ac4679cb3a659b4fe1dd505f724e5"
+original_class_hash = "0x50af3b457e3f167ed69046018bb4b30cb1ac4679cb3a659b4fe1dd505f724e5"
 abi = "manifests/dev/base/abis/models/nums-JackpotCreated-2316c670.json"
 tag = "nums-JackpotCreated"
 qualified_path = "nums::systems::jackpot_actions::jackpot_actions::jackpot_created"
@@ -13,5 +13,5 @@ key = true
 
 [[members]]
 name = "token"
-type = "Token"
+type = "Option<Token>"
 key = false

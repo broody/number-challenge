@@ -492,6 +492,20 @@
   },
   {
     "type": "enum",
+    "name": "core::option::Option::<nums::models::jackpot::token::Token>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::jackpot::token::Token"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "enum",
     "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
     "variants": [
       {
@@ -534,7 +548,7 @@
       },
       {
         "name": "token",
-        "type": "nums::models::jackpot::token::Token"
+        "type": "core::option::Option::<nums::models::jackpot::token::Token>"
       },
       {
         "name": "winner",

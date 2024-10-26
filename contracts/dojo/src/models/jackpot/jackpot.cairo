@@ -12,7 +12,7 @@ pub struct Jackpot {
     pub mode: JackpotMode,
     pub expiration: u64,
     pub powerups: bool,
-    pub token: Token,
+    pub token: Option<Token>,
     pub winner: Option<ContractAddress>,
     pub claimed: bool, // gql lacks ability to filter on winner Option, use bool for filtering on active jackpots
     pub verified: bool,

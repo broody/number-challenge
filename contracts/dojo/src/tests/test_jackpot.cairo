@@ -7,6 +7,8 @@ mod tests {
     const START_BLOCK_TIME: u64 = 100;
     const EXTENSION_TIME: u64 = 100;
     const EXPIRATION_TIME: u64 = 200;
+    const NO_EXPIRATION_TIME: u64 = 0;
+    const NO_EXTENSION_TIME: u64 = 0;
 
     use nums::{
         systems::{
@@ -33,7 +35,7 @@ mod tests {
         starknet::contract_address_const::<0xbeef>()
     }
 
-    fn STATE() -> (IWorldDispatcher, u32, IGameActionsDispatcher, IJackpotActionsDispatcher) {
+    fn KING_OF_THE_HILL_STATE(start_time: u64, expiration: u64, extension: u64) -> (IWorldDispatcher, u32, IGameActionsDispatcher, IJackpotActionsDispatcher) {
         let world = spawn_test_world(
             ["nums"].span(),
             array![
@@ -72,14 +74,8 @@ mod tests {
             'hello world', 
             expiration: EXPIRATION_TIME,
             powerups: false,
-            token: Token {
-                id: Option::None,
-                address: starknet::contract_address_const::<0xdeadbeef>(),
-                ty: TokenType::ERC20,
-                total: 0x123,
-            },
+            token: Option::None,
             extension_time: EXTENSION_TIME,
-            transfer: false,
         );
 
         (world, jackpot_id, game_actions, jackpot_actions)
@@ -95,7 +91,7 @@ mod tests {
 
     #[test]
     fn test_create_king_of_the_hill() {
-        let (world, jackpot_id, mut game_actions, mut jackpot_actions) = STATE();
+        let (world, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
         let jackpot = get!(world, (jackpot_id), Jackpot);
         assert(jackpot.winner == Option::None, 'no winner');
         assert(!jackpot.claimed, 'jackpot should not be claimed');
@@ -137,7 +133,7 @@ mod tests {
     #[test]
     #[should_panic(expected: ('No improvement or already king', 'ENTRYPOINT_FAILED'))]
     fn test_king_me_multiple() {
-        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = STATE();
+        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
         let (game_id, _) = game_actions.create_game(Option::Some(jackpot_id));
 
         jackpot_actions.king_me(game_id);
@@ -147,7 +143,7 @@ mod tests {
     #[test]
     #[should_panic(expected: ('Jackpot already expired', 'ENTRYPOINT_FAILED'))]
     fn test_king_me_expired() {
-        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = STATE();
+        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
         let (game_id, _) = game_actions.create_game(Option::Some(jackpot_id));
 
         starknet::testing::set_block_timestamp(EXPIRATION_TIME + 1);
@@ -157,12 +153,12 @@ mod tests {
 
     #[test]
     fn test_claim_king_of_the_hill() {
-        let (world, jackpot_id, mut game_actions, mut jackpot_actions) = STATE();
+        let (world, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
         let (game_id, _) = game_actions.create_game(Option::Some(jackpot_id));
         game_actions.set_slot(game_id, 6);
         jackpot_actions.king_me(game_id);
         starknet::testing::set_block_timestamp(EXPIRATION_TIME + EXTENSION_TIME + 1);
-        jackpot_actions.claim(game_id, false);
+        jackpot_actions.claim(game_id);
 
         let jackpot = get!(world, (jackpot_id), Jackpot);
         assert(jackpot.claimed, 'should be claimed');
@@ -172,24 +168,24 @@ mod tests {
     #[test]
     #[should_panic(expected: ('no slots filled', 'ENTRYPOINT_FAILED'))]
     fn test_claim_king_not_winner() {
-        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = STATE();
+        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
         let (game_id, _) = game_actions.create_game(Option::Some(jackpot_id));
         game_actions.set_slot(game_id, 6);
         jackpot_actions.king_me(game_id);
         starknet::testing::set_block_timestamp(EXPIRATION_TIME + EXTENSION_TIME + 1);
         starknet::testing::set_contract_address(PLAYER_TWO());
 
-        jackpot_actions.claim(game_id, false);
+        jackpot_actions.claim(game_id);
     }
 
     #[test]
     #[should_panic(expected: ('cannot claim yet', 'ENTRYPOINT_FAILED'))]
     fn test_cannot_claim_king_yet() {
-        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = STATE();
+        let (_, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
         let (game_id, _) = game_actions.create_game(Option::Some(jackpot_id));
         game_actions.set_slot(game_id, 6);
         jackpot_actions.king_me(game_id);
-        jackpot_actions.claim(game_id, false);
+        jackpot_actions.claim(game_id);
     }
 }
 

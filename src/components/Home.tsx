@@ -30,7 +30,7 @@ import Connect from "./Create";
 import { DojoIcon } from "./icons/Dojo";
 import { StarknetIcon } from "./icons/Starknet";
 import { GithubIcon } from "./icons/Github";
-import CartridgeConnector from "@cartridge/connector";
+import ControllerConnector from "@cartridge/connector/controller";
 import Header from "./Header";
 import { ControllerAccounts } from "@cartridge/controller";
 
@@ -60,7 +60,7 @@ const Leaderboard = () => {
   const { colorMode } = useColorMode();
   const [controllerAccounts, setControllerAccounts] =
     useState<ControllerAccounts>();
-  const cartridgeConnector = connector as never as CartridgeConnector;
+  const controllerConnector = connector as never as ControllerConnector;
 
   const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
@@ -70,14 +70,14 @@ const Leaderboard = () => {
   });
 
   useEffect(() => {
-    if (!gameResult.data || !cartridgeConnector?.controller) return;
+    if (!gameResult.data || !controllerConnector?.controller) return;
 
     const addresses =
       gameResult.data.numsGameModels?.edges?.map((g) => g!.node!.player!) || [];
-    cartridgeConnector.controller
+    controllerConnector.controller
       .fetchControllers(addresses)
       .then((accounts) => setControllerAccounts(accounts));
-  }, [gameResult, cartridgeConnector]);
+  }, [gameResult, controllerConnector]);
 
   const totalResult = gameResult.data?.numsGameModels?.edges
     ? gameResult.data.numsGameModels?.edges.length
