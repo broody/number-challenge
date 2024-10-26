@@ -1,0 +1,425 @@
+[
+  {
+    "type": "impl",
+    "name": "ContractImpl",
+    "interface_name": "dojo::contract::contract::IContract"
+  },
+  {
+    "type": "struct",
+    "name": "core::byte_array::ByteArray",
+    "members": [
+      {
+        "name": "data",
+        "type": "core::array::Array::<core::bytes_31::bytes31>"
+      },
+      {
+        "name": "pending_word",
+        "type": "core::felt252"
+      },
+      {
+        "name": "pending_word_len",
+        "type": "core::integer::u32"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "dojo::contract::contract::IContract",
+    "items": [
+      {
+        "type": "function",
+        "name": "name",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "namespace",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "tag",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::byte_array::ByteArray"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "name_hash",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::felt252"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "namespace_hash",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::felt252"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "selector",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::felt252"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "WorldProviderImpl",
+    "interface_name": "dojo::world::world_contract::IWorldProvider"
+  },
+  {
+    "type": "struct",
+    "name": "dojo::world::world_contract::IWorldDispatcher",
+    "members": [
+      {
+        "name": "contract_address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "dojo::world::world_contract::IWorldProvider",
+    "items": [
+      {
+        "type": "function",
+        "name": "world",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "dojo::world::world_contract::IWorldDispatcher"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "JackpotActions",
+    "interface_name": "nums::systems::jackpot_actions::IJackpotActions"
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::Info",
+    "members": [
+      {
+        "name": "title",
+        "type": "core::byte_array::ByteArray"
+      },
+      {
+        "name": "description",
+        "type": "core::byte_array::ByteArray"
+      },
+      {
+        "name": "sponsor_url",
+        "type": "core::byte_array::ByteArray"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::jackpot::Info>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::jackpot::Info"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<core::integer::u256>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "nums::models::jackpot::JackpotType",
+    "variants": [
+      {
+        "name": "ERC20",
+        "type": "()"
+      },
+      {
+        "name": "ERC721",
+        "type": "()"
+      },
+      {
+        "name": "ERC1155",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::Token",
+    "members": [
+      {
+        "name": "id",
+        "type": "core::option::Option::<core::integer::u256>"
+      },
+      {
+        "name": "address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "ty",
+        "type": "nums::models::jackpot::JackpotType"
+      },
+      {
+        "name": "total",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<core::starknet::contract_address::ContractAddress>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "nums::models::jackpot::Fee",
+    "members": [
+      {
+        "name": "address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "amount",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "total",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "recipient",
+        "type": "core::option::Option::<core::starknet::contract_address::ContractAddress>"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::option::Option::<nums::models::jackpot::Fee>",
+    "variants": [
+      {
+        "name": "Some",
+        "type": "nums::models::jackpot::Fee"
+      },
+      {
+        "name": "None",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "nums::systems::jackpot_actions::IJackpotActions",
+    "items": [
+      {
+        "type": "function",
+        "name": "create_jackpot",
+        "inputs": [
+          {
+            "name": "win_condition",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "info",
+            "type": "core::option::Option::<nums::models::jackpot::Info>"
+          },
+          {
+            "name": "token",
+            "type": "nums::models::jackpot::Token"
+          },
+          {
+            "name": "fee",
+            "type": "core::option::Option::<nums::models::jackpot::Fee>"
+          },
+          {
+            "name": "powerups",
+            "type": "core::bool"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u32"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "claim_jackpot",
+        "inputs": [
+          {
+            "name": "game_id",
+            "type": "core::integer::u32"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "IDojoInitImpl",
+    "interface_name": "nums::systems::jackpot_actions::jackpot_actions::IDojoInit"
+  },
+  {
+    "type": "interface",
+    "name": "nums::systems::jackpot_actions::jackpot_actions::IDojoInit",
+    "items": [
+      {
+        "type": "function",
+        "name": "dojo_init",
+        "inputs": [],
+        "outputs": [],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "impl",
+    "name": "UpgradableImpl",
+    "interface_name": "dojo::contract::upgradeable::IUpgradeable"
+  },
+  {
+    "type": "interface",
+    "name": "dojo::contract::upgradeable::IUpgradeable",
+    "items": [
+      {
+        "type": "function",
+        "name": "upgrade",
+        "inputs": [
+          {
+            "name": "new_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "dojo::contract::upgradeable::upgradeable::Upgraded",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "class_hash",
+        "type": "core::starknet::class_hash::ClassHash",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "dojo::contract::upgradeable::upgradeable::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "Upgraded",
+        "type": "dojo::contract::upgradeable::upgradeable::Upgraded",
+        "kind": "nested"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "nums::systems::jackpot_actions::jackpot_actions::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "UpgradeableEvent",
+        "type": "dojo::contract::upgradeable::upgradeable::Event",
+        "kind": "nested"
+      }
+    ]
+  }
+]

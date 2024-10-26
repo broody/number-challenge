@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@cartridge/connector':
-        specifier: ^0.3.46
-        version: 0.3.46(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)
+        specifier: 0.5.0-alpha.2
+        version: 0.5.0-alpha.2(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(typescript@5.5.4)
       '@cartridge/controller':
-        specifier: ^0.3.46
-        version: 0.3.46
+        specifier: 0.5.0-alpha.2
+        version: 0.5.0-alpha.2
       '@chakra-ui/icons':
         specifier: ^2.1.1
         version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react@18.2.0)
@@ -27,11 +27,11 @@ importers:
         specifier: ^11.11.5
         version: 11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0)
       '@starknet-react/chains':
-        specifier: ^0.1.7
-        version: 0.1.7
+        specifier: ^3.0.2
+        version: 3.0.2
       '@starknet-react/core':
-        specifier: ^2.6.0
-        version: 2.6.0(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.7.0)
+        specifier: ^3.0.3
+        version: 3.0.3(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.7.0)(typescript@5.5.4)
       framer-motion:
         specifier: ^11.1.1
         version: 11.1.1(@emotion/is-prop-valid@1.2.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -122,6 +122,9 @@ packages:
 
   '@adraffy/ens-normalize@1.10.0':
     resolution: {integrity: sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==}
+
+  '@adraffy/ens-normalize@1.11.0':
+    resolution: {integrity: sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -234,14 +237,14 @@ packages:
     resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
     engines: {node: '>=6.9.0'}
 
-  '@cartridge/account-wasm@0.3.46':
-    resolution: {integrity: sha512-XK/1yE0U/4v9UXelkOEmW1DNbFXikWnifm9aZQ9JfT2SrNcOM3DTMHQZXMbL217RzxM7yE8KqDVVGwN0//Ya7Q==}
+  '@cartridge/account-wasm@0.5.0-alpha.2':
+    resolution: {integrity: sha512-a9bFhyaXFEEwWVCmKbkD4oha9Rbxn71iDMD0iSHIFdNKeSNLef2YsC6n7SPkFDdXWLtZIDGs2wu2LWKqqUGR2Q==}
 
-  '@cartridge/connector@0.3.46':
-    resolution: {integrity: sha512-iYfYdp6gaFJ8sKSFE4DpdVQJZj1tMroaeES76nC6U5aVQM8uz8OLtFB2AdNx/VO5QoGBB+6YbHyFffRCuVeaOg==}
+  '@cartridge/connector@0.5.0-alpha.2':
+    resolution: {integrity: sha512-kwN9n/ln/+aR/ScuJ3KzaoPYqZu5p2QiDpQSwSpFAPvZmHHWm+II42nEOgVsGZ06K8y0kUl1Rn0GXTFDN24ohw==}
 
-  '@cartridge/controller@0.3.46':
-    resolution: {integrity: sha512-xTr6u0dMIf6oYBf8PeF6edVND2QWWrjrHb+qUJ3taco6OEUFR0uEc2TfEr/PS7tTA1rIlgXJIeWP3VLRHz+IBg==}
+  '@cartridge/controller@0.5.0-alpha.2':
+    resolution: {integrity: sha512-Whby5eDeBUlnGMcS3FV0XhR4z9Zy7+mElBP3dnRvlDLi8BWDDq83W2vJt2jTizDGK8McdOQOVoBnGxnZ5G4Fag==}
 
   '@cartridge/penpal@6.2.3':
     resolution: {integrity: sha512-K8h9VqBfFPXcAFQNnvgBnejF/dp7249pS4jXu3NhNYR6JqMQxtcrDqfnPmJvbF4ECEBs+8Z2UiwlRQiKt5nNsg==}
@@ -1020,6 +1023,10 @@ packages:
   '@noble/curves@1.4.0':
     resolution: {integrity: sha512-p+4cb332SFCrReJkCYe8Xzm0OWi4Jji5jVdIZRL/PmacmDkFNw6MrrV+gGpiPxLHbV+zKFRywUWbaseT+tZRXg==}
 
+  '@noble/curves@1.6.0':
+    resolution: {integrity: sha512-TlaHRXDehJuRNR9TfZDNQ45mMEd5dwUwmicsafcIX4SsNiqnCHKjE/1alYPd/lDRVhxdhUAlv8uEhMCI5zjIJQ==}
+    engines: {node: ^14.21.3 || >=16}
+
   '@noble/hashes@1.3.2':
     resolution: {integrity: sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==}
     engines: {node: '>= 16'}
@@ -1031,6 +1038,10 @@ packages:
   '@noble/hashes@1.4.0':
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
+
+  '@noble/hashes@1.5.0':
+    resolution: {integrity: sha512-1j6kQFb7QRru7eKN3ZDvRcP13rugwdxZqCjbiAVZfIJwgj2A65UmT4TgARXGlXgnRkORLTDTrO19ZErt7+QXgA==}
+    engines: {node: ^14.21.3 || >=16}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1134,11 +1145,20 @@ packages:
   '@scure/base@1.1.6':
     resolution: {integrity: sha512-ok9AWwhcgYuGG3Zfhyqg+zwl+Wn5uE+dwC0NV/2qQkx4dABbb/bx96vWu8NSj+BNjjSjno+JRYRjle1jV08k3g==}
 
+  '@scure/base@1.1.9':
+    resolution: {integrity: sha512-8YKhl8GHiNI/pU2VMaofa2Tor7PJRAjwQLBBuilkJ9L5+13yVbC7JO/wS7piioAvPSwR3JKM1IJ/u4xQzbcXKg==}
+
   '@scure/bip32@1.3.2':
     resolution: {integrity: sha512-N1ZhksgwD3OBlwTv3R6KFEcPojl/W4ElJOeCZdi+vuI5QmTFwLq3OFf2zd2ROpKvxFdgZ6hUpb0dx9bVNEwYCA==}
 
+  '@scure/bip32@1.5.0':
+    resolution: {integrity: sha512-8EnFYkqEQdnkuGBVpCzKxyIwDCBLDVj3oiX0EKUFre/tOjL/Hqba1D6n/8RcmaQy4f95qQFrO2A8Sr6ybh4NRw==}
+
   '@scure/bip39@1.2.1':
     resolution: {integrity: sha512-Z3/Fsz1yr904dduJD0NpiyRHhRYHdcnyh73FZWiV+/qhWi83wNJ3NWolYqCEN+ZWsUz2TWwajJggcRE9r1zUYg==}
+
+  '@scure/bip39@1.4.0':
+    resolution: {integrity: sha512-BEEm6p8IueV/ZTfQLp/0vhw4NPnT9oWf5+28nvmeUICjP99f4vr2d+qc7AVGDDtwRep6ifR43Yed9ERVmiITzw==}
 
   '@scure/starknet@1.0.0':
     resolution: {integrity: sha512-o5J57zY0f+2IL/mq8+AYJJ4Xpc1fOtDhr+mFQKbHnYFmm3WQrC+8zj2HEgxak1a+x86mhmBC1Kq305KUpVf0wg==}
@@ -1146,15 +1166,15 @@ packages:
   '@starknet-io/types-js@0.7.7':
     resolution: {integrity: sha512-WLrpK7LIaIb8Ymxu6KF/6JkGW1sso988DweWu7p5QY/3y7waBIiPvzh27D9bX5KIJNRDyOoOVoHVEKYUYWZ/RQ==}
 
-  '@starknet-react/chains@0.1.7':
-    resolution: {integrity: sha512-UNh97I1SvuJKaAhKOmpEk8JcWuZWMlPG/ba2HcvFYL9x/47BKndJ+Da9V+iJFtkHUjreVnajT1snsaz1XMG+UQ==}
+  '@starknet-react/chains@3.0.2':
+    resolution: {integrity: sha512-kVB1GVirfhrZjSSjXJKGPos9cNWmgdErnaDKflZ8R7ffui1oIMqKHdONx3qwynT8q2TGXwL9Vt844bCLXkNZOA==}
 
-  '@starknet-react/core@2.6.0':
-    resolution: {integrity: sha512-T45TTOD624UDUtnkKjLOTY+TEFir/m9FP1BT+x7DazV4fNJFcRxJCbBWCe8ijWUHeNM3PfZvdN2lI7xp3SSyzg==}
+  '@starknet-react/core@3.0.3':
+    resolution: {integrity: sha512-SJvwbmqYlskkcyJG0eUzJ1FQ8zJljrY5zyDg94EwLwvGENFykeQHDP1t7NBvpk6KVpXcSIAOvDp1Buwl6KveHw==}
     peerDependencies:
-      get-starknet-core: ^3.2.0
+      get-starknet-core: ^4.0.0
       react: ^18.0
-      starknet: ^5.25.0
+      starknet: ^6.11.0
 
   '@tanstack/query-core@5.29.0':
     resolution: {integrity: sha512-WgPTRs58hm9CMzEr5jpISe8HXa3qKQ8CxewdYZeVnA54JrPY9B1CZiwsCoLpLkf0dGRZq+LcX5OiJb0bEsOFww==}
@@ -1163,6 +1183,27 @@ packages:
     resolution: {integrity: sha512-nyuWILR4u7H5moLGSiifLh8kIqQDLNOHGuSz0rcp+J75fNc8aQLyr5+I2JCHU3n+nJrTTW1ssgAD8HiKD7IFBQ==}
     peerDependencies:
       react: ^18.0.0
+
+  '@telegram-apps/bridge@1.3.0':
+    resolution: {integrity: sha512-9P2SEhr1SSo8JQsbfm4fIzYhZY0wwH6PEOmSZ0kNXZ4xX1iSftJ3T7kSbcaQL2zIVrKO8PJxKeH4Etmkk9Oqgg==}
+
+  '@telegram-apps/navigation@1.0.4':
+    resolution: {integrity: sha512-I+wwfhR7O29ofzJ+x4HzErDbvYGjXlJaeaTxwYLCvcS014pv4+5ijbfKSBAmNIxWZC+s97+WzTD86jeze79K3w==}
+
+  '@telegram-apps/sdk@2.5.2':
+    resolution: {integrity: sha512-LlK07tFeL4QNJt/5dO/yh7ilWuqr3ja+Nr9xnDvQsxO7NroldC7moEqAzGnTq8Fu7mu1WFf/UMkmZnOMkK8OWw==}
+
+  '@telegram-apps/signals@1.0.1':
+    resolution: {integrity: sha512-+DAltcPtLBeNPjX+BxEh9smh0cbxCXuEcsOEyDCovp6HJHusWFv1tDyJuV0/rXFmcDs+VwU7SjmINdjld2nFHw==}
+
+  '@telegram-apps/toolkit@1.0.0':
+    resolution: {integrity: sha512-fSVoveLuMzwRKWeXEufMSXxH+HvjsFKb1DeT3pG5qLpnb2rdtejnNcwAt6WEPtiZ3a4YntYaFuR3KYgVv0ZxeQ==}
+
+  '@telegram-apps/transformers@1.0.1':
+    resolution: {integrity: sha512-SsI+FhCOkkZFUPqr+ib11Fi25fRCpdMsI2Flp51NrdtKaPDnKFkBBG4GcSEaGL8sXquW9uAANjc499jSaZK5jQ==}
+
+  '@telegram-apps/types@1.0.1':
+    resolution: {integrity: sha512-8tGy1zG/1MEt0KF8nR0ffZ93whKveEJIkBI+qxHCRgatKwKVJV2dVSXrrBspFKn7FIIo1/CvmB8zP4vKPzglbg==}
 
   '@ts-morph/common@0.23.0':
     resolution: {integrity: sha512-m7Lllj9n/S6sOkCkRftpM7L24uvmfXQFedlW/4hENcuJH1HHm9u5EgxZb9uVjQSCGrbBWBkOGgcTxNg36r6ywA==}
@@ -1291,6 +1332,17 @@ packages:
 
   abitype@1.0.0:
     resolution: {integrity: sha512-NMeMah//6bJ56H5XRj8QCV4AwuW6hB6zqz2LnhhLdcWVQOsXki6/Pn3APeqxCma62nXIcmZWdu1DlHWS74umVQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.22.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+
+  abitype@1.0.6:
+    resolution: {integrity: sha512-MMSqYh4+C/aVqI2RQaWqbvI4Kxo5cQV40WQ4QFtDnNzCkqChm8MuENhElmynZlO0qUy/ObkEUaXtKqYnx1Kp3A==}
     peerDependencies:
       typescript: '>=5.0.4'
       zod: ^3 >=3.22.0
@@ -1717,9 +1769,6 @@ packages:
     resolution: {integrity: sha512-5Fytz/IraMjqpwfd34ke28PTVMjZjJG2MPn5t7OE4eUCUNf8BAa7b5WUS9/Qvr6mwOQS7Mk6vdsMno5he+T8Xw==}
     engines: {node: '>= 4'}
 
-  immutable@4.3.5:
-    resolution: {integrity: sha512-8eabxkth9gZatlwl5TBuJnCsoTADlL6ftEr7A4qgdaTsPyreilDSnUk57SO+jfKcNtxPa22U5KK6DSeAYhpBJw==}
-
   import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -1771,6 +1820,11 @@ packages:
 
   isows@1.0.4:
     resolution: {integrity: sha512-hEzjY+x9u9hPmBom9IIAqdJCwNLax+xrPb51vEPpERoFlIxgmZcHzsT5jKG06nvInKOBGvReAVz80Umed5CczQ==}
+    peerDependencies:
+      ws: '*'
+
+  isows@1.0.6:
+    resolution: {integrity: sha512-lPHCayd40oW98/I0uvgaHKWCSvkzY27LjWLbtzOm64yQ+G3Q5npjjbdppU65iZXkK1Zt+kH9pfegli0AYfwYYw==}
     peerDependencies:
       ws: '*'
 
@@ -2282,6 +2336,14 @@ packages:
       typescript:
         optional: true
 
+  viem@2.21.34:
+    resolution: {integrity: sha512-IR8ucya4dkVJv1jzv/qBz1TxYbSoXZuJPuqQk1/AybU9VuGdMUayittYwr0Navs97XFNml6UWGVya07apoaBmQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vite@5.2.9:
     resolution: {integrity: sha512-uOQWfuZBlc6Y3W/DTuQ1Sr+oIXWvqljLvS881SVmAj00d5RdgShLcuXWxseWPd4HXwiYBFW/vXHfKFeqj9uQnw==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -2310,6 +2372,9 @@ packages:
       terser:
         optional: true
 
+  webauthn-p256@0.0.10:
+    resolution: {integrity: sha512-EeYD+gmIT80YkSIDb2iWq0lq2zbHo1CxHlQTeJ+KkCILWpVy3zASH3ByD4bopzfk0uCwXxLqKGLqp2W4O28VFA==}
+
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -2336,6 +2401,18 @@ packages:
 
   ws@8.13.0:
     resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  ws@8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -2390,6 +2467,8 @@ snapshots:
   '@aashutoshrathi/word-wrap@1.2.6': {}
 
   '@adraffy/ens-normalize@1.10.0': {}
+
+  '@adraffy/ens-normalize@1.11.0': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -2538,22 +2617,27 @@ snapshots:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  '@cartridge/account-wasm@0.3.46': {}
+  '@cartridge/account-wasm@0.5.0-alpha.2': {}
 
-  '@cartridge/connector@0.3.46(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)':
+  '@cartridge/connector@0.5.0-alpha.2(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(typescript@5.5.4)':
     dependencies:
-      '@cartridge/controller': 0.3.46
-      '@starknet-react/core': 2.6.0(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.11.0)
+      '@cartridge/controller': 0.5.0-alpha.2
+      '@starknet-react/core': 3.0.3(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.11.0)(typescript@5.5.4)
       starknet: 6.11.0
     transitivePeerDependencies:
+      - bufferutil
       - encoding
       - get-starknet-core
       - react
+      - typescript
+      - utf-8-validate
 
-  '@cartridge/controller@0.3.46':
+  '@cartridge/controller@0.5.0-alpha.2':
     dependencies:
-      '@cartridge/account-wasm': 0.3.46
+      '@cartridge/account-wasm': 0.5.0-alpha.2
       '@cartridge/penpal': 6.2.3
+      '@starknet-io/types-js': 0.7.7
+      '@telegram-apps/sdk': 2.5.2
       base64url: 3.0.1
       cbor-x: 1.5.9
       fast-deep-equal: 3.1.3
@@ -3519,11 +3603,17 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.4.0
 
+  '@noble/curves@1.6.0':
+    dependencies:
+      '@noble/hashes': 1.5.0
+
   '@noble/hashes@1.3.2': {}
 
   '@noble/hashes@1.3.3': {}
 
   '@noble/hashes@1.4.0': {}
+
+  '@noble/hashes@1.5.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -3591,16 +3681,29 @@ snapshots:
 
   '@scure/base@1.1.6': {}
 
+  '@scure/base@1.1.9': {}
+
   '@scure/bip32@1.3.2':
     dependencies:
       '@noble/curves': 1.2.0
       '@noble/hashes': 1.3.3
       '@scure/base': 1.1.6
 
+  '@scure/bip32@1.5.0':
+    dependencies:
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
+      '@scure/base': 1.1.9
+
   '@scure/bip39@1.2.1':
     dependencies:
       '@noble/hashes': 1.3.3
       '@scure/base': 1.1.6
+
+  '@scure/bip39@1.4.0':
+    dependencies:
+      '@noble/hashes': 1.5.0
+      '@scure/base': 1.1.9
 
   '@scure/starknet@1.0.0':
     dependencies:
@@ -3609,29 +3712,39 @@ snapshots:
 
   '@starknet-io/types-js@0.7.7': {}
 
-  '@starknet-react/chains@0.1.7': {}
+  '@starknet-react/chains@3.0.2': {}
 
-  '@starknet-react/core@2.6.0(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.11.0)':
+  '@starknet-react/core@3.0.3(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.11.0)(typescript@5.5.4)':
     dependencies:
-      '@starknet-react/chains': 0.1.7
+      '@starknet-io/types-js': 0.7.7
+      '@starknet-react/chains': 3.0.2
       '@tanstack/react-query': 5.29.2(react@18.2.0)
       eventemitter3: 5.0.1
       get-starknet-core: 3.2.0(starknet@6.7.0)
-      immutable: 4.3.5
       react: 18.2.0
       starknet: 6.11.0
+      viem: 2.21.34(typescript@5.5.4)(zod@3.22.4)
       zod: 3.22.4
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
 
-  '@starknet-react/core@2.6.0(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.7.0)':
+  '@starknet-react/core@3.0.3(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.7.0)(typescript@5.5.4)':
     dependencies:
-      '@starknet-react/chains': 0.1.7
+      '@starknet-io/types-js': 0.7.7
+      '@starknet-react/chains': 3.0.2
       '@tanstack/react-query': 5.29.2(react@18.2.0)
       eventemitter3: 5.0.1
       get-starknet-core: 3.2.0(starknet@6.7.0)
-      immutable: 4.3.5
       react: 18.2.0
       starknet: 6.7.0
+      viem: 2.21.34(typescript@5.5.4)(zod@3.22.4)
       zod: 3.22.4
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
 
   '@tanstack/query-core@5.29.0': {}
 
@@ -3639,6 +3752,37 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.29.0
       react: 18.2.0
+
+  '@telegram-apps/bridge@1.3.0':
+    dependencies:
+      '@telegram-apps/signals': 1.0.1
+      '@telegram-apps/toolkit': 1.0.0
+      '@telegram-apps/transformers': 1.0.1
+      '@telegram-apps/types': 1.0.1
+
+  '@telegram-apps/navigation@1.0.4':
+    dependencies:
+      '@telegram-apps/bridge': 1.3.0
+      '@telegram-apps/signals': 1.0.1
+      '@telegram-apps/toolkit': 1.0.0
+
+  '@telegram-apps/sdk@2.5.2':
+    dependencies:
+      '@telegram-apps/bridge': 1.3.0
+      '@telegram-apps/navigation': 1.0.4
+      '@telegram-apps/signals': 1.0.1
+      '@telegram-apps/transformers': 1.0.1
+
+  '@telegram-apps/signals@1.0.1': {}
+
+  '@telegram-apps/toolkit@1.0.0': {}
+
+  '@telegram-apps/transformers@1.0.1':
+    dependencies:
+      '@telegram-apps/toolkit': 1.0.0
+      '@telegram-apps/types': 1.0.1
+
+  '@telegram-apps/types@1.0.1': {}
 
   '@ts-morph/common@0.23.0':
     dependencies:
@@ -3815,6 +3959,11 @@ snapshots:
       yargs: 17.7.2
 
   abitype@1.0.0(typescript@5.5.4)(zod@3.22.4):
+    optionalDependencies:
+      typescript: 5.5.4
+      zod: 3.22.4
+
+  abitype@1.0.6(typescript@5.5.4)(zod@3.22.4):
     optionalDependencies:
       typescript: 5.5.4
       zod: 3.22.4
@@ -4269,8 +4418,6 @@ snapshots:
 
   ignore@5.3.1: {}
 
-  immutable@4.3.5: {}
-
   import-fresh@3.3.0:
     dependencies:
       parent-module: 1.0.1
@@ -4319,6 +4466,10 @@ snapshots:
   isows@1.0.4(ws@8.13.0):
     dependencies:
       ws: 8.13.0
+
+  isows@1.0.6(ws@8.18.0):
+    dependencies:
+      ws: 8.18.0
 
   js-tokens@4.0.0: {}
 
@@ -4648,8 +4799,8 @@ snapshots:
   starknet@6.11.0:
     dependencies:
       '@noble/curves': 1.4.0
-      '@noble/hashes': 1.4.0
-      '@scure/base': 1.1.6
+      '@noble/hashes': 1.5.0
+      '@scure/base': 1.1.9
       '@scure/starknet': 1.0.0
       abi-wan-kanabi: 2.2.2
       fetch-cookie: 3.0.1
@@ -4810,6 +4961,24 @@ snapshots:
       - utf-8-validate
       - zod
 
+  viem@2.21.34(typescript@5.5.4)(zod@3.22.4):
+    dependencies:
+      '@adraffy/ens-normalize': 1.11.0
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
+      '@scure/bip32': 1.5.0
+      '@scure/bip39': 1.4.0
+      abitype: 1.0.6(typescript@5.5.4)(zod@3.22.4)
+      isows: 1.0.6(ws@8.18.0)
+      webauthn-p256: 0.0.10
+      ws: 8.18.0
+    optionalDependencies:
+      typescript: 5.5.4
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
   vite@5.2.9:
     dependencies:
       esbuild: 0.20.2
@@ -4817,6 +4986,11 @@ snapshots:
       rollup: 4.14.3
     optionalDependencies:
       fsevents: 2.3.3
+
+  webauthn-p256@0.0.10:
+    dependencies:
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
 
   webidl-conversions@3.0.1: {}
 
@@ -4842,6 +5016,8 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.13.0: {}
+
+  ws@8.18.0: {}
 
   y18n@5.0.8: {}
 
