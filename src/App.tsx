@@ -36,9 +36,6 @@ const policies = [
 const options: ControllerOptions = {
   rpc: getRpc(),
   policies,
-  profileUrl: "https://profile.cartridge.gg/",
-  indexerUrl: "https://api.cartridge.gg/x/nums-slot/torii/graphql",
-  namespace: "nums",
   tokens: {
     erc20: [import.meta.env.VITE_NUMS_ERC20],
   },
