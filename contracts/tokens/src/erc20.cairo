@@ -22,6 +22,8 @@ mod NumsToken {
         StoragePointerWriteAccess
     };
 
+    const DECIMALS: u256 = 1000000000000000000;
+
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
@@ -74,7 +76,7 @@ mod NumsToken {
         // restrict amount to u16 so upper limit is 0xFFFF tokens
         fn reward(ref self: ContractState, recipient: ContractAddress, amount: u16) -> bool {
             assert!(self.rewards_caller.read() == get_caller_address(), "Only the reward caller can mint tokens");
-            self.erc20.mint(recipient, amount.into() * self.erc20.decimals().into());
+            self.erc20.mint(recipient, amount.into() * DECIMALS);
             true
         }
 

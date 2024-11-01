@@ -36,6 +36,9 @@ const policies = [
 const options: ControllerOptions = {
   rpc: getRpc(),
   policies,
+  tokens: {
+    erc20: [import.meta.env.VITE_NUMS_ERC20],
+  },
 };
 
 const connectors = [new ControllerConnector(options) as never as Connector];

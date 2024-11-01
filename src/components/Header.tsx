@@ -74,6 +74,11 @@ const Header = ({
           </MenuButton>
           <MenuList>
             <MenuItem
+              onClick={() => controllerConnector.controller.openProfile()}
+            >
+              Profile
+            </MenuItem>
+            <MenuItem
               onClick={() => controllerConnector.controller.openSettings()}
             >
               Settings
