@@ -2,8 +2,8 @@
 name = "Nums"
 seed = "nums"
 description = "On chain version of the Number Challenge or Blind Number Challenge game."
-cover_uri = "file://assets/cover.png"
-icon_uri = "file://assets/icon.png"
+# cover_uri = "file://assets/cover.png"
+# icon_uri = "file://assets/icon.png"
 website = "https://nums.gg"
 
 
@@ -11,7 +11,10 @@ website = "https://nums.gg"
 default = "nums"
 
 [env]
-rpc_url = "http://localhost:5050"
-account_address = "0x5688081f68f4e1d826da33a21bf7a0e1cb882920f230d40ecac902a4dd7ddd"
-private_key = "0x230d17156789df0f4e6a117b9255383a90f948b5bcddba4abd3e9a283331204"
-world_address = "0x13a0e134c64c01c2a85c014cf51fbd25cf7ba92d7f4b85c3ce0da967e92ed2a"
+rpc_url = "http://localhost:8001/x/starknet/sepolia"
+account_address = "0x6bd82a20984e638c8e1d45770e2924e274e315b9609eb15c26384eac0094cf1"
+private_key = "0x15ffe6ee85bcd75f93b395ec4471819d5dbebb77ea2f2a50b30ce7f67372ce4"
+world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
+
+[writers]
+"nums" = ["nums-game_actions", "nums-jackpot_actions"]

@@ -1,12 +1,10 @@
 use nums::models::jackpot::token::Token;
-use nums::models::jackpot::mode::JackpotMode;
-use starknet::ContractAddress;
 
 
-#[dojo::interface]
-pub trait IJackpotActions {
+#[starknet::interface]
+pub trait IJackpotActions<T> {
     fn create_king_of_the_hill(
-        ref world: IWorldDispatcher,
+        ref self: T,
         title: felt252,
         expiration: u64,
         powerups: bool,
@@ -14,16 +12,16 @@ pub trait IJackpotActions {
         extension_time: u64,
     ) -> u32;   
     fn create_conditional_victory(
-        ref world: IWorldDispatcher,
+        ref self: T,
         title: felt252,
         expiration: u64,
         powerups: bool,
         token: Option<Token>,
         slots_required: u8,
     ) -> u32;
-    fn verify(ref world: IWorldDispatcher, jackpot_id: u32, verified: bool);
-    fn claim(ref world: IWorldDispatcher, game_id: u32);
-    fn king_me(ref world: IWorldDispatcher, game_id: u32);
+    fn verify(ref self: T, jackpot_id: u32, verified: bool);
+    fn claim(ref self: T, game_id: u32);
+    fn king_me(ref self: T, game_id: u32);
 }
 
 
@@ -36,11 +34,12 @@ pub mod jackpot_actions {
     use nums::models::game::{Game, GameTrait};
     use nums::models::jackpot::jackpot::{Jackpot, JackpotImpl};
     use nums::models::jackpot::token::{Token, TokenType};
-    use nums::models::jackpot::mode::{ConditionalVictory, KingOfTheHill, JackpotMode, JackpotModeTrait};
-    use nums::models::jackpot::fee::{Fee};
-    use nums::models::jackpot::metadata::Metadata;
-    use nums::models::name::Name;
+    use nums::models::jackpot::mode::{ConditionalVictory, KingOfTheHill, JackpotMode};
     use nums::models::slot::Slot;
+
+    use dojo::model::ModelStorage;
+    use dojo::event::EventStorage;
+    use dojo::world::IWorldDispatcherTrait;
 
     use starknet::{ContractAddress, get_contract_address, get_caller_address, get_block_timestamp};
     use super::IJackpotActions;
@@ -49,7 +48,6 @@ pub mod jackpot_actions {
 
     #[derive(Drop, Serde)]
     #[dojo::event]
-    #[dojo::model]
     pub struct JackpotCreated {
         #[key]
         jackpot_id: u32,
@@ -58,7 +56,6 @@ pub mod jackpot_actions {
 
     #[derive(Drop, Serde)]
     #[dojo::event]
-    #[dojo::model]
     pub struct JackpotClaimed {
         #[key]
         game_id: u32,
@@ -69,7 +66,6 @@ pub mod jackpot_actions {
 
     #[derive(Drop, Serde)]
     #[dojo::event]
-    #[dojo::model]
     pub struct KingCrowned {
         #[key]
         game_id: u32,
@@ -81,22 +77,24 @@ pub mod jackpot_actions {
     #[abi(embed_v0)]
     impl JackpotActions of IJackpotActions<ContractState> {
         fn create_conditional_victory(
-            ref world: IWorldDispatcher,
+            ref self: ContractState,
             title: felt252,
             expiration: u64,
             powerups: bool,
             token: Option<Token>,
             slots_required: u8
         ) -> u32 {
-            let config = get!(world, (WORLD), Config).game.expect('game config not set');
-            assert(slots_required <= config.max_slots, 'cannot require > max slots');
+            let mut world = self.world(@"nums");
+            let config: Config = world.read_model(WORLD);
+            let game_config = config.game.expect('game config not set');
+
+            assert(slots_required <= game_config.max_slots, 'cannot require > max slots');
             let mode = JackpotMode::CONDITIONAL_VICTORY( 
                 ConditionalVictory {
                     slots_required
                 }
             );
             self._create(
-                world,
                 title,
                 mode,
                 expiration,
@@ -106,7 +104,7 @@ pub mod jackpot_actions {
         }
 
         fn create_king_of_the_hill(
-            ref world: IWorldDispatcher,
+            ref self: ContractState,
             title: felt252,
             expiration: u64,
             powerups: bool,
@@ -117,16 +115,18 @@ pub mod jackpot_actions {
                 panic!("cannot set extension with no expiration");
             }
 
-            let config = get!(world, (WORLD), Config).game.expect('game config not set');
+            let mut world = self.world(@"nums");
+            let config: Config = world.read_model(WORLD);
+            let game_config = config.game.expect('game config not set');
+
             let mode = JackpotMode::KING_OF_THE_HILL(
                 KingOfTheHill {
                     extension_time,
                     king: starknet::contract_address_const::<0x0>(),
-                    remaining_slots: config.max_slots,
+                    remaining_slots: game_config.max_slots,
                 }
             );
             self._create(
-                world,
                 title,
                 mode,
                 expiration,
@@ -140,23 +140,24 @@ pub mod jackpot_actions {
         /// Transfers the jackpot token to the player and updates the jackpot state.
         ///
         /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `game_id` - The identifier of the game.
-        fn claim(ref world: IWorldDispatcher, game_id: u32) {
+        fn claim(ref self: ContractState, game_id: u32) {
+            let mut world = self.world(@"nums");
             let player = get_caller_address();
-            let game = get!(world, (game_id, player), Game);
-            let config = get!(world, (WORLD), Config).game.expect('game config not set');
+            let game: Game = world.read_model((game_id, player));
+            let config: Config = world.read_model(WORLD);
+            let game_config = config.game.expect('game config not set');
             let jackpot_id = game.jackpot_id.expect('jackpot not defined');
-            let mut jackpot = get!(world, (jackpot_id), Jackpot);
+            let mut jackpot: Jackpot = world.read_model(jackpot_id);
            
             if jackpot.expiration > 0 {
                 assert(jackpot.expiration < get_block_timestamp(), 'cannot claim yet')
             }
 
             let mut nums = ArrayTrait::<u16>::new();
-            let mut idx = config.max_slots;
+            let mut idx = game_config.max_slots;
             while idx > 0 {
-                let slot = get!(world, (game_id, player, config.max_slots - idx), Slot);
+                let slot: Slot = world.read_model(((game_id, player, game_config.max_slots - idx)));
                 if slot.number != 0 {
                     nums.append(slot.number);
                 }
@@ -169,8 +170,8 @@ pub mod jackpot_actions {
 
             jackpot.winner = Option::Some(game.player);
             jackpot.claimed = true;
-            set!(world, (jackpot));
-            emit!(world, JackpotClaimed { game_id, jackpot_id, player });
+            world.write_model(@jackpot);
+            world.emit_event(@JackpotClaimed { game_id, jackpot_id, player });
 
             if let Option::Some(token) = jackpot.token {
                 ITokenDispatcher { contract_address: token.address }
@@ -189,13 +190,13 @@ pub mod jackpot_actions {
         /// challenging game as it continues.
         ///
         /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `game_id` - The identifier of the game associated with the jackpot.
-        fn king_me(ref world: IWorldDispatcher, game_id: u32) {
+        fn king_me(ref self: ContractState, game_id: u32) {
+            let mut world = self.world(@"nums");
             let player = get_caller_address();
-            let game = get!(world, (game_id, player), Game);
+            let game: Game = world.read_model((game_id, player));
             let jackpot_id = game.jackpot_id.expect('Jackpot not defined');
-            let mut jackpot = get!(world, (jackpot_id), Jackpot);
+            let mut jackpot: Jackpot = world.read_model(jackpot_id);
 
             let mut king_of_the_hill = match jackpot.mode {
                 JackpotMode::KING_OF_THE_HILL(koth) => koth,
@@ -221,8 +222,8 @@ pub mod jackpot_actions {
 
             // Update the jackpot with the new king
             jackpot.mode = JackpotMode::KING_OF_THE_HILL(king_of_the_hill);
-            set!(world, (jackpot));
-            emit!(world, KingCrowned { game_id, jackpot_id, player });
+            world.write_model(@jackpot);
+            world.emit_event(@KingCrowned { game_id, jackpot_id, player });
         }
 
 
@@ -230,16 +231,16 @@ pub mod jackpot_actions {
         /// Only the game owner can call this function to mark a jackpot as verified or not.
         ///
         /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `jackpot_id` - The identifier of the jackpot to verify.
         /// * `verified` - A boolean indicating whether the jackpot should be marked as verified (true) or not (false).
-        fn verify(ref world: IWorldDispatcher, jackpot_id: u32, verified: bool) {
+        fn verify(ref self: ContractState, jackpot_id: u32, verified: bool) {
+            let mut world = self.world(@"nums");
             let owner = get_caller_address();
-            assert!(world.is_owner(WORLD, owner), "Unauthorized owner");
-            let mut jackpot = get!(world, (jackpot_id), Jackpot);
+            assert!(world.dispatcher.is_owner(WORLD, owner), "Unauthorized owner");
+            let mut jackpot: Jackpot = world.read_model(jackpot_id);
             jackpot.verified = verified;
 
-            set!(world, (jackpot));
+            world.write_model(@jackpot);
         }
     }
 
@@ -248,7 +249,6 @@ pub mod jackpot_actions {
     pub impl InternalImpl of InternalTrait  {
         fn _create(
             self: @ContractState,
-            world: IWorldDispatcher,
             title: felt252,
             mode: JackpotMode,
             expiration: u64,
@@ -259,25 +259,23 @@ pub mod jackpot_actions {
                 assert!(expiration > get_block_timestamp(), "Expiration already passed")
             }
 
+            let mut world = self.world(@"nums");
             let creator = get_caller_address();
-            let jackpot_id = world.uuid();
-            set!(
-                world,
-                (Jackpot {
-                    jackpot_id, 
-                    title,
-                    creator, 
-                    mode,
-                    expiration,
-                    token, 
-                    powerups, 
-                    claimed: false,
-                    verified: false,
-                    winner: Option::None, 
-                })
-            );
+            let jackpot_id = world.dispatcher.uuid();
+            world.write_model(@Jackpot {
+                jackpot_id, 
+                title,
+                creator, 
+                mode,
+                expiration,
+                token, 
+                powerups, 
+                claimed: false,
+                verified: false,
+                winner: Option::None, 
+            });
 
-            emit!(world, JackpotCreated { jackpot_id, token });
+            world.emit_event(@JackpotCreated { jackpot_id, token });
 
             if let Option::Some(token) = token {
                 assert(token.ty == TokenType::ERC20, 'only ERC20 supported');

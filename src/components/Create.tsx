@@ -47,14 +47,15 @@ const Create = () => {
 
       // Parses for game idea from `GameCreated` event
       if (receipt.isSuccess()) {
+        console.log({ receipt });
         const createdEvent = receipt.events.find(
           // no idea what this key is, previously it would've been hash of `GameCreated`
           ({ keys }) =>
             keys[0] ===
-            "0x613f127a45b984440eb97077f485d7718ffff0d065fa4c427774abd166fba2b",
+            "0x1a2f334228cee715f1f0f54053bb6b5eac54fa336e0bc1aacf7516decb0471d",
         );
 
-        navigate(`/${createdEvent?.keys[1]}`);
+        navigate(`/${createdEvent?.data[1]}`);
         return;
       }
     } catch (e) {

@@ -1,17 +1,35 @@
 #[cfg(test)]
 mod tests {
-    use dojo::model::{Model, ModelTest, ModelIndex, ModelEntityTest};
-    use dojo::utils::test::spawn_test_world;
-    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+    use dojo::model::ModelStorage;
+    use dojo::world::WorldStorageTrait;
+    use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDefTrait};
 
     use nums::{
         systems::{game_actions::{game_actions, IGameActionsDispatcher, IGameActionsDispatcherTrait}},
         models::{
-            jackpot::jackpot::{Jackpot, jackpot}, game::{Game, GameTrait, game}, slot::{Slot, slot},
-            name::{Name, name}, config::{Config, GameConfig, config}
+            game::{Game, GameTrait, m_Game}, slot::m_Slot,
+            name::{Name, m_Name}, config::{Config, GameConfig, m_Config}
         }
     };
-    use starknet::testing::set_transaction_hash;
+
+    fn namespace_def() -> NamespaceDef {
+        let ndef = NamespaceDef {
+            namespace: "nums", resources: [
+                TestResource::Model(m_Game::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Slot::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Name::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Config::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(game_actions::e_GameCreated::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Contract(
+                    ContractDefTrait::new(game_actions::TEST_CLASS_HASH, "game_actions")
+                        .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+                )
+            ].span()
+        };
+
+        ndef
+    }
 
     fn CONFIG() -> Config {
         Config {
@@ -24,13 +42,10 @@ mod tests {
 
     #[test]
     fn test_config() {
-        let mut models = array![config::TEST_CLASS_HASH,];
-        let world = spawn_test_world(["nums"].span(), models.span());
-        let contract_address = world
-            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let ndef = namespace_def();
+        let world = spawn_test_world([ndef].span());
+        let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
-
-        world.grant_writer(Model::<Config>::selector(), contract_address);
 
         game_actions.set_config(CONFIG());
     }
@@ -38,11 +53,9 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_config_unauthorized() {
-        let mut models = array![game::TEST_CLASS_HASH, slot::TEST_CLASS_HASH];
-        let world = spawn_test_world(["nums"].span(), models.span());
-
-        let contract_address = world
-            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let ndef = namespace_def();
+        let world = spawn_test_world([ndef].span());
+        let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
 
         let unauthorized_caller = starknet::contract_address_const::<0x1337>();
@@ -54,36 +67,23 @@ mod tests {
     #[test]
     fn test_create_game() {
         let caller = starknet::contract_address_const::<0x0>();
-        starknet::testing::set_contract_address(caller);
-        let mut models = array![
-            game::TEST_CLASS_HASH,
-            slot::TEST_CLASS_HASH,
-            config::TEST_CLASS_HASH,
-            jackpot::TEST_CLASS_HASH,
-        ];
-        let world = spawn_test_world(["nums"].span(), models.span());
-
-        let contract_address = world
-            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let ndef = namespace_def();
+        let world = spawn_test_world([ndef].span());
+        let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
-
-        world.grant_writer(Model::<Game>::selector(), contract_address);
-        world.grant_writer(Model::<Config>::selector(), contract_address);
-        world.grant_writer(Model::<Jackpot>::selector(), contract_address);
-        world.grant_writer(Model::<Slot>::selector(), contract_address);
-
         game_actions.set_config(CONFIG());
 
         let (game_id, first_number) = game_actions.create_game(Option::None);
-        let game = get!(world, (game_id, caller), Game);
+        let game: Game = world.read_model((game_id, caller));
+
         let remaining = game.remaining_slots;
         assert(game.next_number == first_number, 'next number create is wrong');
 
         // set transaction hash so seed is "random"
-        set_transaction_hash(42);
+        starknet::testing::set_transaction_hash(42);
 
         let next_number = game_actions.set_slot(game_id, 6);
-        let game = get!(world, (game_id, caller), Game);
+        let game: Game = world.read_model((game_id, caller));
         assert(game.next_number == next_number, 'next number set slot is wrong');
         assert(game.remaining_slots == remaining - 1, 'remaining slots is wrong');
 
@@ -122,25 +122,17 @@ mod tests {
     #[test]
     fn test_set_name() {
         let caller = starknet::contract_address_const::<0x0>();
-        let mut models = array![
-            game::TEST_CLASS_HASH, name::TEST_CLASS_HASH, config::TEST_CLASS_HASH,
-        ];
-        let world = spawn_test_world(["nums"].span(), models.span());
-
-        let contract_address = world
-            .deploy_contract('salt', game_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let ndef = namespace_def();
+        let world = spawn_test_world([ndef].span());
+        let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
-
-        world.grant_writer(Model::<Game>::selector(), contract_address);
-        world.grant_writer(Model::<Config>::selector(), contract_address);
-        world.grant_writer(Model::<Name>::selector(), contract_address);
 
         game_actions.set_config(CONFIG());
 
         let (game_id, _) = game_actions.create_game(Option::None);
         game_actions.set_name(game_id, 'test_name');
 
-        let name = get!(world, (game_id, caller), Name);
+        let name: Name = world.read_model((game_id, caller));
         assert!(name.name == 'test_name', "name is wrong");
     }
 }

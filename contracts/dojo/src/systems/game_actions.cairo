@@ -1,26 +1,27 @@
 use nums::models::config::Config;
-use starknet::ContractAddress;
 
-#[dojo::interface]
-pub trait IGameActions {
-    fn create_game(ref world: IWorldDispatcher, jackpot_id: Option<u32>) -> (u32, u16);
-    fn set_config(ref world: IWorldDispatcher, config: Config);
-    fn set_slot(ref world: IWorldDispatcher, game_id: u32, target_idx: u8) -> u16;
-    fn set_name(ref world: IWorldDispatcher, game_id: u32, name: felt252);
+#[starknet::interface]
+pub trait IGameActions<T> {
+    fn create_game(ref self: T, jackpot_id: Option<u32>) -> (u32, u16);
+    fn set_config(ref self: T, config: Config);
+    fn set_slot(ref self: T, game_id: u32, target_idx: u8) -> u16;
+    fn set_name(ref self: T, game_id: u32, name: felt252);
 }
 
 #[dojo::contract]
 pub mod game_actions {
     use core::array::ArrayTrait;
-    use core::num::traits::Zero;
     use nums::interfaces::token::{INumsTokenDispatcher, INumsTokenDispatcherTrait};
-    use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
-    use nums::models::config::{Config, SlotReward, SlotRewardTrait};
+    use nums::models::config::{Config, SlotRewardTrait};
     use nums::models::game::{Game, Reward, GameTrait};
     use nums::models::jackpot::jackpot::Jackpot;
     use nums::models::name::Name;
     use nums::models::slot::Slot;
     use nums::utils::random::{Random, RandomImpl};
+
+    use dojo::model::ModelStorage;
+    use dojo::event::EventStorage;
+    use dojo::world::IWorldDispatcherTrait;
 
     use starknet::{ContractAddress, get_caller_address};
     use super::IGameActions;
@@ -29,7 +30,6 @@ pub mod game_actions {
 
     #[derive(Drop, Serde)]
     #[dojo::event]
-    #[dojo::model]
     pub struct Inserted {
         #[key]
         game_id: u32,
@@ -43,7 +43,6 @@ pub mod game_actions {
 
     #[derive(Drop, Serde)]
     #[dojo::event]
-    #[dojo::model]
     pub struct GameCreated {
         #[key]
         game_id: u32,
@@ -57,65 +56,64 @@ pub mod game_actions {
 
     #[abi(embed_v0)]
     impl GameActionsImpl of IGameActions<ContractState> {
-        fn set_config(ref world: IWorldDispatcher, config: Config) {
+        fn set_config(ref self: ContractState, config: Config) {
             let owner = get_caller_address();
-            assert!(world.is_owner(WORLD, owner), "Unauthorized owner");
+            let mut world = self.world(@"nums");
+
+            assert!(world.dispatcher.is_owner(WORLD, owner), "Unauthorized owner");
             assert!(config.world_resource == WORLD, "Invalid config state");
 
-            set!(world, (config));
+            world.write_model(@config);
         }
 
         /// Creates a new game instance, initializes its state, and emits a creation event.
         ///
-        /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
-        ///
         /// # Returns
         /// A tuple containing the game ID and the first random number for the game.
-        fn create_game(ref world: IWorldDispatcher, jackpot_id: Option<u32>) -> (u32, u16) {
-            let config = get!(world, (WORLD), Config).game.expect('Game config not set');
-            let game_id = world.uuid();
+        fn create_game(ref self: ContractState, jackpot_id: Option<u32>) -> (u32, u16) {
+            let mut world = self.world(@"nums");
+            let config: Config = world.read_model(WORLD);
+            let game_config = config.game.expect('Game config not set');
+
+            let game_id = world.dispatcher.uuid();
             let player = get_caller_address();
-            let mut rand = RandomImpl::new(world);
-            let next_number = rand.between::<u16>(config.min_number, config.max_number);
-            if let Option::Some(reward) = get!(world, (WORLD), Config).reward {
-                assert!(reward.levels.len() > 0, "Reward levels not set");
-                set!(
-                    world,
-                    (Reward {
-                        game_id, player, total_rewards: 0, next_reward: *reward.levels[0].amount
-                    })
-                );
+            let mut rand = RandomImpl::new();
+            let next_number = rand.between::<u16>(game_config.min_number, game_config.max_number);
+
+            
+            
+            if let Option::Some(reward_config) = config.reward {
+                assert!(reward_config.levels.len() > 0, "Reward levels not set");
+                world.write_model(@Reward {
+                    game_id,
+                    player,
+                    total_rewards: 0,
+                    next_reward: *reward_config.levels[0].amount
+                });
             }
 
-            set!(
-                world,
-                (Game {
-                    game_id,
-                    player,
-                    max_slots: config.max_slots,
-                    remaining_slots: config.max_slots,
-                    max_number: config.max_number,
-                    min_number: config.min_number,
-                    next_number,
-                    jackpot_id,
-                })
-            );
-
-            emit!(
-                world,
-                GameCreated {
-                    game_id,
-                    player,
-                    max_slots: config.max_slots,
-                    max_number: config.max_number,
-                    min_number: config.min_number,
-                    jackpot_id,
-                }
-            );
+            world.write_model(@Game {
+                game_id,
+                player,
+                max_slots: game_config.max_slots,
+                remaining_slots: game_config.max_slots,
+                max_number: game_config.max_number,
+                min_number: game_config.min_number,
+                next_number,
+                jackpot_id,
+            });
+            
+            world.emit_event(@GameCreated {
+                game_id,
+                player,
+                max_slots: game_config.max_slots,
+                max_number: game_config.max_number,
+                min_number: game_config.min_number,
+                jackpot_id,
+            });
 
             if let Option::Some(jackpot_id) = jackpot_id {
-                let jackpot = get!(world, (jackpot_id), Jackpot);
+                let jackpot: Jackpot = world.read_model(jackpot_id);
                 assert!(jackpot.winner.is_none(), "Jackpot already won");
                 // TODO: Transfer fee token
             }
@@ -128,15 +126,15 @@ pub mod game_actions {
         /// filled.
         ///
         /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `game_id` - The identifier of the game.
         /// * `target_idx` - The index of the slot to be set.
         ///
         /// # Returns
         /// The next random number to be used in the game.
-        fn set_slot(ref world: IWorldDispatcher, game_id: u32, target_idx: u8) -> u16 {
+        fn set_slot(ref self: ContractState, game_id: u32, target_idx: u8) -> u16 {
             let player = get_caller_address();
-            let mut game = get!(world, (game_id, player), Game);
+            let mut world = self.world(@"nums");
+            let mut game: Game = world.read_model((game_id, player));
 
             assert!(game.player == player, "Unauthorized player");
             assert!(target_idx < game.max_slots, "Invalid slot");
@@ -145,7 +143,7 @@ pub mod game_actions {
             let mut nums = ArrayTrait::<u16>::new();
             let mut idx = 0_u8;
             loop {
-                let slot = get!(world, (game_id, player, idx), Slot);
+                let slot: Slot = world.read_model((game_id, player, idx));
                 if slot.number != 0 {
                     // Check if we're trying to insert into a filled slot
                     assert!(target_idx != idx, "Slot already filled");
@@ -167,36 +165,44 @@ pub mod game_actions {
 
             // Update game state
             let target_number = game.next_number;
-            let mut rand = RandomImpl::new(world);
+            let mut rand = RandomImpl::new();
             let next_number = next_random(rand, @nums, game.min_number, game.max_number);
+
+            print!("next: {}", next_number);
             game.next_number = next_number;
             game.remaining_slots -= 1;
 
+            let config: Config = world.read_model(WORLD);
+
             // Slot reward
-            if let Option::Some(reward) = get!(world, (WORLD), Config).reward {
-                let (address, amount) = reward.compute(game.level());
-                let (_, next_reward) = reward.compute(game.level() + 1);
+            if let Option::Some(reward_config) = config.reward {
+                let (address, amount) = reward_config.compute(game.level());
+                let (_, next_reward) = reward_config.compute(game.level() + 1);
                 INumsTokenDispatcher { contract_address: address }.reward(player, amount);
 
-                let mut game_reward = get!(world, (game_id, player), Reward);
+                let mut game_reward: Reward = world.read_model((game_id, player));
                 game_reward.total_rewards += amount.into();
                 game_reward.next_reward = next_reward;
-                set!(world, (game_reward));
+                world.write_model(@game_reward);
             }
 
-            set!(world, (game, Slot { game_id, player, index: target_idx, number: target_number }));
+            world.write_model(@game);
 
-            emit!(
-                world,
-                Inserted {
-                    game_id,
-                    player,
-                    index: target_idx,
-                    number: target_number,
-                    next_number,
-                    remaining_slots: game.remaining_slots
-                }
-            );
+            world.write_model(@Slot {
+                game_id, 
+                player, 
+                index: target_idx, 
+                number: target_number
+            });
+
+            world.emit_event(@Inserted {
+                game_id,
+                player,
+                index: target_idx,
+                number: target_number,
+                next_number,
+                remaining_slots: game.remaining_slots
+            });
 
             next_number
         }
@@ -205,17 +211,17 @@ pub mod game_actions {
         /// that the name has not been set before.
         ///
         /// # Arguments
-        /// * `world` - A reference to the world dispatcher used to interact with the game state.
         /// * `game_id` - The identifier of the game.
         /// * `name` - The new name to be set for the player.
-        fn set_name(ref world: IWorldDispatcher, game_id: u32, name: felt252) {
+        fn set_name(ref self: ContractState, game_id: u32, name: felt252) {
+            let mut world = self.world(@"nums");
             let player = get_caller_address();
-            let mut name_model = get!(world, (game_id, player), Name);
+            let mut name_model: Name = world.read_model((game_id, player));
             assert!(name_model.player == player, "Unauthorized player");
             assert!(name_model.name == 0, "Name already set");
 
             name_model.name = name;
-            set!(world, (name_model));
+            world.write_model(@name_model);
         }
     }
 

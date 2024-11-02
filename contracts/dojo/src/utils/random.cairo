@@ -1,10 +1,7 @@
 use core::pedersen::pedersen;
 
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use starknet::ContractAddress;
 use starknet::get_contract_address;
-use starknet::contract_address_const;
-use starknet::get_caller_address;
 // use cartridge_vrf::IVrfProviderDispatcher;
 // use cartridge_vrf::IVrfProviderDispatcherTrait;
 // use cartridge_vrf::Source;
@@ -13,15 +10,14 @@ const VRF_PROVIDER_ADDRESS: felt252 = 0x051fea4450da9d6aee758bdeba88b2f665bcbf54
 
 #[derive(Copy, Drop, Serde)]
 pub struct Random {
-    pub world: IWorldDispatcher,
     pub seed: felt252,
     pub nonce: usize,
 }
 
 #[generate_trait]
 pub impl RandomImpl of RandomTrait {
-    fn new(world: IWorldDispatcher) -> Random {
-        Random { world, seed: seed(get_contract_address()), nonce: 0 }
+    fn new() -> Random {
+        Random { seed: seed(get_contract_address()), nonce: 0 }
     }
 
     // https://docs.cartridge.gg/vrf/overview

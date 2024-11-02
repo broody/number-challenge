@@ -1,14 +1,10 @@
 #[cfg(test)]
 mod tests {
-    use dojo::model::{Model, ModelTest, ModelIndex, ModelEntityTest};
-    use dojo::utils::test::spawn_test_world;
-    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+    use dojo::model::ModelStorage;
+    use dojo::world::{WorldStorageTrait, WorldStorage};
+    use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDefTrait};
 
-    const START_BLOCK_TIME: u64 = 100;
-    const EXTENSION_TIME: u64 = 100;
-    const EXPIRATION_TIME: u64 = 200;
-    const NO_EXPIRATION_TIME: u64 = 0;
-    const NO_EXTENSION_TIME: u64 = 0;
+    use starknet::ContractAddress;
 
     use nums::{
         systems::{
@@ -16,16 +12,44 @@ mod tests {
             jackpot_actions::{jackpot_actions, IJackpotActionsDispatcher, IJackpotActionsDispatcherTrait}
         },
         models::{
-            name::{Name, name}, game::{Game, GameTrait, game}, slot::{slot, Slot},
-            config::{config, Config, GameConfig, SlotReward, SlotRewardTrait, RewardLevel},
-            jackpot::jackpot::{jackpot, Jackpot},
-            jackpot::mode::{JackpotMode, KingOfTheHill, ConditionalVictory},
-            jackpot::token::{ Token, TokenType},
+            game::m_Game, slot::m_Slot,
+            config::{m_Config, Config, GameConfig},
+            jackpot::jackpot::{m_Jackpot, Jackpot},
+            jackpot::mode::JackpotMode,
         }
     };
 
-    use starknet::ContractAddress;
-    use starknet::testing::set_transaction_hash;
+    const START_BLOCK_TIME: u64 = 100;
+    const EXTENSION_TIME: u64 = 100;
+    const EXPIRATION_TIME: u64 = 200;
+    const NO_EXPIRATION_TIME: u64 = 0;
+    const NO_EXTENSION_TIME: u64 = 0;
+
+    fn namespace_def() -> NamespaceDef {
+        let ndef = NamespaceDef {
+            namespace: "nums", resources: [
+                TestResource::Model(m_Game::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Slot::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Config::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Jackpot::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(game_actions::e_GameCreated::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(jackpot_actions::e_JackpotCreated::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(jackpot_actions::e_JackpotClaimed::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(jackpot_actions::e_KingCrowned::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Contract(
+                    ContractDefTrait::new(game_actions::TEST_CLASS_HASH, "game_actions")
+                        .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+                ),
+                TestResource::Contract(
+                    ContractDefTrait::new(jackpot_actions::TEST_CLASS_HASH, "jackpot_actions")
+                        .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+                )
+            ].span()
+        };
+
+        ndef
+    }
 
     fn PLAYER_ONE() -> ContractAddress {
         starknet::contract_address_const::<0xdead>()
@@ -35,35 +59,14 @@ mod tests {
         starknet::contract_address_const::<0xbeef>()
     }
 
-    fn KING_OF_THE_HILL_STATE(start_time: u64, expiration: u64, extension: u64) -> (IWorldDispatcher, u32, IGameActionsDispatcher, IJackpotActionsDispatcher) {
-        let world = spawn_test_world(
-            ["nums"].span(),
-            array![
-                game::TEST_CLASS_HASH,
-                config::TEST_CLASS_HASH,
-                name::TEST_CLASS_HASH,
-                slot::TEST_CLASS_HASH,
-                jackpot::TEST_CLASS_HASH
-            ]
-                .span()
-        );
+    fn KING_OF_THE_HILL_STATE(start_time: u64, expiration: u64, extension: u64) -> (WorldStorage, u32, IGameActionsDispatcher, IJackpotActionsDispatcher) {
+        let ndef = namespace_def();
+        let world = spawn_test_world([ndef].span());
+        let (game_actions_address, _) = world.dns(@"game_actions").unwrap();
+        let (jackpot_actions_address, _) = world.dns(@"jackpot_actions").unwrap();
 
-        let mut game_actions = IGameActionsDispatcher {
-            contract_address: world
-                .deploy_contract('game_actions', game_actions::TEST_CLASS_HASH.try_into().unwrap())
-        };
-
-        let mut jackpot_actions = IJackpotActionsDispatcher {
-            contract_address: world
-                .deploy_contract('jackpot_actions', jackpot_actions::TEST_CLASS_HASH.try_into().unwrap())
-        };
-
-        // setup auth
-        world.grant_writer(Model::<Game>::selector(), game_actions.contract_address);
-        world.grant_writer(Model::<Config>::selector(), game_actions.contract_address);
-        world.grant_writer(Model::<Slot>::selector(), game_actions.contract_address);
-        world.grant_writer(Model::<Name>::selector(), game_actions.contract_address);
-        world.grant_writer(Model::<Jackpot>::selector(), jackpot_actions.contract_address);
+        let mut game_actions = IGameActionsDispatcher { contract_address: game_actions_address };
+        let mut jackpot_actions = IJackpotActionsDispatcher { contract_address: jackpot_actions_address };
 
         game_actions.set_config(CONFIG());
 
@@ -92,7 +95,7 @@ mod tests {
     #[test]
     fn test_create_king_of_the_hill() {
         let (world, jackpot_id, mut game_actions, mut jackpot_actions) = KING_OF_THE_HILL_STATE(START_BLOCK_TIME, EXPIRATION_TIME, EXTENSION_TIME);
-        let jackpot = get!(world, (jackpot_id), Jackpot);
+        let jackpot: Jackpot = world.read_model(jackpot_id);
         assert(jackpot.winner == Option::None, 'no winner');
         assert(!jackpot.claimed, 'jackpot should not be claimed');
         assert(jackpot.expiration == EXPIRATION_TIME, 'expiration should not change');
@@ -101,8 +104,7 @@ mod tests {
         let next_number = game_actions.set_slot(game_id, 6);
 
         jackpot_actions.king_me(game_id);
-
-        let jackpot = get!(world, (jackpot_id), Jackpot);
+        let jackpot: Jackpot = world.read_model(jackpot_id);
         let king_of_the_hill = match jackpot.mode {
             JackpotMode::KING_OF_THE_HILL(koth) => koth,
             _ => panic!("Not a King of the Hill jackpot")
@@ -120,7 +122,7 @@ mod tests {
 
         jackpot_actions.king_me(game_id);
 
-        let jackpot = get!(world, (jackpot_id), Jackpot);
+        let jackpot: Jackpot = world.read_model(jackpot_id);
         let king_of_the_hill = match jackpot.mode {
             JackpotMode::KING_OF_THE_HILL(koth) => koth,
             _ => panic!("Not a King of the Hill jackpot")
@@ -160,7 +162,7 @@ mod tests {
         starknet::testing::set_block_timestamp(EXPIRATION_TIME + EXTENSION_TIME + 1);
         jackpot_actions.claim(game_id);
 
-        let jackpot = get!(world, (jackpot_id), Jackpot);
+        let jackpot: Jackpot = world.read_model(jackpot_id);
         assert(jackpot.claimed, 'should be claimed');
         assert(jackpot.winner == Option::Some(PLAYER_ONE()), 'winner should be player')
     }
