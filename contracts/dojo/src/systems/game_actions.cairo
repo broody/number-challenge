@@ -80,37 +80,44 @@ pub mod game_actions {
             let mut rand = RandomImpl::new();
             let next_number = rand.between::<u16>(game_config.min_number, game_config.max_number);
 
-            
-            
             if let Option::Some(reward_config) = config.reward {
                 assert!(reward_config.levels.len() > 0, "Reward levels not set");
-                world.write_model(@Reward {
-                    game_id,
-                    player,
-                    total_rewards: 0,
-                    next_reward: *reward_config.levels[0].amount
-                });
+                world
+                    .write_model(
+                        @Reward {
+                            game_id,
+                            player,
+                            total_rewards: 0,
+                            next_reward: *reward_config.levels[0].amount
+                        }
+                    );
             }
 
-            world.write_model(@Game {
-                game_id,
-                player,
-                max_slots: game_config.max_slots,
-                remaining_slots: game_config.max_slots,
-                max_number: game_config.max_number,
-                min_number: game_config.min_number,
-                next_number,
-                jackpot_id,
-            });
-            
-            world.emit_event(@GameCreated {
-                game_id,
-                player,
-                max_slots: game_config.max_slots,
-                max_number: game_config.max_number,
-                min_number: game_config.min_number,
-                jackpot_id,
-            });
+            world
+                .write_model(
+                    @Game {
+                        game_id,
+                        player,
+                        max_slots: game_config.max_slots,
+                        remaining_slots: game_config.max_slots,
+                        max_number: game_config.max_number,
+                        min_number: game_config.min_number,
+                        next_number,
+                        jackpot_id,
+                    }
+                );
+
+            world
+                .emit_event(
+                    @GameCreated {
+                        game_id,
+                        player,
+                        max_slots: game_config.max_slots,
+                        max_number: game_config.max_number,
+                        min_number: game_config.min_number,
+                        jackpot_id,
+                    }
+                );
 
             if let Option::Some(jackpot_id) = jackpot_id {
                 let jackpot: Jackpot = world.read_model(jackpot_id);
@@ -168,7 +175,6 @@ pub mod game_actions {
             let mut rand = RandomImpl::new();
             let next_number = next_random(rand, @nums, game.min_number, game.max_number);
 
-            print!("next: {}", next_number);
             game.next_number = next_number;
             game.remaining_slots -= 1;
 
@@ -188,21 +194,19 @@ pub mod game_actions {
 
             world.write_model(@game);
 
-            world.write_model(@Slot {
-                game_id, 
-                player, 
-                index: target_idx, 
-                number: target_number
-            });
+            world.write_model(@Slot { game_id, player, index: target_idx, number: target_number });
 
-            world.emit_event(@Inserted {
-                game_id,
-                player,
-                index: target_idx,
-                number: target_number,
-                next_number,
-                remaining_slots: game.remaining_slots
-            });
+            world
+                .emit_event(
+                    @Inserted {
+                        game_id,
+                        player,
+                        index: target_idx,
+                        number: target_number,
+                        next_number,
+                        remaining_slots: game.remaining_slots
+                    }
+                );
 
             next_number
         }

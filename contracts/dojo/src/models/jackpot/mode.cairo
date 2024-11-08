@@ -6,7 +6,7 @@ pub enum JackpotMode {
     CONDITIONAL_VICTORY: ConditionalVictory,
 }
 
-#[derive(Copy, Drop, Serde,PartialEq,  Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 pub struct KingOfTheHill {
     pub extension_time: u64,
     pub king: ContractAddress,
@@ -34,10 +34,7 @@ pub impl JackpotModeImpl of JackpotModeTrait {
                 )
             },
             JackpotMode::CONDITIONAL_VICTORY(params) => {
-                assert!(
-                    params.slots_required <= max_slots,
-                    "slots_required exceeds max_slots"
-                );
+                assert!(params.slots_required <= max_slots, "slots_required exceeds max_slots");
 
                 mode
             }

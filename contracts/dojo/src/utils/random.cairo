@@ -6,7 +6,8 @@ use starknet::get_contract_address;
 // use cartridge_vrf::IVrfProviderDispatcherTrait;
 // use cartridge_vrf::Source;
 
-const VRF_PROVIDER_ADDRESS: felt252 = 0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f;
+const VRF_PROVIDER_ADDRESS: felt252 =
+    0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f;
 
 #[derive(Copy, Drop, Serde)]
 pub struct Random {
@@ -22,7 +23,8 @@ pub impl RandomImpl of RandomTrait {
 
     // https://docs.cartridge.gg/vrf/overview
     // fn new_vrf(world: IWorldDispatcher) -> Random {
-    //     let vrf_provider = IVrfProviderDispatcher { contract_address: contract_address_const::<VRF_PROVIDER_ADDRESS>() };
+    //     let vrf_provider = IVrfProviderDispatcher { contract_address:
+    //     contract_address_const::<VRF_PROVIDER_ADDRESS>() };
     //     let seed = vrf_provider.consume_random(Source::Nonce(get_caller_address()));
     //     Random { world, seed, nonce: 0 }
     // }

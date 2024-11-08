@@ -10,7 +10,7 @@ pub trait IJackpotActions<T> {
         powerups: bool,
         token: Option<Token>,
         extension_time: u64,
-    ) -> u32;   
+    ) -> u32;
     fn create_conditional_victory(
         ref self: T,
         title: felt252,
@@ -89,18 +89,8 @@ pub mod jackpot_actions {
             let game_config = config.game.expect('game config not set');
 
             assert(slots_required <= game_config.max_slots, 'cannot require > max slots');
-            let mode = JackpotMode::CONDITIONAL_VICTORY( 
-                ConditionalVictory {
-                    slots_required
-                }
-            );
-            self._create(
-                title,
-                mode,
-                expiration,
-                powerups,
-                token,
-            )
+            let mode = JackpotMode::CONDITIONAL_VICTORY(ConditionalVictory { slots_required });
+            self._create(title, mode, expiration, powerups, token,)
         }
 
         fn create_king_of_the_hill(
@@ -126,15 +116,9 @@ pub mod jackpot_actions {
                     remaining_slots: game_config.max_slots,
                 }
             );
-            self._create(
-                title,
-                mode,
-                expiration,
-                powerups,
-                token
-            )
+            self._create(title, mode, expiration, powerups, token)
         }
-    
+
         /// Claims the jackpot for a specific game. Ensures that the player is authorized and that
         /// the jackpot has not been claimed before.
         /// Transfers the jackpot token to the player and updates the jackpot state.
@@ -149,7 +133,7 @@ pub mod jackpot_actions {
             let game_config = config.game.expect('game config not set');
             let jackpot_id = game.jackpot_id.expect('jackpot not defined');
             let mut jackpot: Jackpot = world.read_model(jackpot_id);
-           
+
             if jackpot.expiration > 0 {
                 assert(jackpot.expiration < get_block_timestamp(), 'cannot claim yet')
             }
@@ -205,14 +189,15 @@ pub mod jackpot_actions {
 
             assert(jackpot.expiration > get_block_timestamp(), 'Jackpot already expired');
             assert(
-                game.remaining_slots < king_of_the_hill.remaining_slots || 
-                (game.remaining_slots == king_of_the_hill.remaining_slots && player != king_of_the_hill.king),
+                game.remaining_slots < king_of_the_hill.remaining_slots
+                    || (game.remaining_slots == king_of_the_hill.remaining_slots
+                        && player != king_of_the_hill.king),
                 'No improvement or already king'
             );
 
             king_of_the_hill.king = player;
             king_of_the_hill.remaining_slots = game.remaining_slots;
-            
+
             if king_of_the_hill.extension_time > 0 {
                 let new_expiration = jackpot.expiration + king_of_the_hill.extension_time;
                 if new_expiration > jackpot.expiration {
@@ -232,7 +217,8 @@ pub mod jackpot_actions {
         ///
         /// # Arguments
         /// * `jackpot_id` - The identifier of the jackpot to verify.
-        /// * `verified` - A boolean indicating whether the jackpot should be marked as verified (true) or not (false).
+        /// * `verified` - A boolean indicating whether the jackpot should be marked as verified
+        /// (true) or not (false).
         fn verify(ref self: ContractState, jackpot_id: u32, verified: bool) {
             let mut world = self.world(@"nums");
             let owner = get_caller_address();
@@ -246,7 +232,7 @@ pub mod jackpot_actions {
 
 
     #[generate_trait]
-    pub impl InternalImpl of InternalTrait  {
+    pub impl InternalImpl of InternalTrait {
         fn _create(
             self: @ContractState,
             title: felt252,
@@ -254,7 +240,7 @@ pub mod jackpot_actions {
             expiration: u64,
             powerups: bool,
             token: Option<Token>,
-        ) -> u32{
+        ) -> u32 {
             if expiration > 0 {
                 assert!(expiration > get_block_timestamp(), "Expiration already passed")
             }
@@ -262,18 +248,21 @@ pub mod jackpot_actions {
             let mut world = self.world(@"nums");
             let creator = get_caller_address();
             let jackpot_id = world.dispatcher.uuid();
-            world.write_model(@Jackpot {
-                jackpot_id, 
-                title,
-                creator, 
-                mode,
-                expiration,
-                token, 
-                powerups, 
-                claimed: false,
-                verified: false,
-                winner: Option::None, 
-            });
+            world
+                .write_model(
+                    @Jackpot {
+                        jackpot_id,
+                        title,
+                        creator,
+                        mode,
+                        expiration,
+                        token,
+                        powerups,
+                        claimed: false,
+                        verified: false,
+                        winner: Option::None,
+                    }
+                );
 
             world.emit_event(@JackpotCreated { jackpot_id, token });
 
@@ -282,7 +271,7 @@ pub mod jackpot_actions {
                 assert(token.total.is_non_zero(), 'total cannot be zero');
 
                 ITokenDispatcher { contract_address: token.address }
-                    .transferFrom( get_caller_address(), get_contract_address(), token.total);    
+                    .transferFrom(get_caller_address(), get_contract_address(), token.total);
             }
 
             jackpot_id

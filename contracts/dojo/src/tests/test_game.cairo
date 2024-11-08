@@ -5,10 +5,12 @@ mod tests {
     use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDefTrait};
 
     use nums::{
-        systems::{game_actions::{game_actions, IGameActionsDispatcher, IGameActionsDispatcherTrait}},
+        systems::{
+            game_actions::{game_actions, IGameActionsDispatcher, IGameActionsDispatcherTrait}
+        },
         models::{
-            game::{Game, GameTrait, m_Game}, slot::m_Slot,
-            name::{Name, m_Name}, config::{Config, GameConfig, m_Config}
+            game::{Game, GameTrait, m_Game}, slot::m_Slot, name::{Name, m_Name},
+            config::{Config, GameConfig, m_Config}
         }
     };
 
@@ -19,7 +21,9 @@ mod tests {
                 TestResource::Model(m_Slot::TEST_CLASS_HASH.try_into().unwrap()),
                 TestResource::Model(m_Name::TEST_CLASS_HASH.try_into().unwrap()),
                 TestResource::Model(m_Config::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Event(game_actions::e_GameCreated::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(
+                    game_actions::e_GameCreated::TEST_CLASS_HASH.try_into().unwrap()
+                ),
                 TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH.try_into().unwrap()),
                 TestResource::Contract(
                     ContractDefTrait::new(game_actions::TEST_CLASS_HASH, "game_actions")

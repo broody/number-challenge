@@ -11,10 +11,10 @@ website = "https://nums.gg"
 default = "nums"
 
 [env]
-rpc_url = "http://localhost:8001/x/starknet/sepolia"
-account_address = "0x6bd82a20984e638c8e1d45770e2924e274e315b9609eb15c26384eac0094cf1"
-private_key = "0x15ffe6ee85bcd75f93b395ec4471819d5dbebb77ea2f2a50b30ce7f67372ce4"
-world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
+rpc_url = "https://api.cartridge.gg/x/nums-slot/katana"
+account_address = "0x7f43a30ba57d75c02bbbbcd2400f4482537a9b4e19d4d64c9c051d39a8a7497"
+private_key = "0x63c758f1cd37cb012c70e788cf3a3a8d38943744d0989bfd99b48c2075e0f2e"
+#world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
 
 [writers]
 "nums" = ["nums-game_actions", "nums-jackpot_actions"]

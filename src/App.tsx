@@ -35,7 +35,6 @@ const policies = [
 
 const options: ControllerOptions = {
   rpc: getRpc(),
-  url: "http://localhost:3001",
   policies,
   tokens: {
     erc20: [import.meta.env.VITE_NUMS_ERC20],
