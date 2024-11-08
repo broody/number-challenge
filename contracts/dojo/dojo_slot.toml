@@ -2,8 +2,8 @@
 name = "Nums"
 seed = "nums"
 description = "On chain version of the Number Challenge or Blind Number Challenge game."
-cover_uri = "file://assets/cover.png"
-icon_uri = "file://assets/icon.png"
+# cover_uri = "file://assets/cover.png"
+# icon_uri = "file://assets/icon.png"
 website = "https://nums.gg"
 
 
@@ -12,6 +12,9 @@ default = "nums"
 
 [env]
 rpc_url = "https://api.cartridge.gg/x/nums-slot/katana"
-account_address = "0x21c64ed0fd15f981ab5ea27e4d40ba517d97693fe916fdd69f85d05f21b503a"
-private_key = "0x1ae2fc0c99a2d6e1375d4f3f7ae97b8d7e4bea98b55df1cfd357ad5110d1599"
-world_address = "0x13a0e134c64c01c2a85c014cf51fbd25cf7ba92d7f4b85c3ce0da967e92ed2a"
+account_address = "0x7f43a30ba57d75c02bbbbcd2400f4482537a9b4e19d4d64c9c051d39a8a7497"
+private_key = "0x63c758f1cd37cb012c70e788cf3a3a8d38943744d0989bfd99b48c2075e0f2e"
+#world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
+
+[writers]
+"nums" = ["nums-game_actions", "nums-jackpot_actions"]

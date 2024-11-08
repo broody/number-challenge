@@ -1,19 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use dojo::utils::test::spawn_test_world;
-
-    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-
-    use nums::{
-        systems::{actions::{actions, IActionsDispatcher, IActionsDispatcherTrait}},
-        models::{
-            game::{Game, GameTrait, game}, slot::{slot, Slot},
-            config::{config, Config, GameConfig, SlotReward, SlotRewardTrait, RewardLevel}
-        }
-    };
+    use nums::{models::{config::{Config, GameConfig, SlotReward, SlotRewardTrait, RewardLevel}}};
 
     use starknet::ContractAddress;
-    use starknet::testing::set_transaction_hash;
     fn REWARD(token: ContractAddress) -> SlotReward {
         SlotReward {
             token,
