@@ -1,6 +1,6 @@
 [world]
 name = "Nums"
-seed = "nums-1"
+seed = "nums"
 description = "On chain version of the Number Challenge or Blind Number Challenge game."
 # cover_uri = "file://assets/cover.png"
 # icon_uri = "file://assets/icon.png"
@@ -11,9 +11,9 @@ website = "https://nums.gg"
 default = "nums"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/nums-slot/katana"
-account_address = "0x7f43a30ba57d75c02bbbbcd2400f4482537a9b4e19d4d64c9c051d39a8a7497"
-private_key = "0x63c758f1cd37cb012c70e788cf3a3a8d38943744d0989bfd99b48c2075e0f2e"
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+account_address = "0x054f2b25070d70d49f1c1f7c10Ef2639889fDAc15894D3FBa1a03caF5603eCA3"
+keystore_path = "/home/broody/.starkli_accounts/sepolia/keystore.json"
 world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
 
 [writers]

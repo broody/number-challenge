@@ -24,6 +24,3 @@ dist-ssr
 *.sw?
 
 target
-
-contracts/**/dojo_sepolia.toml
-contracts/**/dojo_mainnet.toml
