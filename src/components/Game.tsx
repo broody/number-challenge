@@ -137,12 +137,12 @@ const Game = () => {
         //   contractAddress: import.meta.env.VITE_VRF_CONTRACT,
         //   entrypoint: 'request_random',
         //   calldata: CallData.compile({
-        //     caller: import.meta.env.VITE_ACTIONS_CONTRACT,
+        //     caller: import.meta.env.VITE_GAME_CONTRACT,
         //     source: {source_type: 0, address: account.address}
         //   })
         // },
         {
-          contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
+          contractAddress: import.meta.env.VITE_GAME_CONTRACT,
           entrypoint: "set_slot",
           calldata: [gameId, slot.toString()],
         },

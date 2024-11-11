@@ -20,11 +20,11 @@ function rpc(_chain: Chain) {
 
 const policies = [
   {
-    target: import.meta.env.VITE_ACTIONS_CONTRACT,
+    target: import.meta.env.VITE_GAME_CONTRACT,
     method: "create_game",
   },
   {
-    target: import.meta.env.VITE_ACTIONS_CONTRACT,
+    target: import.meta.env.VITE_GAME_CONTRACT,
     method: "set_slot",
   },
   // {

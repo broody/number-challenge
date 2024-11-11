@@ -28,12 +28,12 @@ const Create = () => {
         //   contractAddress: import.meta.env.VITE_VRF_CONTRACT,
         //   entrypoint: 'request_random',
         //   calldata: CallData.compile({
-        //     caller: import.meta.env.VITE_ACTIONS_CONTRACT,
+        //     caller: import.meta.env.VITE_GAME_CONTRACT,
         //     source: {type: 0, address: account.address}
         //   })
         // },
         {
-          contractAddress: import.meta.env.VITE_ACTIONS_CONTRACT,
+          contractAddress: import.meta.env.VITE_GAME_CONTRACT,
           entrypoint: "create_game",
           calldata: [1], // no jackpot yet
         },

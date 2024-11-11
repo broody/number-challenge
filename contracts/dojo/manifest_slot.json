@@ -1,9 +1,32 @@
 {
   "world": {
-    "class_hash": "0x139239a99d627697b19b9856beaef7896fc75375caf3d750dd76982a7afeb78",
-    "address": "0x4048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385",
-    "seed": "nums",
+    "class_hash": "0x79d9ce84b97bcc2a631996c3100d57966fc2f5b061fb1ec4dfd0040976bcac6",
+    "address": "0x1600278f6ab5e8c872fe1c6bdc4db9329743b7f9fa1592e4fb445dc6cf3217a",
+    "seed": "nums-world",
     "name": "Nums",
+    "entrypoints": [
+      "uuid",
+      "set_metadata",
+      "register_namespace",
+      "register_event",
+      "register_model",
+      "register_contract",
+      "init_contract",
+      "upgrade_event",
+      "upgrade_model",
+      "upgrade_contract",
+      "emit_event",
+      "emit_events",
+      "set_entity",
+      "set_entities",
+      "delete_entity",
+      "delete_entities",
+      "grant_owner",
+      "revoke_owner",
+      "grant_writer",
+      "revoke_writer",
+      "upgrade"
+    ],
     "abi": [
       {
         "type": "impl",
@@ -83,16 +106,12 @@
         ]
       },
       {
-        "type": "enum",
-        "name": "core::bool",
-        "variants": [
+        "type": "struct",
+        "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+        "members": [
           {
-            "name": "False",
-            "type": "()"
-          },
-          {
-            "name": "True",
-            "type": "()"
+            "name": "snapshot",
+            "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
           }
         ]
       },
@@ -185,6 +204,30 @@
           {
             "name": "Enum",
             "type": "core::array::Span::<dojo::meta::layout::FieldLayout>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "core::array::Span::<dojo::model::definition::ModelIndex>",
+        "members": [
+          {
+            "name": "snapshot",
+            "type": "@core::array::Array::<dojo::model::definition::ModelIndex>"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "core::bool",
+        "variants": [
+          {
+            "name": "False",
+            "type": "()"
+          },
+          {
+            "name": "True",
+            "type": "()"
           }
         ]
       },
@@ -398,10 +441,26 @@
               {
                 "name": "values",
                 "type": "core::array::Span::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "emit_events",
+            "inputs": [
+              {
+                "name": "event_selector",
+                "type": "core::felt252"
               },
               {
-                "name": "historical",
-                "type": "core::bool"
+                "name": "keys",
+                "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+              },
+              {
+                "name": "values",
+                "type": "core::array::Span::<core::array::Span::<core::felt252>>"
               }
             ],
             "outputs": [],
@@ -433,6 +492,30 @@
           },
           {
             "type": "function",
+            "name": "entities",
+            "inputs": [
+              {
+                "name": "model_selector",
+                "type": "core::felt252"
+              },
+              {
+                "name": "indexes",
+                "type": "core::array::Span::<dojo::model::definition::ModelIndex>"
+              },
+              {
+                "name": "layout",
+                "type": "dojo::meta::layout::Layout"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "set_entity",
             "inputs": [
               {
@@ -457,6 +540,30 @@
           },
           {
             "type": "function",
+            "name": "set_entities",
+            "inputs": [
+              {
+                "name": "model_selector",
+                "type": "core::felt252"
+              },
+              {
+                "name": "indexes",
+                "type": "core::array::Span::<dojo::model::definition::ModelIndex>"
+              },
+              {
+                "name": "values",
+                "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+              },
+              {
+                "name": "layout",
+                "type": "dojo::meta::layout::Layout"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
             "name": "delete_entity",
             "inputs": [
               {
@@ -466,6 +573,26 @@
               {
                 "name": "index",
                 "type": "dojo::model::definition::ModelIndex"
+              },
+              {
+                "name": "layout",
+                "type": "dojo::meta::layout::Layout"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "delete_entities",
+            "inputs": [
+              {
+                "name": "model_selector",
+                "type": "core::felt252"
+              },
+              {
+                "name": "indexes",
+                "type": "core::array::Span::<dojo::model::definition::ModelIndex>"
               },
               {
                 "name": "layout",
@@ -850,11 +977,6 @@
             "kind": "key"
           },
           {
-            "name": "historical",
-            "type": "core::bool",
-            "kind": "key"
-          },
-          {
             "name": "keys",
             "type": "core::array::Span::<core::felt252>",
             "kind": "data"
@@ -1121,13 +1243,23 @@
   },
   "contracts": [
     {
-      "address": "0x62d7400d3aa90533c28804092676dfa0c6dcaa10acf17199827de678dc3ea31",
-      "class_hash": "0x7858a2d00bf28e87aff42ea8c8b8e6ded06bd1dbb71e96a5bdacfd8352b09ed",
+      "address": "0x55611232a0c391eb833cd2a7c9ff4ddeb059e77cd8614c37447ea5fa29c8af4",
+      "class_hash": "0x3f66192197a2f3bddab0e1dc3ecda6aa80a0bfa025beca1cee3b0e00e0b3ee7",
       "abi": [
         {
           "type": "impl",
           "name": "game_actions__ContractImpl",
           "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "game_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
         },
         {
           "type": "struct",
@@ -1149,7 +1281,7 @@
         },
         {
           "type": "interface",
-          "name": "dojo::contract::interface::IContract",
+          "name": "dojo::meta::interface::IDeployedResource",
           "items": [
             {
               "type": "function",
@@ -1462,16 +1594,33 @@
       ],
       "init_calldata": [],
       "tag": "nums-game_actions",
-      "systems": []
+      "selector": "0x4a30d499cf9dadd6ee7aa7b7a455a90b13a38da68bafe625399c8daf8c586d6",
+      "systems": [
+        "create_game",
+        "set_config",
+        "set_slot",
+        "set_name",
+        "upgrade"
+      ]
     },
     {
-      "address": "0x3439b3f163e8c66b5f01af42db684be28ebcd7e88c649a7f54ca4b489a0e532",
-      "class_hash": "0x548cca75c5512f14ca428faccafd1c2cc981215d660a5d58845dec42658d337",
+      "address": "0x795a271105398b7b498bacc7c78147c3f1d9a681086b32a4aa06e869ce2ae",
+      "class_hash": "0x589cd6f05af14c59a5b19f83c22aa78f377a7c39372c9c12ec6c04ec34b9a90",
       "abi": [
         {
           "type": "impl",
           "name": "jackpot_actions__ContractImpl",
           "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "jackpot_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
         },
         {
           "type": "struct",
@@ -1493,7 +1642,7 @@
         },
         {
           "type": "interface",
-          "name": "dojo::contract::interface::IContract",
+          "name": "dojo::meta::interface::IDeployedResource",
           "items": [
             {
               "type": "function",
@@ -1836,71 +1985,91 @@
       ],
       "init_calldata": [],
       "tag": "nums-jackpot_actions",
-      "systems": []
+      "selector": "0x54db86b66f3061f4a01801b930c1aede2b50f8aec7607f687dd93331753f65f",
+      "systems": [
+        "create_king_of_the_hill",
+        "create_conditional_victory",
+        "verify",
+        "claim",
+        "king_me",
+        "upgrade"
+      ]
     }
   ],
   "models": [
     {
       "members": [],
-      "class_hash": "0xee0ea8d44fdce16ade25a4626227b54a8db187e2cec004f3d17d1a45a5da4a",
-      "tag": "Config"
+      "class_hash": "0x5631324b208ded275d384660a9a9deb31ebfcab8f37883d90e0706015b025ee",
+      "tag": "nums-Config",
+      "selector": "0x73ebe7477c76a25a595134e2f5e365ba00af4b40e5db31bd951c76f843ea62"
     },
     {
       "members": [],
-      "class_hash": "0x3dd2224b5bf49c9c6c618cc9d80ed695f3548b2cf2dd5f945839cc3d7518692",
-      "tag": "Game"
+      "class_hash": "0x1ee13b5518d72bc1f20b205cc6a2f778c31d0a311430a346315750cf43710a7",
+      "tag": "nums-Game",
+      "selector": "0x468c6d9d5868b589e6ec58ca133c2835289b5f769817ccf8fa7bd07498a91f0"
     },
     {
       "members": [],
-      "class_hash": "0x58af7abdff7047a261f68c56e5490592d7d734e1610fc173ff72c71bc089abe",
-      "tag": "Jackpot"
+      "class_hash": "0x428a9311f03096bbc9eac91da4003da9f0161e6e96013d845c817b579f7d6cd",
+      "tag": "nums-Jackpot",
+      "selector": "0x723709fcf46a4e688c21bfd94133a3189fdb9fbfbdc1100574e25447aca8a8a"
     },
     {
       "members": [],
-      "class_hash": "0x1a9bd35225a274bc51c95f0a1c9bf55b67df09e34dca6e870583acadc16071b",
-      "tag": "Metadata"
+      "class_hash": "0x79946aca9ce793c5d2745a3475b5a996bb4eda78260f3bc8962f04eea7f4561",
+      "tag": "nums-Metadata",
+      "selector": "0x69d7e1a67a0169f6fdf4c0972c51fe2b8f8fb7fa177f887b940e1d2cb2ecd79"
     },
     {
       "members": [],
-      "class_hash": "0xd111ccfdffb2e1ac8d3a27756e0ffe6de42eb3d0d9d1e47d653f911e6388ab",
-      "tag": "Name"
+      "class_hash": "0x44662667273ecf406971b130444371e557ae81eb68e1baa5ec2d11a52c771ce",
+      "tag": "nums-Name",
+      "selector": "0x3d78139183db912d1e4ded0b4f3bfb5e2363c265e1f620cc51ed3dcdc66033a"
     },
     {
       "members": [],
-      "class_hash": "0x70431c446e79da48b742a833787bb89a3d469b80e8e461a61cf0503142695ce",
-      "tag": "Reward"
+      "class_hash": "0x18b24fe42f509b4545a52e30900afd3b1c69fc8b090cde4def5dfc728c9e2e",
+      "tag": "nums-Reward",
+      "selector": "0x5a0970e88008f6a6d156290eb5c5b0f662011fcd7080e8882b16772710da827"
     },
     {
       "members": [],
-      "class_hash": "0x6c1ef366b6ff3c878e05ef5e26c7c96090c19628acad1bbdc6565bdf5725ecb",
-      "tag": "Slot"
+      "class_hash": "0x58d5e77340758149dd953f0f97a2d7dc51d8c6d20e63f436154504a0dcc57a8",
+      "tag": "nums-Slot",
+      "selector": "0x7ef98499230873bdd2e86ae7ae452adaddfdd8da2d352d8af8d02f1af9af5aa"
     }
   ],
   "events": [
     {
       "members": [],
-      "class_hash": "0x55dcfc45219df8dbc284029ea643551edff6acc297013ee78d80dab392b5958",
-      "tag": "GameCreated"
+      "class_hash": "0x4e1f278f051958fc538df39db9df35627a94193e7c1ab00528217e2500ff0b",
+      "tag": "nums-GameCreated",
+      "selector": "0x613f127a45b984440eb97077f485d7718ffff0d065fa4c427774abd166fba2b"
     },
     {
       "members": [],
-      "class_hash": "0x3eba6c00f14d44cf1af02b10ea6d2a6463379a32988fbd3ba1e49a6741d0534",
-      "tag": "Inserted"
+      "class_hash": "0x4a28a0824d297eee7847f770eb5e0f33c0be72a8a5036672648ee9782ecbbae",
+      "tag": "nums-Inserted",
+      "selector": "0x68a8cf4a301f71be018a6ed94f1991773d5804f7520391049d429ba5aff98cd"
     },
     {
       "members": [],
-      "class_hash": "0x1f1d219534347334614113dee3b4cd8f38f129d4635cdfe6ca7c9b221539e49",
-      "tag": "JackpotClaimed"
+      "class_hash": "0x1fb0979b65bfc8ef8f248e67f04dca29d8bfc3cf46509b46900039c29dd96c8",
+      "tag": "nums-JackpotClaimed",
+      "selector": "0x175ae38739f53db95298ea994d0391bb4f789681601f4cf16fdc20414bff6f"
     },
     {
       "members": [],
-      "class_hash": "0x6fca55cb849ad481fc81c216aa301b964eaa6a98e2470cb987a69200880a6a2",
-      "tag": "JackpotCreated"
+      "class_hash": "0x4a72bf11ec0b3327d7daf622b81a71df0d8c3f84df34799d9701ca0198122c4",
+      "tag": "nums-JackpotCreated",
+      "selector": "0x2316c6700328c1de9b2bf8e664b6119789a104f0d9f865acba568281247589"
     },
     {
       "members": [],
-      "class_hash": "0x657e39da1acf1fc4d155957fda4e81f9b9e43ca7e480ab1b2dc7c89a16ef26a",
-      "tag": "KingCrowned"
+      "class_hash": "0x70db7efc80d04dba02ba83a00bacde527dd1f5a3f376015de3c9ad89d880a49",
+      "tag": "nums-KingCrowned",
+      "selector": "0x7d4f8f724ffe9ff34050a58ee7ba63e5277fff6f3731f3606e96c64c46d7959"
     }
   ]
 }
