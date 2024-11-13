@@ -2,7 +2,7 @@
 mod tests {
     use dojo::model::ModelStorage;
     use dojo::world::{WorldStorageTrait, WorldStorage};
-    use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDefTrait};
+    use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDef, ContractDefTrait, WorldStorageTestTrait};
 
     use starknet::ContractAddress;
 
@@ -28,36 +28,52 @@ mod tests {
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
             namespace: "nums", resources: [
-                TestResource::Model(m_Game::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Model(m_Slot::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Model(m_Config::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Model(m_Jackpot::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Game::TEST_CLASS_HASH),
+                TestResource::Model(m_Slot::TEST_CLASS_HASH),
+                TestResource::Model(m_Config::TEST_CLASS_HASH),
+                TestResource::Model(m_Jackpot::TEST_CLASS_HASH),
                 TestResource::Event(
-                    game_actions::e_GameCreated::TEST_CLASS_HASH.try_into().unwrap()
+                    game_actions::e_GameCreated::TEST_CLASS_HASH
                 ),
-                TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH),
                 TestResource::Event(
-                    jackpot_actions::e_JackpotCreated::TEST_CLASS_HASH.try_into().unwrap()
-                ),
-                TestResource::Event(
-                    jackpot_actions::e_JackpotClaimed::TEST_CLASS_HASH.try_into().unwrap()
+                    jackpot_actions::e_JackpotCreated::TEST_CLASS_HASH
                 ),
                 TestResource::Event(
-                    jackpot_actions::e_KingCrowned::TEST_CLASS_HASH.try_into().unwrap()
+                    jackpot_actions::e_JackpotClaimed::TEST_CLASS_HASH
+                ),
+                TestResource::Event(
+                    jackpot_actions::e_KingCrowned::TEST_CLASS_HASH
                 ),
                 TestResource::Contract(
-                    ContractDefTrait::new(game_actions::TEST_CLASS_HASH, "game_actions")
-                        .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+                    game_actions::TEST_CLASS_HASH
                 ),
                 TestResource::Contract(
-                    ContractDefTrait::new(jackpot_actions::TEST_CLASS_HASH, "jackpot_actions")
-                        .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+                    jackpot_actions::TEST_CLASS_HASH
                 )
             ].span()
         };
 
         ndef
     }
+
+    fn contract_def() -> Span<ContractDef> {
+        [
+            ContractDefTrait::new(@"nums", @"game_actions")
+                .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span()),
+            ContractDefTrait::new(@"nums", @"jackpot_actions")
+                .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+        ].span()
+    }
+
+    fn spawn_nums_world() -> WorldStorage {
+        let ndef = namespace_def();
+        let mut world = spawn_test_world([ndef].span());
+        world.sync_perms_and_inits(contract_def());
+
+        world
+    }
+
 
     fn PLAYER_ONE() -> ContractAddress {
         starknet::contract_address_const::<0xdead>()
@@ -70,8 +86,7 @@ mod tests {
     fn KING_OF_THE_HILL_STATE(
         start_time: u64, expiration: u64, extension: u64
     ) -> (WorldStorage, u32, IGameActionsDispatcher, IJackpotActionsDispatcher) {
-        let ndef = namespace_def();
-        let world = spawn_test_world([ndef].span());
+        let world = spawn_nums_world();
         let (game_actions_address, _) = world.dns(@"game_actions").unwrap();
         let (jackpot_actions_address, _) = world.dns(@"jackpot_actions").unwrap();
 

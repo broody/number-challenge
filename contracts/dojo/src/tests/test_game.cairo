@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
     use dojo::model::ModelStorage;
-    use dojo::world::WorldStorageTrait;
-    use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDefTrait};
+    use dojo::world::{WorldStorageTrait, WorldStorage};
+    use dojo_cairo_test::{spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef, WorldStorageTestTrait};
 
     use nums::{
         systems::{
@@ -17,22 +17,34 @@ mod tests {
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
             namespace: "nums", resources: [
-                TestResource::Model(m_Game::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Model(m_Slot::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Model(m_Name::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Model(m_Config::TEST_CLASS_HASH.try_into().unwrap()),
+                TestResource::Model(m_Game::TEST_CLASS_HASH),
+                TestResource::Model(m_Slot::TEST_CLASS_HASH),
+                TestResource::Model(m_Name::TEST_CLASS_HASH),
+                TestResource::Model(m_Config::TEST_CLASS_HASH),
                 TestResource::Event(
-                    game_actions::e_GameCreated::TEST_CLASS_HASH.try_into().unwrap()
+                    game_actions::e_GameCreated::TEST_CLASS_HASH
                 ),
-                TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH.try_into().unwrap()),
-                TestResource::Contract(
-                    ContractDefTrait::new(game_actions::TEST_CLASS_HASH, "game_actions")
-                        .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
-                )
+                TestResource::Event(game_actions::e_Inserted::TEST_CLASS_HASH),
+                TestResource::Contract(game_actions::TEST_CLASS_HASH),
             ].span()
         };
 
         ndef
+    }
+
+    fn contract_def() -> Span<ContractDef> {
+        [
+            ContractDefTrait::new(@"nums", @"game_actions")
+                .with_writer_of([dojo::utils::bytearray_hash(@"nums")].span())
+        ].span()
+    }
+
+    fn spawn_nums_world() -> WorldStorage {
+        let ndef = namespace_def();
+        let mut world = spawn_test_world([ndef].span());
+        world.sync_perms_and_inits(contract_def());
+
+        world
     }
 
     fn CONFIG() -> Config {
@@ -43,11 +55,9 @@ mod tests {
         }
     }
 
-
     #[test]
     fn test_config() {
-        let ndef = namespace_def();
-        let world = spawn_test_world([ndef].span());
+        let world = spawn_nums_world();
         let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
 
@@ -57,8 +67,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_config_unauthorized() {
-        let ndef = namespace_def();
-        let world = spawn_test_world([ndef].span());
+        let world = spawn_nums_world();
         let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
 
@@ -71,8 +80,7 @@ mod tests {
     #[test]
     fn test_create_game() {
         let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let world = spawn_test_world([ndef].span());
+        let world = spawn_nums_world();
         let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
         game_actions.set_config(CONFIG());
@@ -126,8 +134,7 @@ mod tests {
     #[test]
     fn test_set_name() {
         let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let world = spawn_test_world([ndef].span());
+        let world = spawn_nums_world();
         let (contract_address, _) = world.dns(@"game_actions").unwrap();
         let game_actions = IGameActionsDispatcher { contract_address };
 
