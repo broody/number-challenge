@@ -3,8 +3,8 @@ version = 1
 
 [[package]]
 name = "dojo"
-version = "1.0.0"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.0.0#74280d48fa2828095331487dede59f9b2e378cd3"
+version = "1.0.2"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.0.2#8eb8c480676ea8b0fc5d6e59585cdbab1ff8200d"
 dependencies = [
  "dojo_plugin",
 ]
@@ -12,7 +12,7 @@ dependencies = [
 [[package]]
 name = "dojo_cairo_test"
 version = "1.0.0-rc.0"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.0.0#74280d48fa2828095331487dede59f9b2e378cd3"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.0.2#8eb8c480676ea8b0fc5d6e59585cdbab1ff8200d"
 dependencies = [
  "dojo",
 ]
@@ -20,7 +20,7 @@ dependencies = [
 [[package]]
 name = "dojo_plugin"
 version = "2.8.4"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.0.0#74280d48fa2828095331487dede59f9b2e378cd3"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.0.2#8eb8c480676ea8b0fc5d6e59585cdbab1ff8200d"
 
 [[package]]
 name = "nums"

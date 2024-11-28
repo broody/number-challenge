@@ -6,15 +6,16 @@ edition = "2024_07"
 
 [[target.starknet-contract]]
 sierra = true
+casm = true
 # It's important to keep this, since it's used by Sozo to check the world version.
 build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.2" }
 starknet = "2.8.4"
 
 [dev-dependencies]
-dojo_cairo_test = { git = "https://github.com/dojoengine/dojo.git", tag = "v1.0.0" }
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo.git", tag = "v1.0.2" }
 
 [features]
 default = []

@@ -6,6 +6,7 @@ pub trait IGameActions<T> {
     fn set_config(ref self: T, config: Config);
     fn set_slot(ref self: T, game_id: u32, target_idx: u8) -> u16;
     fn set_name(ref self: T, game_id: u32, name: felt252);
+    fn end_game(ref self: T, game_id: u32);
 }
 
 #[dojo::contract]
@@ -87,8 +88,7 @@ pub mod game_actions {
                         @Reward {
                             game_id,
                             player,
-                            total_rewards: 0,
-                            next_reward: *reward_config.levels[0].amount
+                            total: 0,
                         }
                     );
             }
@@ -103,6 +103,7 @@ pub mod game_actions {
                         max_number: game_config.max_number,
                         min_number: game_config.min_number,
                         next_number,
+                        finished: false,
                         jackpot_id,
                     }
                 );
@@ -128,6 +129,30 @@ pub mod game_actions {
             (game_id, next_number)
         }
 
+        fn end_game(ref self: ContractState, game_id: u32) {
+            let mut world = self.world(@"nums");
+            let player = get_caller_address();
+            let mut game: Game = world.read_model((game_id, player));
+
+            assert!(game.player == player, "Unauthorized player");
+            assert!(!game.finished, "Game already finished");
+
+            game.finished = true;
+            world.write_model(@game);
+
+            let config: Config = world.read_model(WORLD);
+
+            // Slot reward
+            if let Option::Some(reward_config) = config.reward {
+                let (address, amount) = reward_config.compute(game.level());
+                INumsTokenDispatcher { contract_address: address }.reward(player, amount);
+
+                let mut game_reward: Reward = world.read_model((game_id, player));
+                game_reward.total = amount.into();
+                world.write_model(@game_reward);
+            }
+        }
+
         /// Sets a number in the specified slot for a game. It ensures the slot is valid and not
         /// already filled, updates the game state, and emits an event indicating the slot has been
         /// filled.
@@ -144,6 +169,7 @@ pub mod game_actions {
             let mut game: Game = world.read_model((game_id, player));
 
             assert!(game.player == player, "Unauthorized player");
+            assert!(!game.finished, "Game already finished");
             assert!(target_idx < game.max_slots, "Invalid slot");
 
             // Build up nums array and insert target
@@ -178,22 +204,7 @@ pub mod game_actions {
             game.next_number = next_number;
             game.remaining_slots -= 1;
 
-            let config: Config = world.read_model(WORLD);
-
-            // Slot reward
-            if let Option::Some(reward_config) = config.reward {
-                let (address, amount) = reward_config.compute(game.level());
-                let (_, next_reward) = reward_config.compute(game.level() + 1);
-                INumsTokenDispatcher { contract_address: address }.reward(player, amount);
-
-                let mut game_reward: Reward = world.read_model((game_id, player));
-                game_reward.total_rewards += amount.into();
-                game_reward.next_reward = next_reward;
-                world.write_model(@game_reward);
-            }
-
             world.write_model(@game);
-
             world.write_model(@Slot { game_id, player, index: target_idx, number: target_number });
 
             world

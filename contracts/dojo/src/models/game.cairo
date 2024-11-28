@@ -13,6 +13,7 @@ pub struct Game {
     pub min_number: u16,
     pub remaining_slots: u8,
     pub next_number: u16,
+    pub finished: bool,
     pub jackpot_id: Option<u32>,
 }
 
@@ -23,10 +24,8 @@ pub struct Reward {
     pub game_id: u32,
     #[key]
     pub player: ContractAddress,
-    pub total_rewards: u32,
-    pub next_reward: u16
+    pub total: u32
 }
-
 
 #[generate_trait]
 pub impl GameImpl of GameTrait {

@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x79d9ce84b97bcc2a631996c3100d57966fc2f5b061fb1ec4dfd0040976bcac6",
-    "address": "0x1600278f6ab5e8c872fe1c6bdc4db9329743b7f9fa1592e4fb445dc6cf3217a",
-    "seed": "nums-world",
+    "address": "0x16656c54c68b84d7468ceeb0daab1a9bcaa874035794b557c744789a8862a63",
+    "seed": "nums",
     "name": "Nums",
     "entrypoints": [
       "uuid",
@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x55611232a0c391eb833cd2a7c9ff4ddeb059e77cd8614c37447ea5fa29c8af4",
-      "class_hash": "0x3f66192197a2f3bddab0e1dc3ecda6aa80a0bfa025beca1cee3b0e00e0b3ee7",
+      "address": "0xfe1303b2ad83a181fab64fcd8e9fca303b29b3b37d81e92ad60dd56436c417",
+      "class_hash": "0x222bc8057491f8234f6633b47ec2ae2508736e2e7564391beb47f5736c8edeb",
       "abi": [
         {
           "type": "impl",
@@ -1474,6 +1474,18 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "end_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -1600,12 +1612,13 @@
         "set_config",
         "set_slot",
         "set_name",
+        "end_game",
         "upgrade"
       ]
     },
     {
-      "address": "0x795a271105398b7b498bacc7c78147c3f1d9a681086b32a4aa06e869ce2ae",
-      "class_hash": "0x589cd6f05af14c59a5b19f83c22aa78f377a7c39372c9c12ec6c04ec34b9a90",
+      "address": "0x3a0e40befb7ddf05e4b02d2b0f9e4e21473fe2dadb6bc2ec69b5c399209b01b",
+      "class_hash": "0x1825ec0f86e913ff1925fbacfb17169c0e155d5c245cd65e459103dc930ffa7",
       "abi": [
         {
           "type": "impl",
@@ -2005,7 +2018,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1ee13b5518d72bc1f20b205cc6a2f778c31d0a311430a346315750cf43710a7",
+      "class_hash": "0x3fa67b7dac64b8ab78b612b95d2ce2270faeed2037bcda36bc5aaf452854681",
       "tag": "nums-Game",
       "selector": "0x468c6d9d5868b589e6ec58ca133c2835289b5f769817ccf8fa7bd07498a91f0"
     },
@@ -2029,7 +2042,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x18b24fe42f509b4545a52e30900afd3b1c69fc8b090cde4def5dfc728c9e2e",
+      "class_hash": "0x79edec254d675b30f9d00b9d9cd1e30dd1f7210161dd8279908a854ba17c408",
       "tag": "nums-Reward",
       "selector": "0x5a0970e88008f6a6d156290eb5c5b0f662011fcd7080e8882b16772710da827"
     },

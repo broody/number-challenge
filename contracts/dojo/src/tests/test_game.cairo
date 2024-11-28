@@ -107,6 +107,21 @@ mod tests {
     }
 
     #[test]
+    fn test_end_game() {
+        let caller = starknet::contract_address_const::<0x0>();
+        let world = spawn_nums_world();
+        let (contract_address, _) = world.dns(@"game_actions").unwrap();
+        let game_actions = IGameActionsDispatcher { contract_address };
+        game_actions.set_config(CONFIG());
+
+        let (game_id, _) = game_actions.create_game(Option::None);
+        game_actions.end_game(game_id);
+        let game: Game = world.read_model((game_id, caller));
+
+        assert(game.finished, 'game should be finished')
+    }
+
+    #[test]
     fn test_is_valid() {
         let mut game = Game {
             game_id: 0_u32,
@@ -116,6 +131,7 @@ mod tests {
             max_number: 1000_u16,
             min_number: 0_u16,
             next_number: 42_u16,
+            finished: false,
             jackpot_id: Option::None,
         };
 
