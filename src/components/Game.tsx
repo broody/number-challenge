@@ -39,8 +39,7 @@ const GameQuery = graphql(`
     numsRewardModels(where: { game_id: $gameId }) {
       edges {
         node {
-          total_rewards
-          next_reward
+          total
         }
       }
     }
@@ -69,7 +68,7 @@ const Game = () => {
   const [numRange, setNumRange] = useState<string>();
   const [isRewardsActive, setIsRewardsActive] = useState<boolean>(false);
   const [totalRewards, setTotalRewards] = useState<number | null>(null);
-  const [nextReward, setNextReward] = useState<number | null>(null);
+  const [nextReward ] = useState<number | null>(null);
   const explorer = useExplorer();
   const { account } = useAccount();
   const { gameId } = useParams();
@@ -119,8 +118,7 @@ const Game = () => {
 
     if (rewardsModel) {
       setIsRewardsActive(true);
-      setTotalRewards(rewardsModel.total_rewards as number);
-      setNextReward(rewardsModel.next_reward as number);
+      setTotalRewards(rewardsModel.total as number);
     }
 
     setIsLoading(false);
@@ -247,12 +245,12 @@ const Game = () => {
                   </Link>{" "}
                   Rewards{" "}
                 </Heading>
-                <Heading
+                {/* <Heading
                   fontSize="18px"
                   color={isRewardsActive ? "green.400" : "red.400"}
                 >
                   [ {isRewardsActive ? "ACTIVE" : "INACTIVE"} ]
-                </Heading>
+                </Heading> */}
               </HStack>
               {isRewardsActive && (
                 <>
