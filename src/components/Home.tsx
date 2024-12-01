@@ -18,6 +18,7 @@ import {
   Box,
   Flex,
   Spacer,
+  Image,
 } from "@chakra-ui/react";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
@@ -97,10 +98,15 @@ const Leaderboard = () => {
           >
             <VStack justifyItems="center" spacing="80px">
               <VStack spacing="30px">
-                <Heading>Number Challenge</Heading>
+                <Heading>
+                  <HStack spacing="18px">
+                    <Image src="/nums_white.png" boxSize="40px" />
+                    <Text>Number Challenge</Text>
+                  </HStack>
+                </Heading>
                 <VStack spacing="30px" align="flex-start">
                   <Text>
-                    Welcome to <strong>Number Challenge</strong>, a fully{" "}
+                    Welcome to <strong>Nums</strong>, a fully{" "}
                     <strong>onchain</strong> game!
                   </Text>
                   <Text>

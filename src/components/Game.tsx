@@ -68,7 +68,7 @@ const Game = () => {
   const [numRange, setNumRange] = useState<string>();
   const [isRewardsActive, setIsRewardsActive] = useState<boolean>(false);
   const [totalRewards, setTotalRewards] = useState<number | null>(null);
-  const [nextReward ] = useState<number | null>(null);
+  const [nextReward] = useState<number | null>(null);
   const explorer = useExplorer();
   const { account } = useAccount();
   const { gameId } = useParams();
@@ -238,20 +238,20 @@ const Game = () => {
                 Remaining Slots: <strong>{remaining}</strong>
               </Text>
               <br />
-              <HStack mb="10px">
+              {/*<HStack mb="10px">
                 <Heading fontSize="18px">
                   <Link href={numsErc20Link()} isExternal>
                     $NUMS
                   </Link>{" "}
                   Rewards{" "}
                 </Heading>
-                {/* <Heading
+                 <Heading
                   fontSize="18px"
                   color={isRewardsActive ? "green.400" : "red.400"}
                 >
                   [ {isRewardsActive ? "ACTIVE" : "INACTIVE"} ]
-                </Heading> */}
-              </HStack>
+                </Heading> 
+              </HStack>*/}
               {isRewardsActive && (
                 <>
                   <Text>
