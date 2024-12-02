@@ -2,7 +2,7 @@ use nums::models::config::Config;
 
 #[starknet::interface]
 pub trait IGameActions<T> {
-    fn create_game(ref self: T, jackpot_id: Option<u32>) -> (u32, u16);
+    fn create_game(ref self: T, challenge_id: Option<u32>) -> (u32, u16);
     fn set_config(ref self: T, config: Config);
     fn set_slot(ref self: T, game_id: u32, target_idx: u8) -> u16;
     fn set_name(ref self: T, game_id: u32, name: felt252);
@@ -15,7 +15,7 @@ pub mod game_actions {
     use nums::interfaces::token::{INumsTokenDispatcher, INumsTokenDispatcherTrait};
     use nums::models::config::{Config, SlotRewardTrait};
     use nums::models::game::{Game, Reward, GameTrait};
-    use nums::models::jackpot::jackpot::Jackpot;
+    use nums::models::challenge::challenge::Challenge;
     use nums::models::name::Name;
     use nums::models::slot::Slot;
     use nums::utils::random::{Random, RandomImpl};
@@ -52,7 +52,7 @@ pub mod game_actions {
         max_slots: u8,
         max_number: u16,
         min_number: u16,
-        jackpot_id: Option<u32>,
+        challenge_id: Option<u32>,
     }
 
     #[abi(embed_v0)]
@@ -71,7 +71,7 @@ pub mod game_actions {
         ///
         /// # Returns
         /// A tuple containing the game ID and the first random number for the game.
-        fn create_game(ref self: ContractState, jackpot_id: Option<u32>) -> (u32, u16) {
+        fn create_game(ref self: ContractState, challenge_id: Option<u32>) -> (u32, u16) {
             let mut world = self.world(@"nums");
             let config: Config = world.read_model(WORLD);
             let game_config = config.game.expect('Game config not set');
@@ -104,7 +104,7 @@ pub mod game_actions {
                         min_number: game_config.min_number,
                         next_number,
                         finished: false,
-                        jackpot_id,
+                        challenge_id,
                     }
                 );
 
@@ -116,13 +116,13 @@ pub mod game_actions {
                         max_slots: game_config.max_slots,
                         max_number: game_config.max_number,
                         min_number: game_config.min_number,
-                        jackpot_id,
+                        challenge_id,
                     }
                 );
 
-            if let Option::Some(jackpot_id) = jackpot_id {
-                let jackpot: Jackpot = world.read_model(jackpot_id);
-                assert!(jackpot.winner.is_none(), "Jackpot already won");
+            if let Option::Some(challenge_id) = challenge_id {
+                let challenge: Challenge = world.read_model(challenge_id);
+                assert!(challenge.winner.is_none(), "Challenge already won");
                 // TODO: Transfer fee token
             }
 

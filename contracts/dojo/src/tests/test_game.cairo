@@ -132,7 +132,7 @@ mod tests {
             min_number: 0_u16,
             next_number: 42_u16,
             finished: false,
-            jackpot_id: Option::None,
+            challenge_id: Option::None,
         };
 
         let mut nums = ArrayTrait::<u16>::new();

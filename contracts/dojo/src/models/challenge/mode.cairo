@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-pub enum JackpotMode {
+pub enum ChallengeMode {
     KING_OF_THE_HILL: KingOfTheHill,
     CONDITIONAL_VICTORY: ConditionalVictory,
 }
@@ -19,13 +19,13 @@ pub struct ConditionalVictory {
 }
 
 #[generate_trait]
-pub impl JackpotModeImpl of JackpotModeTrait {
-    fn new(mode: JackpotMode, max_slots: u8, expiration: u64) -> JackpotMode {
+pub impl ChallengeModeImpl of ChallengeModeTrait {
+    fn new(mode: ChallengeMode, max_slots: u8, expiration: u64) -> ChallengeMode {
         match mode {
-            JackpotMode::KING_OF_THE_HILL(params) => {
+            ChallengeMode::KING_OF_THE_HILL(params) => {
                 assert!(expiration != 0, "King of the Hill must have expiration");
 
-                JackpotMode::KING_OF_THE_HILL(
+                ChallengeMode::KING_OF_THE_HILL(
                     KingOfTheHill {
                         extension_time: params.extension_time,
                         king: starknet::contract_address_const::<0x0>(),
@@ -33,7 +33,7 @@ pub impl JackpotModeImpl of JackpotModeTrait {
                     }
                 )
             },
-            JackpotMode::CONDITIONAL_VICTORY(params) => {
+            ChallengeMode::CONDITIONAL_VICTORY(params) => {
                 assert!(params.slots_required <= max_slots, "slots_required exceeds max_slots");
 
                 mode

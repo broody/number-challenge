@@ -14,7 +14,7 @@ pub struct Game {
     pub remaining_slots: u8,
     pub next_number: u16,
     pub finished: bool,
-    pub jackpot_id: Option<u32>,
+    pub challenge_id: Option<u32>,
 }
 
 #[derive(Copy, Drop, Serde)]

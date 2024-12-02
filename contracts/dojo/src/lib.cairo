@@ -1,13 +1,13 @@
 pub mod systems {
     pub mod game_actions;
-    pub mod jackpot_actions;
+    pub mod challenge_actions;
 }
 
 pub mod models {
     pub mod config;
     pub mod game;
-    pub mod jackpot {
-        pub mod jackpot;
+    pub mod challenge {
+        pub mod challenge;
         pub mod fee;
         pub mod mode;
         pub mod token;
@@ -26,7 +26,7 @@ pub mod utils {
 }
 
 pub mod tests {
-    pub mod test_jackpot;
+    pub mod test_challenge;
     pub mod test_reward;
     pub mod test_game;
 }
