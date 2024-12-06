@@ -31,9 +31,8 @@ import Connect from "./Create";
 import { DojoIcon } from "./icons/Dojo";
 import { StarknetIcon } from "./icons/Starknet";
 import { GithubIcon } from "./icons/Github";
-import ControllerConnector from "@cartridge/connector/controller";
 import Header from "./Header";
-import { ControllerAccounts } from "@cartridge/controller";
+import { lookupAddresses } from "@cartridge/controller";
 
 const GamesQuery = graphql(`
   query Games($offset: Int) {
@@ -57,11 +56,10 @@ const GamesQuery = graphql(`
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
-  const { account, connector } = useAccount();
+  const { account } = useAccount();
   const { colorMode } = useColorMode();
-  const [controllerAccounts, setControllerAccounts] =
-    useState<ControllerAccounts>();
-  const controllerConnector = connector as never as ControllerConnector;
+  const [addressUsernamesMap, setAddressUsernamesMap] =
+    useState<Map<string, string>>();
 
   const [gameResult, reexecuteQuery] = useQuery({
     query: GamesQuery,
@@ -71,14 +69,15 @@ const Leaderboard = () => {
   });
 
   useEffect(() => {
-    if (!gameResult.data || !controllerConnector?.controller) return;
+    if (!gameResult.data) return;
 
     const addresses =
       gameResult.data.numsGameModels?.edges?.map((g) => g!.node!.player!) || [];
-    controllerConnector.controller
-      .fetchControllers(addresses)
-      .then((accounts) => setControllerAccounts(accounts));
-  }, [gameResult, controllerConnector]);
+
+    lookupAddresses(addresses).then((usernames) =>
+      setAddressUsernamesMap(usernames),
+    );
+  }, [gameResult]);
 
   const totalResult = gameResult.data?.numsGameModels?.edges
     ? gameResult.data.numsGameModels?.edges.length
@@ -204,9 +203,8 @@ const Leaderboard = () => {
                         >
                           <Td>{index + offset + 1}</Td>
                           <Td>
-                            {controllerAccounts?.[
-                              addAddressPadding(edge.node.player)
-                            ] ?? formatAddress(edge.node.player)}{" "}
+                            {addressUsernamesMap?.get(edge.node.player) ??
+                              formatAddress(edge.node.player)}{" "}
                             {account?.address === edge.node.player && (
                               <>(you)</>
                             )}

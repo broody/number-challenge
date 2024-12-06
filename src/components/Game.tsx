@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { graphql } from "../graphql";
 import { useQuery } from "urql";
 import { useEffect, useState } from "react";
-import { formatAddress, numsErc20Link, removeZeros } from "../utils";
+import { formatAddress, removeZeros } from "../utils";
 import {
   Box,
   Button,

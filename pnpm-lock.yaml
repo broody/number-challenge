@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@cartridge/connector':
-        specifier: 0.5.1
-        version: 0.5.1(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(typescript@5.5.4)
+        specifier: 0.5.2
+        version: 0.5.2(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(typescript@5.5.4)
       '@cartridge/controller':
-        specifier: 0.5.1
-        version: 0.5.1
+        specifier: 0.5.2
+        version: 0.5.2
       '@chakra-ui/icons':
         specifier: ^2.1.1
         version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react@18.2.0)
@@ -240,17 +240,20 @@ packages:
     resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
     engines: {node: '>=6.9.0'}
 
-  '@cartridge/account-wasm@0.5.1':
-    resolution: {integrity: sha512-m7XGkiZvh49s7SIvWHpgu7xNcgzTTn3XPewd2V+AWXTZzkj/JtRDSsUK0Rywg0qLTh3SEimviSiSpX6qm0XCgA==}
+  '@cartridge/account-wasm@0.5.2':
+    resolution: {integrity: sha512-GDY2rSvGmPTS5AR11mpCeIjQGF7A+aCdDROa+hnFJrwL6Z0824Fydf7vwMYdICxiW27AYkjBVTTLsGse3E+kSg==}
 
-  '@cartridge/connector@0.5.1':
-    resolution: {integrity: sha512-50wVk+EkbSIArGEzb+cylCE68vU5lx7IdFoWDPqMueZ9AWxODuVEo4TubqbUAt2vqGO+L2fhEnknlmOFGdZE9A==}
+  '@cartridge/connector@0.5.2':
+    resolution: {integrity: sha512-yweFz6YOrFhqEPpw5QRUjJLGxXT+wrW/IhjzPHtJS2FaQD1tX+ALkSHCsVwiWtw7Z+ckzQhXM+pULuVBHWFRWg==}
 
-  '@cartridge/controller@0.5.1':
-    resolution: {integrity: sha512-9yK+TOu5cYVyM3jEiqtDWVqf/TsBPzIJl104lJRNRMsVxfVBunpI+FPSsXB1X25wxqR68zefwfL2VEe2xYdErw==}
+  '@cartridge/controller@0.5.2':
+    resolution: {integrity: sha512-lNc0/oe2e9nA/RiV69P7UEF+UTIw4GbHY+bTCtpGJl3EemDki/l/pqcWWqX+Pz0ZBOtBKvEIH9PSDoeoCTv67w==}
 
   '@cartridge/penpal@6.2.3':
     resolution: {integrity: sha512-K8h9VqBfFPXcAFQNnvgBnejF/dp7249pS4jXu3NhNYR6JqMQxtcrDqfnPmJvbF4ECEBs+8Z2UiwlRQiKt5nNsg==}
+
+  '@cartridge/presets@0.5.2':
+    resolution: {integrity: sha512-FjG0qD0YRA8Ilh6o7310Nicn5UiyBHOlVRGSKXPzbycuQgooqy2x8uGo6M9qANrD0zKJKv53gi01cbgv+Fev3w==}
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
@@ -2740,11 +2743,11 @@ snapshots:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  '@cartridge/account-wasm@0.5.1': {}
+  '@cartridge/account-wasm@0.5.2': {}
 
-  '@cartridge/connector@0.5.1(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(typescript@5.5.4)':
+  '@cartridge/connector@0.5.2(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(typescript@5.5.4)':
     dependencies:
-      '@cartridge/controller': 0.5.1
+      '@cartridge/controller': 0.5.2
       '@starknet-react/core': 3.0.3(get-starknet-core@3.2.0(starknet@6.7.0))(react@18.2.0)(starknet@6.11.0)(typescript@5.5.4)
       starknet: 6.11.0
     transitivePeerDependencies:
@@ -2755,10 +2758,11 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@cartridge/controller@0.5.1':
+  '@cartridge/controller@0.5.2':
     dependencies:
-      '@cartridge/account-wasm': 0.5.1
+      '@cartridge/account-wasm': 0.5.2
       '@cartridge/penpal': 6.2.3
+      '@cartridge/presets': 0.5.2
       '@starknet-io/types-js': 0.7.7
       '@telegram-apps/sdk': 2.5.2
       base64url: 3.0.1
@@ -2770,6 +2774,10 @@ snapshots:
       - encoding
 
   '@cartridge/penpal@6.2.3': {}
+
+  '@cartridge/presets@0.5.2':
+    dependencies:
+      '@starknet-io/types-js': 0.7.7
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     optional: true
