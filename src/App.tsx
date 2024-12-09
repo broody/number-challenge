@@ -11,6 +11,7 @@ import { Chain, sepolia, mainnet } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
 import ControllerConnector from "@cartridge/connector/controller";
 import { getRpc } from "./network";
+import Transfer from "./components/Transfer";
 
 function rpc(_chain: Chain) {
   return {
@@ -56,6 +57,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:gameId" element={<Game />} />
+          <Route path="/transfer" element={<Transfer />} />
         </Routes>
       </Router>
     </StarknetConfig>
