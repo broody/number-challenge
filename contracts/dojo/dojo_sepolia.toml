@@ -1,6 +1,6 @@
 [world]
 name = "Nums"
-seed = "nums"
+seed = "nums-vrf-debug"
 description = "On chain version of the Number Challenge or Blind Number Challenge game."
 # cover_uri = "file://assets/cover.png"
 # icon_uri = "file://assets/icon.png"
@@ -14,7 +14,7 @@ default = "nums"
 rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 account_address = "0x054f2b25070d70d49f1c1f7c10Ef2639889fDAc15894D3FBa1a03caF5603eCA3"
 keystore_path = "/home/broody/.starkli_accounts/sepolia/keystore.json"
-world_address = "0x016656c54c68b84d7468ceeb0daab1a9bcaa874035794b557c744789a8862a63"
+#world_address = "0x016656c54c68b84d7468ceeb0daab1a9bcaa874035794b557c744789a8862a63"
 
 [writers]
-"nums" = ["nums-game_actions", "nums-jackpot_actions"]
+"nums" = ["nums-game_actions", "nums-challenge_actions", "nums-random_actions"]

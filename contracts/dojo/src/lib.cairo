@@ -1,6 +1,7 @@
 pub mod systems {
     pub mod game_actions;
     pub mod challenge_actions;
+    pub mod random_actions;
 }
 
 pub mod models {

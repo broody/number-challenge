@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x79d9ce84b97bcc2a631996c3100d57966fc2f5b061fb1ec4dfd0040976bcac6",
-    "address": "0x16656c54c68b84d7468ceeb0daab1a9bcaa874035794b557c744789a8862a63",
-    "seed": "nums",
+    "address": "0xbc21693ca841c2fee6b11b3a40c33db8147095084079fb40a46e0796bfc7fe",
+    "seed": "nums-vrf-debug",
     "name": "Nums",
     "entrypoints": [
       "uuid",
@@ -1243,8 +1243,400 @@
   },
   "contracts": [
     {
-      "address": "0xfe1303b2ad83a181fab64fcd8e9fca303b29b3b37d81e92ad60dd56436c417",
-      "class_hash": "0x222bc8057491f8234f6633b47ec2ae2508736e2e7564391beb47f5736c8edeb",
+      "address": "0x5220d1a0ffba546719b791d84df8d7a86cc0838f9c618a9af722b0e5ae1701",
+      "class_hash": "0x74fbfc2b081408f98468efe898d5e1cb6974cc6dc9b52cc84952a6ebd3acf60",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "challenge_actions__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "challenge_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "ChallengeActions",
+          "interface_name": "nums::systems::challenge_actions::IChallengeActions"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::option::Option::<core::integer::u256>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "nums::models::challenge::token::TokenType",
+          "variants": [
+            {
+              "name": "ERC20",
+              "type": "()"
+            },
+            {
+              "name": "ERC721",
+              "type": "()"
+            },
+            {
+              "name": "ERC1155",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "nums::models::challenge::token::Token",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::option::Option::<core::integer::u256>"
+            },
+            {
+              "name": "address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "ty",
+              "type": "nums::models::challenge::token::TokenType"
+            },
+            {
+              "name": "total",
+              "type": "core::integer::u256"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::option::Option::<nums::models::challenge::token::Token>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "nums::models::challenge::token::Token"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "nums::systems::challenge_actions::IChallengeActions",
+          "items": [
+            {
+              "type": "function",
+              "name": "create_king_of_the_hill",
+              "inputs": [
+                {
+                  "name": "title",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "expiration",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "powerups",
+                  "type": "core::bool"
+                },
+                {
+                  "name": "token",
+                  "type": "core::option::Option::<nums::models::challenge::token::Token>"
+                },
+                {
+                  "name": "extension_time",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "create_conditional_victory",
+              "inputs": [
+                {
+                  "name": "title",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "expiration",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "powerups",
+                  "type": "core::bool"
+                },
+                {
+                  "name": "token",
+                  "type": "core::option::Option::<nums::models::challenge::token::Token>"
+                },
+                {
+                  "name": "slots_required",
+                  "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "verify",
+              "inputs": [
+                {
+                  "name": "challenge_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "verified",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "claim",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "king_me",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "nums::systems::challenge_actions::challenge_actions::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "nums-challenge_actions",
+      "selector": "0x7b1c41dbe8a3f909d7e3f756394f01e5e36a993c1045f2fa0c3c88d1ef7f334",
+      "systems": [
+        "create_king_of_the_hill",
+        "create_conditional_victory",
+        "verify",
+        "claim",
+        "king_me",
+        "upgrade"
+      ]
+    },
+    {
+      "address": "0x117a952aeda9b2c006e737a0c244f62eaa80078257bfe0d88ca23ad5c83f17f",
+      "class_hash": "0x4b2b404a625cb7ac387b22a759b81bef6a99e21458a0cae79cc8a5dffff2fd9",
       "abi": [
         {
           "type": "impl",
@@ -1416,7 +1808,7 @@
               "name": "create_game",
               "inputs": [
                 {
-                  "name": "jackpot_id",
+                  "name": "challenge_id",
                   "type": "core::option::Option::<core::integer::u32>"
                 }
               ],
@@ -1617,12 +2009,12 @@
       ]
     },
     {
-      "address": "0x3a0e40befb7ddf05e4b02d2b0f9e4e21473fe2dadb6bc2ec69b5c399209b01b",
-      "class_hash": "0x1825ec0f86e913ff1925fbacfb17169c0e155d5c245cd65e459103dc930ffa7",
+      "address": "0x21324982e2e31ac096d4965b0d753e1ab0ee890cda28655a7ffcfa79b58165f",
+      "class_hash": "0x14ce75d5b9b568000d19a56f09e50d2df41284776d44b4f1ce2da6132877d74",
       "abi": [
         {
           "type": "impl",
-          "name": "jackpot_actions__ContractImpl",
+          "name": "random_actions__ContractImpl",
           "interface_name": "dojo::contract::interface::IContract"
         },
         {
@@ -1632,7 +2024,7 @@
         },
         {
           "type": "impl",
-          "name": "jackpot_actions__DeployedContractImpl",
+          "name": "random_actions__DeployedContractImpl",
           "interface_name": "dojo::meta::interface::IDeployedResource"
         },
         {
@@ -1672,211 +2064,22 @@
         },
         {
           "type": "impl",
-          "name": "JackpotActions",
-          "interface_name": "nums::systems::jackpot_actions::IJackpotActions"
-        },
-        {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::integer::u256",
-          "members": [
-            {
-              "name": "low",
-              "type": "core::integer::u128"
-            },
-            {
-              "name": "high",
-              "type": "core::integer::u128"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::option::Option::<core::integer::u256>",
-          "variants": [
-            {
-              "name": "Some",
-              "type": "core::integer::u256"
-            },
-            {
-              "name": "None",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "nums::models::jackpot::token::TokenType",
-          "variants": [
-            {
-              "name": "ERC20",
-              "type": "()"
-            },
-            {
-              "name": "ERC721",
-              "type": "()"
-            },
-            {
-              "name": "ERC1155",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "nums::models::jackpot::token::Token",
-          "members": [
-            {
-              "name": "id",
-              "type": "core::option::Option::<core::integer::u256>"
-            },
-            {
-              "name": "address",
-              "type": "core::starknet::contract_address::ContractAddress"
-            },
-            {
-              "name": "ty",
-              "type": "nums::models::jackpot::token::TokenType"
-            },
-            {
-              "name": "total",
-              "type": "core::integer::u256"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::option::Option::<nums::models::jackpot::token::Token>",
-          "variants": [
-            {
-              "name": "Some",
-              "type": "nums::models::jackpot::token::Token"
-            },
-            {
-              "name": "None",
-              "type": "()"
-            }
-          ]
+          "name": "RandomActionsImpl",
+          "interface_name": "nums::systems::random_actions::IRandomActions"
         },
         {
           "type": "interface",
-          "name": "nums::systems::jackpot_actions::IJackpotActions",
+          "name": "nums::systems::random_actions::IRandomActions",
           "items": [
             {
               "type": "function",
-              "name": "create_king_of_the_hill",
-              "inputs": [
-                {
-                  "name": "title",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "expiration",
-                  "type": "core::integer::u64"
-                },
-                {
-                  "name": "powerups",
-                  "type": "core::bool"
-                },
-                {
-                  "name": "token",
-                  "type": "core::option::Option::<nums::models::jackpot::token::Token>"
-                },
-                {
-                  "name": "extension_time",
-                  "type": "core::integer::u64"
-                }
-              ],
+              "name": "gimme_random",
+              "inputs": [],
               "outputs": [
                 {
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u16"
                 }
               ],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "create_conditional_victory",
-              "inputs": [
-                {
-                  "name": "title",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "expiration",
-                  "type": "core::integer::u64"
-                },
-                {
-                  "name": "powerups",
-                  "type": "core::bool"
-                },
-                {
-                  "name": "token",
-                  "type": "core::option::Option::<nums::models::jackpot::token::Token>"
-                },
-                {
-                  "name": "slots_required",
-                  "type": "core::integer::u8"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "verify",
-              "inputs": [
-                {
-                  "name": "jackpot_id",
-                  "type": "core::integer::u32"
-                },
-                {
-                  "name": "verified",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "claim",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::integer::u32"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "king_me",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::integer::u32"
-                }
-              ],
-              "outputs": [],
               "state_mutability": "external"
             }
           ]
@@ -1980,7 +2183,7 @@
         },
         {
           "type": "event",
-          "name": "nums::systems::jackpot_actions::jackpot_actions::Event",
+          "name": "nums::systems::random_actions::random_actions::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1997,19 +2200,21 @@
         }
       ],
       "init_calldata": [],
-      "tag": "nums-jackpot_actions",
-      "selector": "0x54db86b66f3061f4a01801b930c1aede2b50f8aec7607f687dd93331753f65f",
+      "tag": "nums-random_actions",
+      "selector": "0xba8cec7cc76165eb2433940dccdef82ca25116e88c0d707d2fed3fea6459de",
       "systems": [
-        "create_king_of_the_hill",
-        "create_conditional_victory",
-        "verify",
-        "claim",
-        "king_me",
+        "gimme_random",
         "upgrade"
       ]
     }
   ],
   "models": [
+    {
+      "members": [],
+      "class_hash": "0x2e80120461e70f0ed533cde74a3126704c5995c836e3b4a5eb0f77fb0e44111",
+      "tag": "nums-Challenge",
+      "selector": "0x20090a11f167e29edaf6e04629134c5882aaff0f0d18ceaeb68c274f50cc4ea"
+    },
     {
       "members": [],
       "class_hash": "0x5631324b208ded275d384660a9a9deb31ebfcab8f37883d90e0706015b025ee",
@@ -2018,19 +2223,13 @@
     },
     {
       "members": [],
-      "class_hash": "0x3fa67b7dac64b8ab78b612b95d2ce2270faeed2037bcda36bc5aaf452854681",
+      "class_hash": "0x7837aa9d4b613d3d48d8031d230fb1f77c6d4e108f212ecda74322827e828d0",
       "tag": "nums-Game",
       "selector": "0x468c6d9d5868b589e6ec58ca133c2835289b5f769817ccf8fa7bd07498a91f0"
     },
     {
       "members": [],
-      "class_hash": "0x428a9311f03096bbc9eac91da4003da9f0161e6e96013d845c817b579f7d6cd",
-      "tag": "nums-Jackpot",
-      "selector": "0x723709fcf46a4e688c21bfd94133a3189fdb9fbfbdc1100574e25447aca8a8a"
-    },
-    {
-      "members": [],
-      "class_hash": "0x79946aca9ce793c5d2745a3475b5a996bb4eda78260f3bc8962f04eea7f4561",
+      "class_hash": "0x23a3c98d06afcea0e4b9545b9828a902a37f9ed3160419fdba7d93bbe44d074",
       "tag": "nums-Metadata",
       "selector": "0x69d7e1a67a0169f6fdf4c0972c51fe2b8f8fb7fa177f887b940e1d2cb2ecd79"
     },
@@ -2056,7 +2255,19 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0x4e1f278f051958fc538df39db9df35627a94193e7c1ab00528217e2500ff0b",
+      "class_hash": "0x7f701ce77487a206129724e43c9afc840a5ff0704e38e2184dd97fd368db15f",
+      "tag": "nums-ChallengeClaimed",
+      "selector": "0x1a9fd6bac4b15615bdaf88a794a7a330bc7d258e56b38581c0d3a2d8efdd1c3"
+    },
+    {
+      "members": [],
+      "class_hash": "0x6ea9ad0c06d212de53ed9f43ab2689ecca5f61a5a7cc00790f82be971693029",
+      "tag": "nums-ChallengeCreated",
+      "selector": "0x28e732dcb2119aefb0e41c79cbc930ee7037f83ba52b9fe931537b3e6e3cb81"
+    },
+    {
+      "members": [],
+      "class_hash": "0x36c2866040e2a19094123d51355735d1e537e9dad0db9f4fbd3cb5525ddf87d",
       "tag": "nums-GameCreated",
       "selector": "0x613f127a45b984440eb97077f485d7718ffff0d065fa4c427774abd166fba2b"
     },
@@ -2068,19 +2279,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1fb0979b65bfc8ef8f248e67f04dca29d8bfc3cf46509b46900039c29dd96c8",
-      "tag": "nums-JackpotClaimed",
-      "selector": "0x175ae38739f53db95298ea994d0391bb4f789681601f4cf16fdc20414bff6f"
-    },
-    {
-      "members": [],
-      "class_hash": "0x4a72bf11ec0b3327d7daf622b81a71df0d8c3f84df34799d9701ca0198122c4",
-      "tag": "nums-JackpotCreated",
-      "selector": "0x2316c6700328c1de9b2bf8e664b6119789a104f0d9f865acba568281247589"
-    },
-    {
-      "members": [],
-      "class_hash": "0x70db7efc80d04dba02ba83a00bacde527dd1f5a3f376015de3c9ad89d880a49",
+      "class_hash": "0x577d7be2867f07ac056c3a648e56f1fa1268d52e848c37c9e6654a6baf850e8",
       "tag": "nums-KingCrowned",
       "selector": "0x7d4f8f724ffe9ff34050a58ee7ba63e5277fff6f3731f3606e96c64c46d7959"
     }

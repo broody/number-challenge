@@ -11,6 +11,7 @@ import { Chain, sepolia, mainnet } from "@starknet-react/chains";
 import { ControllerOptions } from "@cartridge/controller";
 import ControllerConnector from "@cartridge/connector/controller";
 import { getRpc } from "./network";
+import Random from "./components/Random";
 
 function rpc(_chain: Chain) {
   return {
@@ -27,10 +28,10 @@ const policies = [
     target: import.meta.env.VITE_GAME_CONTRACT,
     method: "set_slot",
   },
-  // {
-  //   target: import.meta.env.VITE_VRF_CONTRACT,
-  //   method: "request_random"
-  // }
+  {
+    target: import.meta.env.VITE_VRF_CONTRACT,
+    method: "request_random"
+  }
 ];
 
 const options: ControllerOptions = {
@@ -56,6 +57,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:gameId" element={<Game />} />
+          <Route path="/random" element={<Random />} />
         </Routes>
       </Router>
     </StarknetConfig>
