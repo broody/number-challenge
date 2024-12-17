@@ -17,4 +17,4 @@ private_key = "0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912"
 #world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
 
 [writers]
-"nums" = ["nums-game_actions", "nums-jackpot_actions"]
+"nums" = ["nums-game_actions", "nums-challenge_actions"]

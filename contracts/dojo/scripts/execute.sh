@@ -27,10 +27,10 @@ fi
 
 # Find the address where tag = "nums-game_actions"
 GAME_ACTIONS_ADDR=$(jq -r '.contracts[] | select(.tag == "nums-game_actions") | .address' "$JSON_FILE")
-JACKPOT_ACTIONS_ADDR=$(jq -r '.contracts[] | select(.tag == "nums-jackpot_actions") | .address' "$JSON_FILE")
+JACKPOT_ACTIONS_ADDR=$(jq -r '.contracts[] | select(.tag == "nums-challenge_actions") | .address' "$JSON_FILE")
 
 if [ -z "$JACKPOT_ACTIONS_ADDR" ]; then
-    echo "Error: Could not find address for tag 'nums-jackpot_actions'"
+    echo "Error: Could not find address for tag 'nums-challenge_actions'"
     exit 1
 fi
 

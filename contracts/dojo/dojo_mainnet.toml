@@ -13,9 +13,9 @@ default = "nums"
 [env]
 rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
 account_address = "0xdbd8a366db7af2abc9aa5b72c9e357d0ff83dfba2fe5b63cc7ffb5cd0df2cd"
-keystore_path = "/home/broody/.starkli_accounts/mainnet/keystore.json"
-world_address = "0x016656c54c68b84d7468ceeb0daab1a9bcaa874035794b557c744789a8862a63"
-world_block = 938_525
+keystore_path = "/Users/broody/.starkli_accounts/mainnet/keystore.json"
+world_address = "0x05f2358c005acf2a63616a32b76a01d632463b84609954ff846998f898a49778"
+world_block = 989_372
 
 [writers]
-"nums" = ["nums-game_actions", "nums-jackpot_actions"]
+"nums" = ["nums-game_actions", "nums-challenge_actions"]

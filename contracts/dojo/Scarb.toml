@@ -11,11 +11,11 @@ casm = true
 build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.2" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.8" }
 starknet = "2.8.4"
 
 [dev-dependencies]
-dojo_cairo_test = { git = "https://github.com/dojoengine/dojo.git", tag = "v1.0.2" }
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo.git", tag = "v1.0.8" }
 
 [features]
 default = []
