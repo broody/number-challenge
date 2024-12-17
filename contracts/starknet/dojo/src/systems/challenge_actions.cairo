@@ -1,4 +1,4 @@
-use nums::models::challenge::token::Token;
+use nums::models::token::Token;
 
 
 #[starknet::interface]

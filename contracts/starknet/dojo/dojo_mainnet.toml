@@ -1,0 +1,19 @@
+[world]
+name = "Nums"
+seed = "nums"
+description = "On chain version of the Number Challenge or Blind Number Challenge game."
+# cover_uri = "file://assets/cover.png"
+# icon_uri = "file://assets/icon.png"
+website = "https://nums.gg"
+
+
+[namespace]
+default = "nums"
+
+[env]
+rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
+account_address = "0xdbd8a366db7af2abc9aa5b72c9e357d0ff83dfba2fe5b63cc7ffb5cd0df2cd"
+keystore_path = "/Users/broody/.starkli_accounts/mainnet/keystore.json"
+
+[writers]
+"nums" = ["nums-challenge_actions"]
