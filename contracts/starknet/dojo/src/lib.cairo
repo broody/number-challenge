@@ -4,7 +4,6 @@ pub mod systems {
 
 pub mod models {
     pub mod challenge;
-    pub mod fee;
     pub mod mode;
     pub mod token;
     pub mod metadata;
@@ -12,6 +11,7 @@ pub mod models {
 
 pub mod interfaces {
     pub mod token;
+    pub mod messaging;
 }
 
 pub mod tests {}

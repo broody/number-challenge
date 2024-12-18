@@ -12,6 +12,7 @@ build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.8" }
+piltover = { git = "https://github.com/cartridge-gg/piltover", ref = "591c2240"}
 starknet = "2.8.4"
 
 [dev-dependencies]

@@ -14,8 +14,8 @@ default = "nums"
 rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
 account_address = "0xdbd8a366db7af2abc9aa5b72c9e357d0ff83dfba2fe5b63cc7ffb5cd0df2cd"
 keystore_path = "/Users/broody/.starkli_accounts/mainnet/keystore.json"
-world_address = "0x05f2358c005acf2a63616a32b76a01d632463b84609954ff846998f898a49778"
-world_block = 989_372
+# world_address = "0x05f2358c005acf2a63616a32b76a01d632463b84609954ff846998f898a49778"
+# world_block = 989_372
 
 [writers]
-"nums" = ["nums-game_actions", "nums-challenge_actions"]
+"nums" = ["nums-game_actions"]

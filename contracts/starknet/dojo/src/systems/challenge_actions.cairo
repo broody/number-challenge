@@ -7,7 +7,6 @@ pub trait IChallengeActions<T> {
         ref self: T,
         title: felt252,
         expiration: u64,
-        powerups: bool,
         token: Option<Token>,
         extension_time: u64,
     ) -> u32;
@@ -15,13 +14,12 @@ pub trait IChallengeActions<T> {
         ref self: T,
         title: felt252,
         expiration: u64,
-        powerups: bool,
         token: Option<Token>,
         slots_required: u8,
     ) -> u32;
     fn verify(ref self: T, challenge_id: u32, verified: bool);
-    fn claim(ref self: T, game_id: u32);
-    fn king_me(ref self: T, game_id: u32);
+    //fn claim(ref self: T, game_id: u32);
+    //fn king_me(ref self: T, game_id: u32);
 }
 
 
@@ -30,12 +28,10 @@ pub mod challenge_actions {
     use core::array::ArrayTrait;
     use core::num::traits::Zero;
     use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
-    use nums::models::config::Config;
-    use nums::models::game::{Game, GameTrait};
-    use nums::models::challenge::challenge::{Challenge, ChallengeImpl};
-    use nums::models::challenge::token::{Token, TokenType};
-    use nums::models::challenge::mode::{ConditionalVictory, KingOfTheHill, ChallengeMode};
-    use nums::models::slot::Slot;
+    use nums::interfaces::piltover::{IMessaging, IMessagingTrait};
+    use nums::models::challenge::{Challenge, ChallengeImpl};
+    use nums::models::token::{Token, TokenType};
+    use nums::models::mode::{ConditionalVictory, KingOfTheHill, ChallengeMode};
 
     use dojo::model::ModelStorage;
     use dojo::event::EventStorage;
@@ -80,24 +76,17 @@ pub mod challenge_actions {
             ref self: ContractState,
             title: felt252,
             expiration: u64,
-            powerups: bool,
             token: Option<Token>,
             slots_required: u8
         ) -> u32 {
-            let mut world = self.world(@"nums");
-            let config: Config = world.read_model(WORLD);
-            let game_config = config.game.expect('game config not set');
-
-            assert(slots_required <= game_config.max_slots, 'cannot require > max slots');
             let mode = ChallengeMode::CONDITIONAL_VICTORY(ConditionalVictory { slots_required });
-            self._create(title, mode, expiration, powerups, token,)
+            self._create(title, mode, expiration, token,)
         }
 
         fn create_king_of_the_hill(
             ref self: ContractState,
             title: felt252,
             expiration: u64,
-            powerups: bool,
             token: Option<Token>,
             extension_time: u64,
         ) -> u32 {
@@ -105,18 +94,13 @@ pub mod challenge_actions {
                 panic!("cannot set extension with no expiration");
             }
 
-            let mut world = self.world(@"nums");
-            let config: Config = world.read_model(WORLD);
-            let game_config = config.game.expect('game config not set');
-
             let mode = ChallengeMode::KING_OF_THE_HILL(
                 KingOfTheHill {
                     extension_time,
                     king: starknet::contract_address_const::<0x0>(),
-                    remaining_slots: game_config.max_slots,
                 }
             );
-            self._create(title, mode, expiration, powerups, token)
+            self._create(title, mode, expiration, token)
         }
 
         /// Claims the challenge for a specific game. Ensures that the player is authorized and that
@@ -125,49 +109,50 @@ pub mod challenge_actions {
         ///
         /// # Arguments
         /// * `game_id` - The identifier of the game.
-        fn claim(ref self: ContractState, game_id: u32) {
-            let mut world = self.world(@"nums");
-            let player = get_caller_address();
-            let game: Game = world.read_model((game_id, player));
-            let config: Config = world.read_model(WORLD);
-            let game_config = config.game.expect('game config not set');
-            let challenge_id = game.challenge_id.expect('challenge not defined');
-            let mut challenge: Challenge = world.read_model(challenge_id);
+        // fn claim(ref self: ContractState, game_id: u32) {
+        //     let mut world = self.world(@"nums");
+        //     let player = get_caller_address();
+        //     let game: Game = world.read_model((game_id, player));
+        //     let config: Config = world.read_model(WORLD);
+        //     let game_config = config.game.expect('game config not set');
+        //     let challenge_id = game.challenge_id.expect('challenge not defined');
+        //     let mut challenge: Challenge = world.read_model(challenge_id);
 
-            if challenge.expiration > 0 {
-                assert(challenge.expiration < get_block_timestamp(), 'cannot claim yet')
-            }
+        //     if challenge.expiration > 0 {
+        //         assert(challenge.expiration < get_block_timestamp(), 'cannot claim yet')
+        //     }
 
-            let mut nums = ArrayTrait::<u16>::new();
-            let mut idx = game_config.max_slots;
-            while idx > 0 {
-                let slot: Slot = world.read_model(((game_id, player, game_config.max_slots - idx)));
-                if slot.number != 0 {
-                    nums.append(slot.number);
-                }
-                idx -= 1_u8;
-            };
+        //     let mut nums = ArrayTrait::<u16>::new();
+        //     let mut idx = game_config.max_slots;
+        //     while idx > 0 {
+        //         let slot: Slot = world.read_model(((game_id, player, game_config.max_slots - idx)));
+        //         if slot.number != 0 {
+        //             nums.append(slot.number);
+        //         }
+        //         idx -= 1_u8;
+        //     };
 
-            assert(nums.len() != 0, 'no slots filled');
-            assert(game.is_valid(@nums), 'invalid game state');
-            assert(challenge.can_claim(@nums), 'cannot claim challenge');
+        //     assert(nums.len() != 0, 'no slots filled');
+        //     assert(game.is_valid(@nums), 'invalid game state');
+        //     assert(challenge.can_claim(@nums), 'cannot claim challenge');
 
-            challenge.winner = Option::Some(game.player);
-            challenge.claimed = true;
-            world.write_model(@challenge);
-            world.emit_event(@ChallengeClaimed { game_id, challenge_id, player });
+        //     challenge.winner = Option::Some(game.player);
+        //     challenge.claimed = true;
+        //     world.write_model(@challenge);
+        //     world.emit_event(@ChallengeClaimed { game_id, challenge_id, player });
 
-            if let Option::Some(token) = challenge.token {
-                ITokenDispatcher { contract_address: token.address }
-                    .transfer(game.player, token.total);
-            }
-        }
+        //     if let Option::Some(token) = challenge.token {
+        //         ITokenDispatcher { contract_address: token.address }
+        //             .transfer(game.player, token.total);
+        //     }
+        // }
 
         /// Attempts to crown the caller as the new king in a King of the Hill challenge.
         ///
         /// This function allows a player to claim the position of "king" in a King of the Hill
-        /// challenge game. It verifies that the game is associated with a King of the Hill challenge,
-        /// updates the current king, and potentially extends the challenge's expiration time.
+        /// challenge game. It verifies that the game is associated with a King of the Hill
+        /// challenge, updates the current king, and potentially extends the challenge's expiration
+        /// time.
         ///
         /// The remaining_slots mechanism ensures that each new king must have fewer or equal
         /// remaining slots compared to the previous king. This creates a progressively more
@@ -175,41 +160,41 @@ pub mod challenge_actions {
         ///
         /// # Arguments
         /// * `game_id` - The identifier of the game associated with the challenge.
-        fn king_me(ref self: ContractState, game_id: u32) {
-            let mut world = self.world(@"nums");
-            let player = get_caller_address();
-            let game: Game = world.read_model((game_id, player));
-            let challenge_id = game.challenge_id.expect('Challenge not defined');
-            let mut challenge: Challenge = world.read_model(challenge_id);
+        // fn king_me(ref self: ContractState, game_id: u32) {
+        //     let mut world = self.world(@"nums");
+        //     let player = get_caller_address();
+        //     let game: Game = world.read_model((game_id, player));
+        //     let challenge_id = game.challenge_id.expect('Challenge not defined');
+        //     let mut challenge: Challenge = world.read_model(challenge_id);
 
-            let mut king_of_the_hill = match challenge.mode {
-                ChallengeMode::KING_OF_THE_HILL(koth) => koth,
-                _ => panic!("Not a King of the Hill challenge")
-            };
+        //     let mut king_of_the_hill = match challenge.mode {
+        //         ChallengeMode::KING_OF_THE_HILL(koth) => koth,
+        //         _ => panic!("Not a King of the Hill challenge")
+        //     };
 
-            assert(challenge.expiration > get_block_timestamp(), 'Challenge already expired');
-            assert(
-                game.remaining_slots < king_of_the_hill.remaining_slots
-                    || (game.remaining_slots == king_of_the_hill.remaining_slots
-                        && player != king_of_the_hill.king),
-                'No improvement or already king'
-            );
+        //     assert(challenge.expiration > get_block_timestamp(), 'Challenge already expired');
+        //     assert(
+        //         game.remaining_slots < king_of_the_hill.remaining_slots
+        //             || (game.remaining_slots == king_of_the_hill.remaining_slots
+        //                 && player != king_of_the_hill.king),
+        //         'No improvement or already king'
+        //     );
 
-            king_of_the_hill.king = player;
-            king_of_the_hill.remaining_slots = game.remaining_slots;
+        //     king_of_the_hill.king = player;
+        //     king_of_the_hill.remaining_slots = game.remaining_slots;
 
-            if king_of_the_hill.extension_time > 0 {
-                let new_expiration = challenge.expiration + king_of_the_hill.extension_time;
-                if new_expiration > challenge.expiration {
-                    challenge.expiration = new_expiration;
-                }
-            }
+        //     if king_of_the_hill.extension_time > 0 {
+        //         let new_expiration = challenge.expiration + king_of_the_hill.extension_time;
+        //         if new_expiration > challenge.expiration {
+        //             challenge.expiration = new_expiration;
+        //         }
+        //     }
 
-            // Update the challenge with the new king
-            challenge.mode = ChallengeMode::KING_OF_THE_HILL(king_of_the_hill);
-            world.write_model(@challenge);
-            world.emit_event(@KingCrowned { game_id, challenge_id, player });
-        }
+        //     // Update the challenge with the new king
+        //     challenge.mode = ChallengeMode::KING_OF_THE_HILL(king_of_the_hill);
+        //     world.write_model(@challenge);
+        //     world.emit_event(@KingCrowned { game_id, challenge_id, player });
+        // }
 
 
         /// Verifies or unverifies a challenge as legitimate.
@@ -238,7 +223,6 @@ pub mod challenge_actions {
             title: felt252,
             mode: ChallengeMode,
             expiration: u64,
-            powerups: bool,
             token: Option<Token>,
         ) -> u32 {
             if expiration > 0 {
@@ -257,7 +241,6 @@ pub mod challenge_actions {
                         mode,
                         expiration,
                         token,
-                        powerups,
                         claimed: false,
                         verified: false,
                         winner: Option::None,
