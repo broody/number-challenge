@@ -1,6 +1,6 @@
-use starknet::{ContractAddress, get_caller_address};
-use nums::models::mode::ChallengeMode;
-use nums::models::token::Token;
+use starknet::ContractAddress;
+use nums_common::challenge_mode::ChallengeMode;
+use nums_starknet::models::token::Token;
 
 #[derive(Copy, Drop, Serde, PartialEq)]
 #[dojo::model]

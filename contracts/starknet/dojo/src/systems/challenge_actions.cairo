@@ -1,4 +1,4 @@
-use nums::models::token::Token;
+use nums_starknet::models::token::Token;
 
 
 #[starknet::interface]
@@ -27,11 +27,10 @@ pub trait IChallengeActions<T> {
 pub mod challenge_actions {
     use core::array::ArrayTrait;
     use core::num::traits::Zero;
-    use nums::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
-    use nums::interfaces::piltover::{IMessaging, IMessagingTrait};
-    use nums::models::challenge::{Challenge, ChallengeImpl};
-    use nums::models::token::{Token, TokenType};
-    use nums::models::mode::{ConditionalVictory, KingOfTheHill, ChallengeMode};
+    use nums_starknet::models::challenge::Challenge;
+    use nums_starknet::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
+    use nums_starknet::models::token::{Token, TokenType};
+    use nums_common::challenge_mode::{ChallengeMode, ConditionalVictory, KingOfTheHill};
 
     use dojo::model::ModelStorage;
     use dojo::event::EventStorage;

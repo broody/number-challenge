@@ -1,4 +1,4 @@
-use nums::models::config::Config;
+use nums_appchain::models::config::Config;
 
 #[starknet::interface]
 pub trait IGameActions<T> {
@@ -12,11 +12,11 @@ pub trait IGameActions<T> {
 #[dojo::contract]
 pub mod game_actions {
     use core::array::ArrayTrait;
-    use nums::models::config::{Config, SlotRewardTrait};
-    use nums::models::game::{Game, Reward, GameTrait};
-    use nums::models::name::Name;
-    use nums::models::slot::Slot;
-    use nums::utils::random::{Random, RandomImpl};
+    use nums_appchain::models::config::{Config, SlotRewardTrait};
+    use nums_appchain::models::game::{Game, Reward, GameTrait};
+    use nums_appchain::models::name::Name;
+    use nums_appchain::models::slot::Slot;
+    use nums_appchain::utils::random::{Random, RandomImpl};
 
     use dojo::model::ModelStorage;
     use dojo::event::EventStorage;
