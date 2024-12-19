@@ -1,0 +1,12 @@
+[package]
+name = "nums_common"
+version = "0.1.0"
+cairo-version = "=2.8.4"
+edition = "2024_07"
+
+[dependencies]
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.8" }
+starknet = "2.8.4"
+
+[features]
+default = []
