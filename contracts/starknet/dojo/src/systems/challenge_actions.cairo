@@ -1,4 +1,5 @@
 use nums_starknet::models::token::Token;
+use nums_starknet::models::challenge::AppChain;
 
 
 #[starknet::interface]
@@ -7,17 +8,20 @@ pub trait IChallengeActions<T> {
         ref self: T,
         title: felt252,
         expiration: u64,
-        token: Option<Token>,
         extension_time: u64,
+        token: Option<Token>,
+        appchain: Option<AppChain>,
     ) -> u32;
     fn create_conditional_victory(
         ref self: T,
         title: felt252,
         expiration: u64,
-        token: Option<Token>,
         slots_required: u8,
+        token: Option<Token>,
+        appchain: Option<AppChain>,
     ) -> u32;
     fn verify(ref self: T, challenge_id: u32, verified: bool);
+    fn resend_appchain_message(ref self: T, challenge_id: u32);
     //fn claim(ref self: T, game_id: u32);
     //fn king_me(ref self: T, game_id: u32);
 }
@@ -27,10 +31,12 @@ pub trait IChallengeActions<T> {
 pub mod challenge_actions {
     use core::array::ArrayTrait;
     use core::num::traits::Zero;
-    use nums_starknet::models::challenge::Challenge;
+    use nums_starknet::models::challenge::{Challenge, AppChain};
     use nums_starknet::interfaces::token::{ITokenDispatcher, ITokenDispatcherTrait};
+    use nums_starknet::interfaces::messaging::{IMessagingDispatcher, IMessagingDispatcherTrait};
     use nums_starknet::models::token::{Token, TokenType};
     use nums_common::challenge_mode::{ChallengeMode, ConditionalVictory, KingOfTheHill};
+    use nums_common::messages::ChallengeMessage;
 
     use dojo::model::ModelStorage;
     use dojo::event::EventStorage;
@@ -46,6 +52,7 @@ pub mod challenge_actions {
     pub struct ChallengeCreated {
         #[key]
         challenge_id: u32,
+        is_appchain: bool,
         token: Option<Token>,
     }
 
@@ -75,19 +82,21 @@ pub mod challenge_actions {
             ref self: ContractState,
             title: felt252,
             expiration: u64,
-            token: Option<Token>,
             slots_required: u8
+            token: Option<Token>,
+            appchain: Option<AppChain>,
         ) -> u32 {
             let mode = ChallengeMode::CONDITIONAL_VICTORY(ConditionalVictory { slots_required });
-            self._create(title, mode, expiration, token,)
+            self._create(title, mode, expiration, token, appchain)
         }
 
         fn create_king_of_the_hill(
             ref self: ContractState,
             title: felt252,
             expiration: u64,
-            token: Option<Token>,
             extension_time: u64,
+            token: Option<Token>,
+            appchain: Option<AppChain>,
         ) -> u32 {
             if expiration == 0 && extension_time > 0 {
                 panic!("cannot set extension with no expiration");
@@ -99,7 +108,7 @@ pub mod challenge_actions {
                     king: starknet::contract_address_const::<0x0>(),
                 }
             );
-            self._create(title, mode, expiration, token)
+            self._create(title, mode, expiration, token, appchain)
         }
 
         /// Claims the challenge for a specific game. Ensures that the player is authorized and that
@@ -212,8 +221,20 @@ pub mod challenge_actions {
 
             world.write_model(@challenge);
         }
-    }
 
+        fn resend_appchain_message(ref self: ContractState, challenge_id: u32) {
+            let mut world = self.world(@"nums");
+            let challenge: Challenge = world.read_model(challenge_id);
+            let appchain = challenge.appchain.expect('appchain not set');
+            let message = ChallengeMessage {
+                id: challenge_id,
+                mode: challenge.mode,
+                expiration: challenge.expiration,
+            };
+
+            self._send_appchain_message(message, appchain);
+        }
+    }
 
     #[generate_trait]
     pub impl InternalImpl of InternalTrait {
@@ -223,6 +244,7 @@ pub mod challenge_actions {
             mode: ChallengeMode,
             expiration: u64,
             token: Option<Token>,
+            appchain: Option<AppChain>,
         ) -> u32 {
             if expiration > 0 {
                 assert!(expiration > get_block_timestamp(), "Expiration already passed")
@@ -230,11 +252,11 @@ pub mod challenge_actions {
 
             let mut world = self.world(@"nums");
             let creator = get_caller_address();
-            let challenge_id = world.dispatcher.uuid();
+            let id = world.dispatcher.uuid();
             world
                 .write_model(
                     @Challenge {
-                        challenge_id,
+                        id,
                         title,
                         creator,
                         mode,
@@ -242,11 +264,12 @@ pub mod challenge_actions {
                         token,
                         claimed: false,
                         verified: false,
+                        appchain,
                         winner: Option::None,
                     }
                 );
 
-            world.emit_event(@ChallengeCreated { challenge_id, token });
+            world.emit_event(@ChallengeCreated { challenge_id: id, is_appchain: appchain.is_some(), token });
 
             if let Option::Some(token) = token {
                 assert(token.ty == TokenType::ERC20, 'only ERC20 supported');
@@ -256,7 +279,32 @@ pub mod challenge_actions {
                     .transferFrom(get_caller_address(), get_contract_address(), token.total);
             }
 
-            challenge_id
+            if let Option::Some(appchain) = appchain {
+                let message = ChallengeMessage {
+                    id,
+                    mode,
+                    expiration,
+                };
+
+                self._send_appchain_message(message, appchain);
+            }
+
+            id
+        }
+
+        fn _send_appchain_message(
+            self: @ContractState,
+            message: ChallengeMessage,
+            appchain: AppChain,
+        ) {
+            let mut payload: Array<felt252> = array![];
+            message.serialize(ref payload);
+
+            IMessagingDispatcher { contract_address: appchain.message_contract.try_into().unwrap() }.send_message_to_appchain(
+                appchain.to_address.try_into().unwrap(),
+                appchain.to_selector,
+                payload.span(),
+            );
         }
     }
 }

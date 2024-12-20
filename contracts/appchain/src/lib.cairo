@@ -1,5 +1,6 @@
 pub mod systems {
     pub mod game_actions;
+    pub mod message_handlers;
 }
 
 pub mod models {
@@ -7,10 +8,7 @@ pub mod models {
     pub mod game;
     pub mod name;
     pub mod slot;
-}
-
-pub mod utils {
-    pub mod random;
+    pub mod challenge;
 }
 
 pub mod tests {

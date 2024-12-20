@@ -6,7 +6,7 @@ use nums_starknet::models::token::Token;
 #[dojo::model]
 pub struct Challenge {
     #[key]
-    pub challenge_id: u32,
+    pub id: u32,
     pub title: felt252,
     pub creator: ContractAddress,
     pub mode: ChallengeMode,
@@ -15,7 +15,16 @@ pub struct Challenge {
     pub winner: Option<ContractAddress>,
     pub claimed: bool, // gql lacks ability to filter on winner Option, use bool for filtering on active challenges
     pub verified: bool,
+    pub appchain: Option<AppChain>,
 }
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+pub struct AppChain {
+    pub message_contract: ContractAddress,
+    pub to_address: ContractAddress,
+    pub to_selector: felt252,
+}
+
 
 // #[generate_trait]
 // pub impl ChallengeImpl of ChallengeTrait {
