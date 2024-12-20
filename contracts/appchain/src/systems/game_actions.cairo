@@ -1,4 +1,4 @@
-use nums::models::config::Config;
+use nums_appchain::models::config::Config;
 
 #[starknet::interface]
 pub trait IGameActions<T> {
@@ -12,13 +12,11 @@ pub trait IGameActions<T> {
 #[dojo::contract]
 pub mod game_actions {
     use core::array::ArrayTrait;
-    use nums::interfaces::token::{INumsTokenDispatcher, INumsTokenDispatcherTrait};
-    use nums::models::config::{Config, SlotRewardTrait};
-    use nums::models::game::{Game, Reward, GameTrait};
-    use nums::models::challenge::challenge::Challenge;
-    use nums::models::name::Name;
-    use nums::models::slot::Slot;
-    use nums::utils::random::{Random, RandomImpl};
+    use nums_appchain::models::config::{Config, SlotRewardTrait};
+    use nums_appchain::models::game::{Game, Reward, GameTrait};
+    use nums_appchain::models::name::Name;
+    use nums_appchain::models::slot::Slot;
+    use nums_common::random::{Random, RandomImpl};
 
     use dojo::model::ModelStorage;
     use dojo::event::EventStorage;
@@ -120,12 +118,6 @@ pub mod game_actions {
                     }
                 );
 
-            if let Option::Some(challenge_id) = challenge_id {
-                let challenge: Challenge = world.read_model(challenge_id);
-                assert!(challenge.winner.is_none(), "Challenge already won");
-                // TODO: Transfer fee token
-            }
-
             (game_id, next_number)
         }
 
@@ -144,9 +136,7 @@ pub mod game_actions {
 
             // Slot reward
             if let Option::Some(reward_config) = config.reward {
-                let (address, amount) = reward_config.compute(game.level());
-                INumsTokenDispatcher { contract_address: address }.reward(player, amount);
-
+                let (_, amount) = reward_config.compute(game.level());
                 let mut game_reward: Reward = world.read_model((game_id, player));
                 game_reward.total = amount.into();
                 world.write_model(@game_reward);

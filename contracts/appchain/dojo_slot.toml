@@ -14,7 +14,7 @@ default = "nums"
 rpc_url = "https://api.cartridge.gg/x/nums-slot/katana"
 account_address = "0x672b197e2356b1c9064e4975bd8f1c510758973cf4993f2c11e66257ce6ae35"
 private_key = "0x230d17156789df0f4e6a117b9255383a90f948b5bcddba4abd3e9a283331204"
-world_address = "0x05f2358c005acf2a63616a32b76a01d632463b84609954ff846998f898a49778"
+# world_address = "0x05f2358c005acf2a63616a32b76a01d632463b84609954ff846998f898a49778"
 
 [writers]
-"nums" = ["nums-game_actions", "nums-challenge_actions"]
+"nums" = ["nums-game_actions"]

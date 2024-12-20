@@ -1,0 +1,20 @@
+[world]
+name = "Nums"
+seed = "nums"
+description = "On chain version of the Number Challenge or Blind Number Challenge game."
+# cover_uri = "file://assets/cover.png"
+# icon_uri = "file://assets/icon.png"
+website = "https://nums.gg"
+
+
+[namespace]
+default = "nums"
+
+[env]
+rpc_url = "http://localhost:5050"
+account_address = "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec"
+private_key = "0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912"
+#world_address = "0x04048ca2ad07286822bb2accf3af3e513a32f8f2c84843e9dbd208b06e234385"
+
+[writers]
+"nums" = ["nums-game_actions"]
